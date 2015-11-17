@@ -2,9 +2,9 @@
 .DS_Store
 .project
 .gradle/
-.varOne-web/build
-.varOne-node/build
-.varOne-rpc/build
+varOne-web/build/
+varOne-node/build/
+varOne-rpc/build/
 
 *.jar
 *.war
