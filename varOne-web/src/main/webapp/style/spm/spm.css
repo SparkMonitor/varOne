@@ -1,0 +1,5 @@
+.breadcrumb > li + li:before {
+    color: #ccc;
+    content: " > ";
+    padding: 0 5px;
+}
