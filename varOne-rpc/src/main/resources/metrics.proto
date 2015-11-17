@@ -1,0 +1,75 @@
+option java_package = "com.haredb.sparkmonitor.hadoop.rpc.protos";
+option java_outer_classname = "MetricsProtos";
+option java_generate_equals_and_hash = true;
+
+enum MetricsTypeProto {
+	FS            = 0;
+	JVM           = 1;
+	GC            = 2;
+	THREAD_POOL   = 3;
+	
+	EXEC_FS_LOCAL_LARGEREAD_OPS = 4;
+	EXEC_FS_LOCAL_READ_BYTES = 5;
+	EXEC_FS_LOCAL_READ_OPS = 6;
+	EXEC_FS_LOCAL_WRITE_BYTES = 7;
+	EXEC_FS_LOCAL_WRITE_OPS = 8;
+	
+	
+	EXEC_FS_HDFS_LARGEREAD_OPS = 9;
+	EXEC_FS_HDFS_READ_BYTES = 10;
+	EXEC_FS_HDFS_READ_OPS = 11;
+	EXEC_FS_HDFS_WRITE_BYTES = 12;
+	EXEC_FS_HDFS_WRITE_OPS = 13;
+	
+	
+	EXEC_THREADPOOL_ACTIVETASK = 14;
+	EXEC_THREADPOOL_COMPLETETASK = 15;
+	EXEC_THREADPOOL_CURRPOOL_SIZE = 16;
+	EXEC_THREADPOOL_MAXPOOL_SIZE = 17;
+	
+	
+	JVM_HEAP_COMMITED = 18;
+	JVM_HEAP_INIT = 19;
+	JVM_HEAP_MAX = 20;
+	JVM_HEAP_USAGE = 21;
+	JVM_HEAP_USED = 22;
+	
+	
+	JVM_NON_HEAP_COMMITED = 23;
+	JVM_NON_HEAP_INIT = 24;
+	JVM_NON_HEAP_MAX = 25;
+	JVM_NON_HEAP_USAGE = 26;
+	JVM_NON_HEAP_USED = 27;
+	
+	
+	JVM_POOLS_CODE_CACHE_USAGE = 28;
+	JVM_POOLS_PS_EDEN_SPACE_USAGE = 29;
+	JVM_POOLS_PS_OLD_GEN_USAGE = 30;
+	JVM_POOLS_PS_PERM_GEN_USAGE = 31;
+	JVM_POOLS_PS_SURVIVOR_SPACE_USAGE = 32;
+	
+	
+	JVM_PS_MARKSWEEP_COUNT = 33;
+	JVM_PS_MARKSWEEP_TIME = 34;
+	JVM_PS_SCAVENGE_COUNT = 35;
+	JVM_PS_SCAVENGE_TIME = 36;
+	
+}
+
+message MetricsRequestProto{
+    required string applicationId = 1;
+	repeated MetricsTypeProto metrics = 2;
+}
+
+
+message MetricsResponseProto{
+	message MetricsMapProto{
+		message TupleProto{
+			required int64 time = 1;
+			optional string value = 2; 
+		}
+		required string metricsName = 1;
+		repeated TupleProto  metricsValues   = 2;
+	}
+	repeated MetricsMapProto result = 1;
+}
