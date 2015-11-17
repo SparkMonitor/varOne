@@ -1,0 +1,93 @@
+buildscript {
+  repositories { jcenter() }
+  dependencies {
+  /* https://github.com/johnrengelman/shadow */
+    classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.2'
+  }
+}
+
+subprojects {
+    apply plugin: 'com.github.johnrengelman.shadow'
+    apply plugin: 'java'
+    sourceCompatibility = 1.7
+    group = 'com.haredb'
+    version = '1.0'
+
+    // set encoding 'UTF-8' on all compile task
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    tasks.withType(Javadoc) {
+        options.encoding = 'UTF-8'
+    }
+
+    test {
+        outputs.upToDateWhen { false }
+        testLogging.showStandardStreams = true
+        testLogging{
+            events "passed","skipped","failed"
+        }
+    }
+
+    javadoc {
+        options.charSet = 'UTF-8'
+    }
+
+    //disable jar task
+    //tasks.jar.enabled = false
+}
+
+/**
+ * IDE configuration
+ */
+subprojects {
+    apply plugin: 'eclipse'
+    apply plugin: 'eclipse-wtp'
+    eclipse {
+        jdt {
+            sourceCompatibility = 1.7
+            targetCompatibility = 1.7
+        }
+    }
+    if (project.name in ["varOne-node"]) {
+        eclipse {
+            project {
+                referencedProjects 'varOne-rpc'
+            }
+        }
+    } else if (project.name in ["varOne-web"]) {
+        eclipse {
+            project {
+                referencedProjects 'varOne-node'
+            }
+        }
+    }
+}
+
+subprojects {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://repository.cloudera.com/artifactory/cloudera-repos/"
+        }
+    }
+    configurations {
+        hadoopConf
+        provided
+    }
+
+    sourceSets {
+        main.compileClasspath += configurations.provided
+        test.compileClasspath += configurations.provided
+        test.runtimeClasspath += configurations.provided
+    }
+
+    dependencies {
+        hadoopConf 'org.apache.hadoop:hadoop-client:2.3.0'
+    }
+
+    dependencies {
+        testCompile 'junit:junit:4.11'
+    }
+}
