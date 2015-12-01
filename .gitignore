@@ -9,3 +9,6 @@ node_modules
 *.jar
 *.war
 varOne-web/src/main/webapp/npm-debug.log
+.classpath
+.settings
+bin
