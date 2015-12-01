@@ -150,7 +150,9 @@ public class SparkMonitorFacade {
 			history.setId(appStart.getId());
 			history.setName(appStart.getName());
 			history.setStartTime(appStart.getTimestamp()+"");
-			history.setEndTime(eventLog.getAppEnd().getTimestamp()+"");
+			if(eventLog.getAppEnd() != null){
+				history.setEndTime(eventLog.getAppEnd().getTimestamp()+"");
+			}
 			history.setUser(appStart.getUser());
 			histories.add(history);
 		}
