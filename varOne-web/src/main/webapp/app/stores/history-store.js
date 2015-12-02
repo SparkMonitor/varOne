@@ -43,6 +43,11 @@ class HistoryStore {
     this.breadcrumb = [Const.history.tab.HISTORY_TAB, Const.history.tab.JOB_TAB];
   }
 
+  onSwitchToHistoryTab(){
+    this.tab = Const.history.tab.HISTORY_TAB;
+    this.breadcrumb = [Const.history.tab.HISTORY_TAB];
+  }
+
 }
 
 export default alt.createStore(HistoryStore);

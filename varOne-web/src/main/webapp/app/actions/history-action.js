@@ -5,6 +5,7 @@ class HistoryAction {
 
   constructor() {
     this.generateActions('switchToJobTab');
+    this.generateActions('switchToHistoryTab');
   }
 
   async fetchApplications(){
