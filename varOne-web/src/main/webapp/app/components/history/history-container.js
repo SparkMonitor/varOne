@@ -30,6 +30,14 @@ class HistoryContainer extends React.Component {
 
   constructor(props){
     super(props);
+    this.init = false;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.tab === this.props.tab &&
+      this.props.tab !== Const.history.tab.HISTORY_TAB){
+      HistoryAction.switchToHistoryTab();
+    }
   }
 
   componentWillMount(){
@@ -53,7 +61,7 @@ class HistoryContainer extends React.Component {
   }
 
   handleStageSelect = (stageId) => {
-    
+
   }
 
   renderContent = () => {
