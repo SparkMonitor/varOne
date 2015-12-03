@@ -128,7 +128,7 @@ public class RPCService implements IService {
 	 }
 	 private String getProtoClassName(Class<?> clazz) {
 	    String srcClassName = getClassName(clazz);
-	    return "com.haredb.sparkmonitor.hadoop.rpc.protos" + "." + srcClassName + "Protos$" + srcClassName;  
+	    return "com.varone.hadoop.rpc.protos" + "." + srcClassName + "Protos$" + srcClassName;  
 	 }
 	  private String getClassName(Class<?> clazz) {
 	    String fqName = clazz.getName();
