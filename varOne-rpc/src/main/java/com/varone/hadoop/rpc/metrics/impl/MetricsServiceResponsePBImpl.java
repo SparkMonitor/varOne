@@ -35,7 +35,7 @@ public class MetricsServiceResponsePBImpl implements MetricsServiceResponse {
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceResponse#getResult()
+	 * @see com.varone.hadoop.rpc.metrics.MetricsServiceResponse#getResult()
 	 */
 	@Override
 	public List<MetricsMapProto> getResult() {
@@ -45,7 +45,7 @@ public class MetricsServiceResponsePBImpl implements MetricsServiceResponse {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceResponse#setResult(java.util.List)
+	 * @see com.varone.hadoop.rpc.metrics.MetricsServiceResponse#setResult(java.util.List)
 	 */
 	@Override
 	public void setResult(List<MetricsMapProto> result) {

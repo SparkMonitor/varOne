@@ -43,7 +43,7 @@ public class EventLogHdfsReaderImpl implements EventLogReader {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.haredb.sparkmonitor.reader.eventlog.EventLogReader#getAllInProgressLog()
+	 * @see com.varone.web.reader.eventlog.EventLogReader#getAllInProgressLog()
 	 */
 	@Override
 	public Map<String, SparkEventLogBean> getAllInProgressLog()
@@ -74,7 +74,7 @@ public class EventLogHdfsReaderImpl implements EventLogReader {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.haredb.sparkmonitor.reader.eventlog.EventLogReader#getInProgressLog(java.lang.String)
+	 * @see com.varone.web.reader.eventlog.EventLogReader#getInProgressLog(java.lang.String)
 	 */
 	@Override
 	public SparkEventLogBean getInProgressLog(final String applicationId)

@@ -35,7 +35,7 @@ public class MetricsServiceRequestPBImpl implements MetricsServiceRequest {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceRequest#getApplicationId()
+	 * @see com.varone.hadoop.rpc.metrics.MetricsServiceRequest#getApplicationId()
 	 */
 	@Override
 	public String getApplicationId() {
@@ -45,7 +45,7 @@ public class MetricsServiceRequestPBImpl implements MetricsServiceRequest {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceRequest#setApplicationId(java.lang.String)
+	 * @see com.varone.hadoop.rpc.metrics.MetricsServiceRequest#setApplicationId(java.lang.String)
 	 */
 	@Override
 	public void setApplicationId(String applicationId) {
@@ -55,7 +55,7 @@ public class MetricsServiceRequestPBImpl implements MetricsServiceRequest {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceRequest#getMetrics()
+	 * @see com.varone.hadoop.rpc.metrics.MetricsServiceRequest#getMetrics()
 	 */
 	@Override
 	public List<MetricsTypeProto> getMetrics() {
@@ -65,7 +65,7 @@ public class MetricsServiceRequestPBImpl implements MetricsServiceRequest {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceRequest#setMetrics(java.util.List)
+	 * @see com.varone.hadoop.rpc.metrics.MetricsServiceRequest#setMetrics(java.util.List)
 	 */
 	@Override
 	public void setMetrics(List<MetricsTypeProto> metrics) {

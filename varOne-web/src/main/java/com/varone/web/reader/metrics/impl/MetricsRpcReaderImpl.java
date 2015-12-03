@@ -35,7 +35,7 @@ public class MetricsRpcReaderImpl implements MetricsReader {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.haredb.sparkmonitor.reader.metrics.MetricsReader#getNodeMetrics(java.lang.String, java.util.List)
+	 * @see com.varone.web.reader.metrics.MetricsReader#getNodeMetrics(java.lang.String, java.util.List)
 	 */
 	@Override
 	public List<NodeBean> getAllNodeMetrics(String applicationId,

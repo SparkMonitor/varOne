@@ -38,7 +38,7 @@ public class NodeMetricsService extends AbstractServer implements MetricsService
 	}
 
 	/* (non-Javadoc)
-	 * @see com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsService#getMetrics(com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceRequest)
+	 * @see com.varone.hadoop.rpc.metrics.MetricsService#getMetrics(com.varone.hadoop.rpc.metrics.MetricsServiceRequest)
 	 */
 	@Override
 	public MetricsServiceResponse getMetrics(MetricsServiceRequest request)
@@ -61,7 +61,7 @@ public class NodeMetricsService extends AbstractServer implements MetricsService
 	}
 
 	/* (non-Javadoc)
-	 * @see com.haredb.sparkmonitor.hadoop.rpc.AbstractServer#constructServer(org.apache.hadoop.conf.Configuration)
+	 * @see com.varone.hadoop.rpc.AbstractServer#constructServer(org.apache.hadoop.conf.Configuration)
 	 */
 	@Override
 	public void constructServer(Configuration config) throws Exception {

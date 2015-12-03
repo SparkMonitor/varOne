@@ -29,7 +29,7 @@ public class MetricsServicePBServiceImpl implements MetricsServicePB {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsServiceProtos.Metrics.BlockingInterface#getMetrics(com.google.protobuf.RpcController, com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsRequestProto)
+	 * @see com.varone.hadoop.rpc.protos.MetricsServiceProtos.Metrics.BlockingInterface#getMetrics(com.google.protobuf.RpcController, com.varone.hadoop.rpc.protos.MetricsProtos.MetricsRequestProto)
 	 */
 	@Override
 	public MetricsResponseProto getMetrics(RpcController controller,

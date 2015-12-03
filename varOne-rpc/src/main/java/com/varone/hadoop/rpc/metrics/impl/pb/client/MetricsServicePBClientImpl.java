@@ -46,7 +46,7 @@ public class MetricsServicePBClientImpl implements MetricsService, Closeable {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsService#getMetrics(com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceRequest)
+	 * @see com.varone.hadoop.rpc.metrics.MetricsService#getMetrics(com.varone.hadoop.rpc.metrics.MetricsServiceRequest)
 	 */
 	@Override
 	public MetricsServiceResponse getMetrics(MetricsServiceRequest request)

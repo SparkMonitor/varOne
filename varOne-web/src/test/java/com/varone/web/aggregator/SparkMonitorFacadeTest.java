@@ -33,7 +33,7 @@ public class SparkMonitorFacadeTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.adapter.UIDataTransfer#getDefaultTotalNodeDashBoard()}.
+	 * Test method for {@link com.varone.web.aggregator.UIDataTransfer#getDefaultTotalNodeDashBoard()}.
 	 * @throws Exception 
 	 */
 	public void testGetDefaultTotalNodeDashBoard() throws Exception{

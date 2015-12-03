@@ -50,7 +50,7 @@ public class RPCService implements IService {
 	
 	
 	/* (non-Javadoc)
-	 * @see com.haredb.hadoop.rpc.IService#startService()
+	 * @see com.varone.rpc.IService#startService()
 	 */
 	@Override
 	public void startService() throws Exception {
@@ -152,7 +152,7 @@ public class RPCService implements IService {
 		    return server;
 		  }
 	/* (non-Javadoc)
-	 * @see com.haredb.hadoop.rpc.IService#stopService()
+	 * @see com.varone.rpc.IService#stopService()
 	 */
 	@Override
 	public void stopService() throws Exception {
