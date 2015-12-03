@@ -6,7 +6,7 @@ package com.haredb.sparkmonitor.aggregator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.haredb.sparkmonitor.node.MetricsType;
+import com.varone.node.MetricsType;
 
 /**
  * @author allen

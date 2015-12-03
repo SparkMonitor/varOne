@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.node.reader;
+package com.varone.node.reader;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +13,8 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 
-import com.haredb.sparkmonitor.node.MetricTuple;
-import com.haredb.sparkmonitor.node.MetricsType;
+import com.varone.node.MetricTuple;
+import com.varone.node.MetricsType;
 
 /**
  * @author allen

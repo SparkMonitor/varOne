@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.node.reader;
+package com.varone.node.reader;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,30 +13,33 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 
-import com.haredb.sparkmonitor.node.MetricTuple;
-import com.haredb.sparkmonitor.node.MetricsType;
+import com.varone.node.MetricTuple;
+import com.varone.node.MetricsType;
 
 /**
  * @author allen
  *
  */
-public class FsMetricsReader extends MetricsReader {
-	
-	
-	
-	public FsMetricsReader(MetricsReader reader, MetricsType metricType){
+public class JvmMetricsReader extends MetricsReader {
+
+	/**
+	 * @param reader
+	 */
+	public JvmMetricsReader(MetricsReader reader, MetricsType metricType) {
 		super(reader, metricType);
 	}
 
 	/* (non-Javadoc)
-	 * @see com.haredb.sparkmonitor.node.reader.MetricsReader#read()
+	 * @see com.haredb.sparkmonitor.node.reader.MetricsReader#read(java.lang.String, java.lang.String)
 	 */
 	@Override
-	protected Map<String, List<MetricTuple>> read(String applicationId, String metricsDir) throws IOException {
+	protected Map<String, List<MetricTuple>> read(String applicationId,
+			String metricsDir) throws IOException {
 		File root = new File(metricsDir);
 		IOFileFilter filter = null;
-		if(super.metricType.equals(MetricsType.FS)){
-			filter = new RegexFileFilter(applicationId+"(.\\d+).executor.filesystem.*\\.csv");
+		
+		if(super.metricType.equals(MetricsType.JVM)){
+			filter = new RegexFileFilter(applicationId+"(.\\d+).jvm.(?!total).*\\.csv");
 		} else {
 			filter = new RegexFileFilter(applicationId+"(.\\d+)." + super.metricType.type() + ".csv");
 		}

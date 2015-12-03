@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.node.reader;
+package com.varone.node.reader;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +13,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 
-import com.haredb.sparkmonitor.node.MetricTuple;
-import com.haredb.sparkmonitor.node.MetricsType;
+import com.varone.node.MetricTuple;
+import com.varone.node.MetricsType;
+import com.varone.node.reader.JvmMetricsReader;
+import com.varone.node.reader.MetricsReader;
 
 import junit.framework.TestCase;
 
@@ -59,7 +61,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM() throws IOException {
@@ -75,7 +77,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_HEAP_COMMITED() throws IOException {
@@ -91,7 +93,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_HEAP_INIT() throws IOException {
@@ -107,7 +109,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_HEAP_MAX() throws IOException {
@@ -123,7 +125,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_HEAP_USAGE() throws IOException {
@@ -139,7 +141,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_HEAP_USED() throws IOException {
@@ -155,7 +157,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_NON_HEAP_COMMITED() throws IOException {
@@ -171,7 +173,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_NON_HEAP_INIT() throws IOException {
@@ -187,7 +189,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_NON_HEAP_MAX() throws IOException {
@@ -203,7 +205,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_NON_HEAP_USAGE() throws IOException {
@@ -219,7 +221,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_NON_HEAP_USED() throws IOException {
@@ -235,7 +237,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_POOLS_CODE_CACHE_USAGE() throws IOException {
@@ -251,7 +253,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_POOLS_PS_EDEN_SPACE_USAGE() throws IOException {
@@ -267,7 +269,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_POOLS_PS_OLD_GEN_USAGE() throws IOException {
@@ -283,7 +285,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_POOLS_PS_PERM_GEN_USAGE() throws IOException {
@@ -299,7 +301,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_POOLS_PS_SURVIVOR_SPACE_USAGE() throws IOException {
@@ -315,7 +317,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_PS_MARKSWEEP_COUNT() throws IOException {
@@ -331,7 +333,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_PS_MARKSWEEP_TIME() throws IOException {
@@ -347,7 +349,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_PS_SCAVENGE_COUNT() throws IOException {
@@ -363,7 +365,7 @@ public class JvmMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.JvmMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_JVM_PS_SCAVENGE_TIME() throws IOException {

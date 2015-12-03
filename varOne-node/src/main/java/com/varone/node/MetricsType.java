@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.node;
+package com.varone.node;
 
 /**
  * @author allen

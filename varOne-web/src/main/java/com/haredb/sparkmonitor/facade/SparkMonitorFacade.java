@@ -14,7 +14,6 @@ import com.haredb.sparkmonitor.aggregator.UIDataAggregator;
 import com.haredb.sparkmonitor.eventlog.bean.SparkEventLogBean;
 import com.haredb.sparkmonitor.eventlog.bean.SparkEventLogBean.AppStart;
 import com.haredb.sparkmonitor.metrics.bean.NodeBean;
-import com.haredb.sparkmonitor.node.MetricsType;
 import com.haredb.sparkmonitor.reader.eventlog.EventLogReader;
 import com.haredb.sparkmonitor.reader.eventlog.impl.EventLogHdfsReaderImpl;
 import com.haredb.sparkmonitor.reader.metrics.MetricsReader;
@@ -26,6 +25,7 @@ import com.haredb.sparkmonitor.vo.HistoryVO;
 import com.haredb.sparkmonitor.vo.JobVO;
 import com.haredb.sparkmonitor.vo.StageVO;
 import com.haredb.sparkmonitor.yarn.service.YarnService;
+import com.varone.node.MetricsType;
 
 /**
  * @author allen

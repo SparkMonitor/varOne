@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.node.utils;
+package com.varone.node.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +11,8 @@ import java.util.Map.Entry;
 import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto;
 import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto.TupleProto;
 import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
-import com.haredb.sparkmonitor.node.MetricTuple;
-import com.haredb.sparkmonitor.node.MetricsType;
+import com.varone.node.MetricTuple;
+import com.varone.node.MetricsType;
 
 /**
  * @author allen

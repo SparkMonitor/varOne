@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.node.util;
+package com.varone.node.util;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -13,9 +13,9 @@ import junit.framework.TestCase;
 import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto;
 import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto.TupleProto;
 import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
-import com.haredb.sparkmonitor.node.MetricTuple;
-import com.haredb.sparkmonitor.node.MetricsType;
-import com.haredb.sparkmonitor.node.utils.MetricsDataTransfer;
+import com.varone.node.MetricTuple;
+import com.varone.node.MetricsType;
+import com.varone.node.utils.MetricsDataTransfer;
 
 /**
  * @author allen
@@ -38,7 +38,7 @@ public class MetricsDataTransferTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.utils.MetricsDataTransfer#MetricsDataTransfer()}.
+	 * Test method for {@link com.varone.node.utils.MetricsDataTransfer#MetricsDataTransfer()}.
 	 */
 	public void testMetricsDataTransfer() {
 		MetricsDataTransfer metricsDataTransfer = new MetricsDataTransfer();
@@ -46,7 +46,7 @@ public class MetricsDataTransferTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.utils.MetricsDataTransfer#decodeMetricsType(java.util.List)}.
+	 * Test method for {@link com.varone.node.utils.MetricsDataTransfer#decodeMetricsType(java.util.List)}.
 	 * @throws Exception 
 	 */
 	public void testDecodeMetricsType() throws Exception {
@@ -133,7 +133,7 @@ public class MetricsDataTransferTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.utils.MetricsDataTransfer#encodeMetricsData(java.util.Map)}.
+	 * Test method for {@link com.varone.node.utils.MetricsDataTransfer#encodeMetricsData(java.util.Map)}.
 	 */
 	public void testEncodeMetricsData() {
 		MetricsDataTransfer metricsDataTransfer = new MetricsDataTransfer();
@@ -174,7 +174,7 @@ public class MetricsDataTransferTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.utils.MetricsDataTransfer#encodeMetricsType(java.util.List)}.
+	 * Test method for {@link com.varone.node.utils.MetricsDataTransfer#encodeMetricsType(java.util.List)}.
 	 * @throws Exception 
 	 */
 	public void testEncodeMetricsType() throws Exception {

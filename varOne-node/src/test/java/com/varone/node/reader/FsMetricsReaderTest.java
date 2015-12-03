@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.node.reader;
+package com.varone.node.reader;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,8 +15,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 
-import com.haredb.sparkmonitor.node.MetricTuple;
-import com.haredb.sparkmonitor.node.MetricsType;
+import com.varone.node.MetricTuple;
+import com.varone.node.MetricsType;
+import com.varone.node.reader.FsMetricsReader;
+import com.varone.node.reader.MetricsReader;
 
 /**
  * @author allen
@@ -57,7 +59,7 @@ public class FsMetricsReaderTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testReadWith_FS() throws IOException {
@@ -73,7 +75,7 @@ public class FsMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testReadWith_EXEC_FS_HDFS_LARGEREAD_OPS() throws IOException {
@@ -89,7 +91,7 @@ public class FsMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testReadWith_EXEC_FS_HDFS_READ_BYTES() throws IOException {
@@ -105,7 +107,7 @@ public class FsMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testReadWith_EXEC_FS_HDFS_READ_OPS() throws IOException {
@@ -121,7 +123,7 @@ public class FsMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testReadWith_EXEC_FS_HDFS_WRITE_BYTES() throws IOException {
@@ -137,7 +139,7 @@ public class FsMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testReadWith_EXEC_FS_HDFS_WRITE_OPS() throws IOException {
@@ -153,7 +155,7 @@ public class FsMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testReadWith_EXEC_FS_LOCAL_LARGEREAD_OPS() throws IOException {
@@ -169,7 +171,7 @@ public class FsMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testReadWith_EXEC_FS_LOCAL_READ_BYTES() throws IOException {
@@ -185,7 +187,7 @@ public class FsMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testReadWith_EXEC_FS_LOCAL_READ_OPS() throws IOException {
@@ -201,7 +203,7 @@ public class FsMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testReadWith_EXEC_FS_LOCAL_WRITE_BYTES() throws IOException {
@@ -217,7 +219,7 @@ public class FsMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.FsMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testReadWith_EXEC_FS_LOCAL_WRITE_OPS() throws IOException {

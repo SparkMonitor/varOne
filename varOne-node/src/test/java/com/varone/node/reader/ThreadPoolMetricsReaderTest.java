@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.node.reader;
+package com.varone.node.reader;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,8 +15,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 
-import com.haredb.sparkmonitor.node.MetricTuple;
-import com.haredb.sparkmonitor.node.MetricsType;
+import com.varone.node.MetricTuple;
+import com.varone.node.MetricsType;
+import com.varone.node.reader.MetricsReader;
+import com.varone.node.reader.ThreadPoolMetricsReader;
 
 /**
  * @author allen
@@ -59,7 +61,7 @@ public class ThreadPoolMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.ThreadPoolMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.ThreadPoolMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_THREAD_POOL() throws IOException {
@@ -76,7 +78,7 @@ public class ThreadPoolMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.ThreadPoolMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.ThreadPoolMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_EXEC_THREADPOOL_ACTIVETASK() throws IOException {
@@ -93,7 +95,7 @@ public class ThreadPoolMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.ThreadPoolMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.ThreadPoolMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_EXEC_THREADPOOL_COMPLETETASK() throws IOException {
@@ -110,7 +112,7 @@ public class ThreadPoolMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.ThreadPoolMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.ThreadPoolMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_EXEC_THREADPOOL_CURRPOOL_SIZE() throws IOException {
@@ -127,7 +129,7 @@ public class ThreadPoolMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.ThreadPoolMetricsReader#read(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.varone.node.reader.ThreadPoolMetricsReader#read(java.lang.String, java.lang.String)}.
 	 * @throws IOException 
 	 */
 	public void testRead_EXEC_THREADPOOL_MAXPOOL_SIZE() throws IOException {

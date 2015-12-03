@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.node.reader;
+package com.varone.node.reader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +9,9 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import com.haredb.sparkmonitor.node.MetricTuple;
-import com.haredb.sparkmonitor.node.MetricsType;
+import com.varone.node.MetricTuple;
+import com.varone.node.MetricsType;
+import com.varone.node.reader.NodeMetricsReader;
 
 /**
  * @author allen
@@ -33,7 +34,7 @@ public class NodeMetricsReaderTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.NodeMetricsReader#readMetricsByApplicationId(java.lang.String, java.util.List)}.
+	 * Test method for {@link com.varone.node.reader.NodeMetricsReader#readMetricsByApplicationId(java.lang.String, java.util.List)}.
 	 * @throws Exception 
 	 */
 	public void testReadFSAndTPMetrics() throws Exception {
@@ -53,7 +54,7 @@ public class NodeMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.NodeMetricsReader#readMetricsByApplicationId(java.lang.String, java.util.List)}.
+	 * Test method for {@link com.varone.node.reader.NodeMetricsReader#readMetricsByApplicationId(java.lang.String, java.util.List)}.
 	 * @throws Exception 
 	 */
 	public void testReadFSAndJVMMetrics() throws Exception {
@@ -73,7 +74,7 @@ public class NodeMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.NodeMetricsReader#readMetricsByApplicationId(java.lang.String, java.util.List)}.
+	 * Test method for {@link com.varone.node.reader.NodeMetricsReader#readMetricsByApplicationId(java.lang.String, java.util.List)}.
 	 * @throws Exception 
 	 */
 	public void testReadAllByGroup() throws Exception {
@@ -94,7 +95,7 @@ public class NodeMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.NodeMetricsReader#readMetricsByApplicationId(java.lang.String, java.util.List)}.
+	 * Test method for {@link com.varone.node.reader.NodeMetricsReader#readMetricsByApplicationId(java.lang.String, java.util.List)}.
 	 * @throws Exception 
 	 */
 	public void testReadFSWithDuplcateMetrics() throws Exception {
@@ -115,7 +116,7 @@ public class NodeMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.NodeMetricsReader#readMetricsByApplicationId(java.lang.String, java.util.List)}.
+	 * Test method for {@link com.varone.node.reader.NodeMetricsReader#readMetricsByApplicationId(java.lang.String, java.util.List)}.
 	 * @throws Exception 
 	 */
 	public void testReadJVMWithDuplcateMetrics() throws Exception {
@@ -137,7 +138,7 @@ public class NodeMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.NodeMetricsReader#readMetricsByApplicationId(java.lang.String, java.util.List)}.
+	 * Test method for {@link com.varone.node.reader.NodeMetricsReader#readMetricsByApplicationId(java.lang.String, java.util.List)}.
 	 * @throws Exception 
 	 */
 	public void testReadThreadPoolWithDuplcateMetrics() throws Exception {
@@ -157,7 +158,7 @@ public class NodeMetricsReaderTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.haredb.sparkmonitor.node.reader.NodeMetricsReader#readMetricsByApplicationId(java.lang.String, java.util.List)}.
+	 * Test method for {@link com.varone.node.reader.NodeMetricsReader#readMetricsByApplicationId(java.lang.String, java.util.List)}.
 	 * @throws Exception 
 	 */
 	public void testReadAll() throws Exception {

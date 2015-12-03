@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.node;
+package com.varone.node;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -11,7 +11,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.hadoop.conf.Configuration;
 
-import com.haredb.sparkmonitor.node.utils.Consts;
+import com.varone.node.utils.Consts;
 
 /**
  * @author allen
