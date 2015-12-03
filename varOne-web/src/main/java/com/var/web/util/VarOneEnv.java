@@ -9,7 +9,11 @@ public class VarOneEnv {
 	
 	
 	public File getVarOneHomePath(){
-		File homePath = new File(new File(System.getProperty("user.home")), VARONE_HOME_NAME);
+		return this.getVarOneHomePath(System.getProperty("user.home"), VARONE_HOME_NAME);
+	}
+	
+	public File getVarOneHomePath(String homeDir, String homeName){
+		File homePath = new File(new File(homeDir), homeName);
 		this.mkdir(homePath);
 		return homePath;
 	}
@@ -28,8 +32,9 @@ public class VarOneEnv {
 	public boolean checkHadoopConfXMLFile(File confPath){
 		File hdfsSite = new File(confPath, "hdfs-site.xml");
 		File yarnSite = new File(confPath, "yarn-site.xml");
+		File coreSite = new File(confPath, "core-site.xml");
 		
-		if(hdfsSite.exists() && yarnSite.exists()){
+		if(hdfsSite.exists() && yarnSite.exists() && coreSite.exists()){
 			return true;
 		}else{
 			return false;
