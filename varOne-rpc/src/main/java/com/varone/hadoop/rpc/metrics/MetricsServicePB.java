@@ -13,7 +13,7 @@ import com.varone.hadoop.rpc.protos.MetricsServiceProtos.MetricsService.Blocking
  *
  */
 @ProtocolInfo(
-	    protocolName = "com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsRpcService",
+	    protocolName = "com.varone.hadoop.rpc.metrics.MetricsRpcService",
 	    protocolVersion = 1)
 public interface MetricsServicePB extends BlockingInterface {
 
