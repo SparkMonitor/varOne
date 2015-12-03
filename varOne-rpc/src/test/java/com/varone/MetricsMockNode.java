@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor;
+package com.varone;
 
 import org.apache.hadoop.conf.Configuration;
 

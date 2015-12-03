@@ -1,21 +1,21 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor;
+package com.varone;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
 
-import com.haredb.sparkmonitor.hadoop.rpc.AbstractServer;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsService;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceRequest;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceResponse;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.impl.MetricsServiceResponsePBImpl;
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto;
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto.TupleProto;
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
+import com.varone.hadoop.rpc.AbstractServer;
+import com.varone.hadoop.rpc.metrics.MetricsService;
+import com.varone.hadoop.rpc.metrics.MetricsServiceRequest;
+import com.varone.hadoop.rpc.metrics.MetricsServiceResponse;
+import com.varone.hadoop.rpc.metrics.impl.MetricsServiceResponsePBImpl;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto.TupleProto;
 
 /**
  * @author allen

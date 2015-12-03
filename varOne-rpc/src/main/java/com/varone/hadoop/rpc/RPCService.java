@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.hadoop.rpc;
+package com.varone.hadoop.rpc;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -22,7 +22,7 @@ import org.apache.hadoop.yarn.exceptions.YarnRuntimeException;
 import org.apache.hadoop.yarn.ipc.YarnRPC;
 
 import com.google.protobuf.BlockingService;
-import com.haredb.sparkmonitor.hadoop.rpc.IService;
+import com.varone.hadoop.rpc.IService;
 
 /**
  * @author allen

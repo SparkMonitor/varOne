@@ -1,11 +1,11 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.hadoop.rpc.metrics;
+package com.varone.hadoop.rpc.metrics;
 
 import java.util.List;
 
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
 
 /**
  * @author allen

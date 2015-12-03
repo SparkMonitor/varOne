@@ -1,11 +1,11 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.hadoop.rpc.metrics;
+package com.varone.hadoop.rpc.metrics;
 
 import org.apache.hadoop.ipc.ProtocolInfo;
 
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsServiceProtos.MetricsService.BlockingInterface;
+import com.varone.hadoop.rpc.protos.MetricsServiceProtos.MetricsService.BlockingInterface;
 
 
 /**

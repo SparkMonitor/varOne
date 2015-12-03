@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.hadoop.rpc.metrics;
+package com.varone.hadoop.rpc.metrics;
 
 /**
  * @author allen

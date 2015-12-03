@@ -1,12 +1,12 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.hadoop.rpc;
+package com.varone.hadoop.rpc;
 
 import org.apache.hadoop.conf.Configuration;
 
-import com.haredb.sparkmonitor.hadoop.rpc.IService;
-import com.haredb.sparkmonitor.hadoop.rpc.RPCService;
+import com.varone.hadoop.rpc.IService;
+import com.varone.hadoop.rpc.RPCService;
 
 /**
  * @author allen

@@ -9,11 +9,11 @@ import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
 
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceRequest;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceResponse;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.impl.MetricsServiceRequestPBImpl;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.impl.pb.client.MetricsServicePBClientImpl;
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
+import com.varone.hadoop.rpc.metrics.MetricsServiceRequest;
+import com.varone.hadoop.rpc.metrics.MetricsServiceResponse;
+import com.varone.hadoop.rpc.metrics.impl.MetricsServiceRequestPBImpl;
+import com.varone.hadoop.rpc.metrics.impl.pb.client.MetricsServicePBClientImpl;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
 
 /**
  * @author allen

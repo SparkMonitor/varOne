@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.hadoop.rpc.metrics.impl.pb.client;
+package com.varone.hadoop.rpc.metrics.impl.pb.client;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -13,13 +13,13 @@ import org.apache.hadoop.ipc.RPC;
 import org.apache.hadoop.yarn.ipc.RPCUtil;
 
 import com.google.protobuf.ServiceException;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsService;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServicePB;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceRequest;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceResponse;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.impl.MetricsServiceRequestPBImpl;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.impl.MetricsServiceResponsePBImpl;
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsRequestProto;
+import com.varone.hadoop.rpc.metrics.MetricsService;
+import com.varone.hadoop.rpc.metrics.MetricsServicePB;
+import com.varone.hadoop.rpc.metrics.MetricsServiceRequest;
+import com.varone.hadoop.rpc.metrics.MetricsServiceResponse;
+import com.varone.hadoop.rpc.metrics.impl.MetricsServiceRequestPBImpl;
+import com.varone.hadoop.rpc.metrics.impl.MetricsServiceResponsePBImpl;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsRequestProto;
 
 /**
  * @author allen

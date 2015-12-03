@@ -1,17 +1,17 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.hadoop.rpc.metrics.impl.pb.service;
+package com.varone.hadoop.rpc.metrics.impl.pb.service;
 
 import com.google.protobuf.RpcController;
 import com.google.protobuf.ServiceException;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsService;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServicePB;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceResponse;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.impl.MetricsServiceRequestPBImpl;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.impl.MetricsServiceResponsePBImpl;
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsRequestProto;
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto;
+import com.varone.hadoop.rpc.metrics.MetricsService;
+import com.varone.hadoop.rpc.metrics.MetricsServicePB;
+import com.varone.hadoop.rpc.metrics.MetricsServiceResponse;
+import com.varone.hadoop.rpc.metrics.impl.MetricsServiceRequestPBImpl;
+import com.varone.hadoop.rpc.metrics.impl.MetricsServiceResponsePBImpl;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsRequestProto;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto;
 
 /**
  * @author allen

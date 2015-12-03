@@ -6,11 +6,11 @@ package com.haredb.sparkmonitor.metrics.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceResponse;
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto;
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
 import com.haredb.sparkmonitor.reader.metrics.stub.MetricsStub;
 import com.haredb.sparkmonitor.reader.metrics.stub.RpcThreadListener;
+import com.varone.hadoop.rpc.metrics.MetricsServiceResponse;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto;
 
 
 /**

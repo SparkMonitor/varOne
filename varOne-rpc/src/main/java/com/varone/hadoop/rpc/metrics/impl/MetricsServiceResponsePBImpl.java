@@ -1,14 +1,14 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor.hadoop.rpc.metrics.impl;
+package com.varone.hadoop.rpc.metrics.impl;
 
 import java.util.List;
 
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceResponse;
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto;
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto;
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsResponseProtoOrBuilder;
+import com.varone.hadoop.rpc.metrics.MetricsServiceResponse;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProtoOrBuilder;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto;
 
 /**
  * @author allen

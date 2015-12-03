@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto;
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto.TupleProto;
 import com.haredb.sparkmonitor.metrics.bean.MetricBean;
 import com.haredb.sparkmonitor.metrics.bean.NodeBean;
 import com.haredb.sparkmonitor.metrics.bean.TimeValuePairBean;
 import com.haredb.sparkmonitor.reader.metrics.MetricsReader;
 import com.haredb.sparkmonitor.reader.metrics.stub.MetricsStubCenter;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto.TupleProto;
 import com.varone.node.utils.MetricsDataTransfer;
 
 /**

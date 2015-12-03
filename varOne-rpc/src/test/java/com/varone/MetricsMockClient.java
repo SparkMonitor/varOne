@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.haredb.sparkmonitor;
+package com.varone;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -10,11 +10,11 @@ import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
 
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceRequest;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.MetricsServiceResponse;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.impl.MetricsServiceRequestPBImpl;
-import com.haredb.sparkmonitor.hadoop.rpc.metrics.impl.pb.client.MetricsServicePBClientImpl;
-import com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
+import com.varone.hadoop.rpc.metrics.MetricsServiceRequest;
+import com.varone.hadoop.rpc.metrics.MetricsServiceResponse;
+import com.varone.hadoop.rpc.metrics.impl.MetricsServiceRequestPBImpl;
+import com.varone.hadoop.rpc.metrics.impl.pb.client.MetricsServicePBClientImpl;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
 
 /**
  * @author allen
