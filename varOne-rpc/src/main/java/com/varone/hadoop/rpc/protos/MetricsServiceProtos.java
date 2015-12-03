@@ -251,9 +251,9 @@ public final class MetricsServiceProtos {
     java.lang.String[] descriptorData = {
       "\n\024metricsService.proto\032\rmetrics.proto2K\n" +
       "\016MetricsService\0229\n\ngetMetrics\022\024.MetricsR" +
-      "equestProto\032\025.MetricsResponseProtoBG\n)co" +
-      "m.haredb.sparkmonitor.hadoop.rpc.protosB" +
-      "\024MetricsServiceProtos\210\001\001\240\001\001"
+      "equestProto\032\025.MetricsResponseProtoB:\n\034co" +
+      "m.varone.hadoop.rpc.protosB\024MetricsServi" +
+      "ceProtos\210\001\001\240\001\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

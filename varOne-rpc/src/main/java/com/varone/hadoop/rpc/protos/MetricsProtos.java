@@ -822,7 +822,7 @@ public final class MetricsProtos {
                 com.varone.hadoop.rpc.protos.MetricsProtos.MetricsRequestProto.class, com.varone.hadoop.rpc.protos.MetricsProtos.MetricsRequestProto.Builder.class);
       }
 
-      // Construct using com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsRequestProto.newBuilder()
+      // Construct using com.varone.hadoop.rpc.protos.MetricsProtos.MetricsRequestProto.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -1754,7 +1754,7 @@ public final class MetricsProtos {
                     com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto.TupleProto.class, com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto.TupleProto.Builder.class);
           }
 
-          // Construct using com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto.TupleProto.newBuilder()
+          // Construct using com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto.TupleProto.newBuilder()
           private Builder() {
             maybeForceBuilderInitialization();
           }
@@ -2256,7 +2256,7 @@ public final class MetricsProtos {
                   com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto.class, com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto.Builder.class);
         }
 
-        // Construct using com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto.newBuilder()
+        // Construct using com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto.newBuilder()
         private Builder() {
           maybeForceBuilderInitialization();
         }
@@ -2939,7 +2939,7 @@ public final class MetricsProtos {
                 com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.class, com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.Builder.class);
       }
 
-      // Construct using com.haredb.sparkmonitor.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.newBuilder()
+      // Construct using com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -3389,8 +3389,8 @@ public final class MetricsProtos {
       "IVOR_SPACE_USAGE\020 \022\032\n\026JVM_PS_MARKSWEEP_C" +
       "OUNT\020!\022\031\n\025JVM_PS_MARKSWEEP_TIME\020\"\022\031\n\025JVM" +
       "_PS_SCAVENGE_COUNT\020#\022\030\n\024JVM_PS_SCAVENGE_" +
-      "TIME\020$B=\n)com.haredb.sparkmonitor.hadoop" +
-      ".rpc.protosB\rMetricsProtos\240\001\001"
+      "TIME\020$B0\n\034com.varone.hadoop.rpc.protosB\r" +
+      "MetricsProtos\240\001\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
