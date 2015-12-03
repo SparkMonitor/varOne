@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.haredb</groupId>
-  <artifactId>Spark_Monitor_Web</artifactId>
+  <groupId>com.varone</groupId>
+  <artifactId>varOne-web</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>Spark_Monitor_Web Maven Webapp</name>
@@ -17,7 +17,7 @@
     
     <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>Spark_Monitor_Node</artifactId>
+        <artifactId>varOne-node</artifactId>
         <version>${project.version}</version>
     </dependency>
     
