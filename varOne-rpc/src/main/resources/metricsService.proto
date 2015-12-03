@@ -1,4 +1,4 @@
-option java_package = "com.haredb.sparkmonitor.hadoop.rpc.protos";
+option java_package = "com.varone.hadoop.rpc.protos";
 option java_outer_classname = "MetricsServiceProtos";
 option java_generic_services = true;
 option java_generate_equals_and_hash = true;

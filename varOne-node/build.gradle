@@ -15,7 +15,7 @@ jar {
     extension = "jar"
 
     manifest {
-        attributes 'Main-Class': 'com.haredb.sparkmonitor.node.SPMNode'
+        attributes 'Main-Class': 'com.varone.node.SPMNode'
     }
 
 
@@ -37,13 +37,13 @@ shadowJar {
     mergeServiceFiles()
 /*
     manifest {
-        attributes 'Main-Class': 'com.haredb.sparkmonitor.node.SPMNode'
+        attributes 'Main-Class': 'com.varone.node.SPMNode'
     }*/
 }
 
 
 jar {
     manifest {
-        attributes 'Main-Class': 'com.haredb.sparkmonitor.node.SPMNode'
+        attributes 'Main-Class': 'com.varone.node.SPMNode'
     }
 }
