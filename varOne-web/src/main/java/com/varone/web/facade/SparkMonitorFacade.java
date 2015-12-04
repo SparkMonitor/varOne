@@ -38,9 +38,6 @@ public class SparkMonitorFacade {
 	
 	private Configuration config;
 	
-	/**
-	 * 
-	 */
 	public SparkMonitorFacade() {
 		VarOneEnv env = new VarOneEnv();
 		this.config = this.loadConfiguration(env.getVarOneConfPath());		
@@ -182,6 +179,17 @@ public class SparkMonitorFacade {
 				config.addResource(new Path(file.getAbsolutePath()));
 			}
 		}
+		this.checkConfig(config, varOneConfPath, "fs.default.name");
+		this.checkConfig(config, varOneConfPath, "yarn.resourcemanager.address");
+		this.checkConfig(config, varOneConfPath, "spark.eventLog.dir");
+		
 		return config;
+	}
+	
+	private void checkConfig(Configuration config, File varOneConfPath, String key){
+		String value = config.get(key);
+		if(value == null){
+			throw new RuntimeException(varOneConfPath.getAbsolutePath() + "/*.xml not set " + key + " property");
+		}
 	}
 }
