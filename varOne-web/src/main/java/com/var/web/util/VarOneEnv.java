@@ -6,7 +6,9 @@ public class VarOneEnv {
 
 	public static String VARONE_HOME_NAME = ".varone";
 	public static String CONFIG = "conf";
-	
+	public static String YARNSITEFILENAME = "yarn-site.xml";
+	public static String HDFSSITEFILENAME = "hdfs-site.xml";
+	public static String CORESITEFILENAME = "core-site.xml";
 	
 	public File getVarOneHomePath(){
 		return this.getVarOneHomePath(System.getProperty("user.home"), VARONE_HOME_NAME);
@@ -30,9 +32,9 @@ public class VarOneEnv {
 	}
 	
 	public boolean checkHadoopConfXMLFile(File confPath){
-		File hdfsSite = new File(confPath, "hdfs-site.xml");
-		File yarnSite = new File(confPath, "yarn-site.xml");
-		File coreSite = new File(confPath, "core-site.xml");
+		File hdfsSite = new File(confPath, HDFSSITEFILENAME);
+		File yarnSite = new File(confPath, YARNSITEFILENAME);
+		File coreSite = new File(confPath, CORESITEFILENAME);
 		
 		if(hdfsSite.exists() && yarnSite.exists() && coreSite.exists()){
 			return true;
