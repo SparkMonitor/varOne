@@ -9,7 +9,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileUtil;
 import org.junit.Test;
 
-import com.var.web.util.VarOneEnv;
+import com.varone.web.util.VarOneEnv;
 
 public class SparkMonitorFacadeTest {
 	

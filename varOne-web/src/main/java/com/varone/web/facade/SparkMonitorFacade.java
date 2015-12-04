@@ -12,7 +12,6 @@ import java.util.Map;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 
-import com.var.web.util.VarOneEnv;
 import com.varone.node.MetricsType;
 import com.varone.web.aggregator.UIDataAggregator;
 import com.varone.web.eventlog.bean.SparkEventLogBean;
@@ -22,6 +21,7 @@ import com.varone.web.reader.eventlog.EventLogReader;
 import com.varone.web.reader.eventlog.impl.EventLogHdfsReaderImpl;
 import com.varone.web.reader.metrics.MetricsReader;
 import com.varone.web.reader.metrics.impl.MetricsRpcReaderImpl;
+import com.varone.web.util.VarOneEnv;
 import com.varone.web.vo.DefaultApplicationVO;
 import com.varone.web.vo.DefaultNodeVO;
 import com.varone.web.vo.DefaultTotalNodeVO;

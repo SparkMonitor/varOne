@@ -1,4 +1,4 @@
-package com.var.web.util;
+package com.varone.web.util;
 
 import java.io.File;
 

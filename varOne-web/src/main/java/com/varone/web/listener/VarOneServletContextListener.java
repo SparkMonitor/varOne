@@ -5,7 +5,7 @@ import java.io.File;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import com.var.web.util.VarOneEnv;
+import com.varone.web.util.VarOneEnv;
 
 public class VarOneServletContextListener implements ServletContextListener {
 
