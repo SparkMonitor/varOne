@@ -20,27 +20,20 @@ class ClusterStore {
       data.metrics[metric.property].value = [];
       let host2Metrics = result.propToMetrics[metric.property];
       for(let host in host2Metrics){
-        data.metrics[metric.property].value.push({
-          x: host,
-          y: host2Metrics[host]
-        });
+        data.metrics[metric.property].value.push([
+          host,host2Metrics[host]
+        ]);
       }
     });
 
     var taskDounts = [];
     for(let host in result.taskStartedNumByNode){
-      taskDounts.push({
-        label: host,
-        value: result.taskStartedNumByNode[host]
-      });
+      taskDounts.push([host, result.taskStartedNumByNode[host]]);
     }
 
     var executorDounts = [];
     for(let host in result.executorNumByNode){
-      executorDounts.push({
-        label: host,
-        value: result.executorNumByNode[host]
-      });
+      executorDounts.push([host, result.executorNumByNode[host]]);
     }
 
     var displaySummaryInfo = [{
