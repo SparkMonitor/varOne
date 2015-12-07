@@ -1,17 +1,20 @@
 import React from 'react';
+import c3 from 'c3';
 
 export default class JobMetric extends React.Component{
+
+  cluster_metrics_chart = null;
 
   static propTypes = {
     metric: React.PropTypes.object
   }
 
   componentDidMount(){
-    this._morrisCharting();
+    this.defaultCharting();
   }
 
   componentDidUpdate(){
-    this._morrisCharting();
+    this.reloadCharting();
   }
 
   render(){
@@ -30,18 +33,19 @@ export default class JobMetric extends React.Component{
     );
   }
 
-  _morrisCharting(){
-    var morrisDount = document.getElementById(this.props.metric.id);
-    while (morrisDount.firstChild) {
-        morrisDount.removeChild(morrisDount.firstChild);
-    }
+  reloadCharting(){
+    this.cluster_metrics_chart.load({
+        columns: this.props.metric.value
+    });
+  }
 
-    Morris.Bar({
-      element: this.props.metric.id,
-      data: this.props.metric.value,
-      xkey: 'x',
-      ykeys: ['y'],
-      labels: [this.props.metric.title]
+  defaultCharting(){
+    this.cluster_metrics_chart = c3.generate({
+        bindto: '#'+this.props.metric.id,
+        data: {
+            columns: this.props.metric.value,
+            type: 'bar'
+        }
     });
   }
 }

@@ -1,14 +1,18 @@
 import React from 'react';
 import JobMetric from './job-metric';
+import c3 from 'c3';
 
 class JobMetrics extends React.Component {
+
+  task_started_chart = null;
+  executor_node_chart = null;
 
   componentDidMount(){
     this.defaultCharting();
   }
 
   componentDidUpdate(){
-    this.defaultCharting();
+    this.reloadCharting();
   }
 
   render(){
@@ -42,7 +46,7 @@ class JobMetrics extends React.Component {
                       <i className="fa fa-pie-chart fa-fw"></i> Executor on Node
                   </div>
                   <div className="panel-body">
-                      <div ref="morris-executor-dount" id="morris-executor-dount"></div>
+                      <div id="morris-executor-dount"></div>
                   </div>
               </div>
           </div>
@@ -50,27 +54,38 @@ class JobMetrics extends React.Component {
     );
   }
 
+  reloadCharting(){
+    this.task_started_chart.load({
+        columns: this.props.taskStartedNumByNode
+    });
+
+    this.executor_node_chart.load({
+        columns: this.props.executorNumByNode
+    });
+  }
+
   defaultCharting(){
-    var morrisDount = document.getElementById("morris-executor-dount");
-    while (morrisDount.firstChild) {
-        morrisDount.removeChild(morrisDount.firstChild);
-    }
-    morrisDount = document.getElementById("morris-task-donut");
-    while (morrisDount.firstChild) {
-        morrisDount.removeChild(morrisDount.firstChild);
-    }
-
-    Morris.Donut({
-        element: 'morris-task-donut',
-        data: this.props.taskStartedNumByNode,
-        resize: true
+    this.task_started_chart = c3.generate({
+        bindto: '#morris-task-donut',
+        data: {
+            columns: this.props.taskStartedNumByNode,
+            type : 'donut'
+        },
+        donut: {
+            title: 'Task Started on Node'
+        }
+    });
+    this.executor_node_chart = c3.generate({
+        bindto: '#morris-executor-dount',
+        data: {
+            columns: this.props.executorNumByNode,
+            type : 'donut'
+        },
+        donut: {
+            title: 'Executor on Node'
+        }
     });
 
-    Morris.Donut({
-        element: 'morris-executor-dount',
-        data: this.props.executorNumByNode,
-        resize: true
-    });
   }
 }
 
