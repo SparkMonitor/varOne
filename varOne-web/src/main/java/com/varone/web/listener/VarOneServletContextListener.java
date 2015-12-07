@@ -14,7 +14,7 @@ public class VarOneServletContextListener implements ServletContextListener {
 		VarOneEnv env = new VarOneEnv();
 		File varOneConfPath = env.createVarOneConfPath();
 		if(!env.checkHadoopConfXMLFile(varOneConfPath)){
-			throw new RuntimeException("Please confirm you hdfs-site.xml and yarn-site.xml file to the " + varOneConfPath);
+			throw new RuntimeException("Please confirm you hdfs-site.xml, yarn-site.xml, core-site file to the " + varOneConfPath);
 		}
 		
 		
