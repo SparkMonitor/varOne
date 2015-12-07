@@ -1,4 +1,5 @@
 require('../../style/spm/spm.css');
+require('../../node_modules/c3/c3.min.css');
 import React from 'react';
 import Const from '../utils/consts';
 import Nav   from './navigator/nav';
