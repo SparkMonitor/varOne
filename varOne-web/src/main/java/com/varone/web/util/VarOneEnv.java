@@ -1,6 +1,8 @@
 package com.varone.web.util;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VarOneEnv {
 
@@ -9,6 +11,7 @@ public class VarOneEnv {
 	public static String YARNSITEFILENAME = "yarn-site.xml";
 	public static String HDFSSITEFILENAME = "hdfs-site.xml";
 	public static String CORESITEFILENAME = "core-site.xml";
+	public static String METRICSPROPERTIES_FILENAME = "metrics.properties";
 	
 	public File getVarOneHomePath(){
 		return this.getVarOneHomePath(System.getProperty("user.home"), VARONE_HOME_NAME);
@@ -35,18 +38,25 @@ public class VarOneEnv {
 		File hdfsSite = new File(confPath, HDFSSITEFILENAME);
 		File yarnSite = new File(confPath, YARNSITEFILENAME);
 		File coreSite = new File(confPath, CORESITEFILENAME);
+		File metriesProperties = new File(confPath, METRICSPROPERTIES_FILENAME);
 		
-		if(hdfsSite.exists() && yarnSite.exists() && coreSite.exists()){
-			return true;
-		}else{
-			return false;
-		}
+		return (hdfsSite.exists() && yarnSite.exists() 
+				&& coreSite.exists() && metriesProperties.exists());
 	}
 	
 	private void mkdir(File folderPath){
 		if(!folderPath.exists()){
 			folderPath.mkdir();
 		}
+	}
+
+	public List<String> requireConfFiles() {
+		List<String> fileNames = new ArrayList<String>();
+		fileNames.add(CORESITEFILENAME);
+		fileNames.add(HDFSSITEFILENAME);
+		fileNames.add(YARNSITEFILENAME);
+		fileNames.add(METRICSPROPERTIES_FILENAME);
+		return fileNames;
 	}
 	
 	
