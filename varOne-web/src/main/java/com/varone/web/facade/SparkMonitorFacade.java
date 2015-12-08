@@ -3,14 +3,12 @@
  */
 package com.varone.web.facade;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.Path;
 
 import com.varone.node.MetricsType;
 import com.varone.web.aggregator.UIDataAggregator;
@@ -21,7 +19,7 @@ import com.varone.web.reader.eventlog.EventLogReader;
 import com.varone.web.reader.eventlog.impl.EventLogHdfsReaderImpl;
 import com.varone.web.reader.metrics.MetricsReader;
 import com.varone.web.reader.metrics.impl.MetricsRpcReaderImpl;
-import com.varone.web.util.VarOneEnv;
+import com.varone.web.util.VarOneConfiguration;
 import com.varone.web.vo.DefaultApplicationVO;
 import com.varone.web.vo.DefaultNodeVO;
 import com.varone.web.vo.DefaultTotalNodeVO;
@@ -39,8 +37,8 @@ public class SparkMonitorFacade {
 	private Configuration config;
 	
 	public SparkMonitorFacade() {
-		VarOneEnv env = new VarOneEnv();
-		this.config = this.loadConfiguration(env.getVarOneConfPath());		
+		VarOneConfiguration varOneConf = new VarOneConfiguration();
+		this.config = varOneConf.loadHadoopConfiguration();
 	}
 	
 	public DefaultTotalNodeVO getDefaultClusterDashBoard(List<String> metrics) throws Exception{
@@ -170,26 +168,5 @@ public class SparkMonitorFacade {
 		SparkEventLogBean eventLog = eventLogReader.getJobStages(applicationId, jobId);
 		
 		return new UIDataAggregator().aggregateJobStages(applicationId, jobId, eventLog);
-	}
-	
-	protected Configuration loadConfiguration(File varOneConfPath) {
-		Configuration config = new Configuration();
-		for(File file : varOneConfPath.listFiles()){
-			if(file.getName().endsWith(".xml")){
-				config.addResource(new Path(file.getAbsolutePath()));
-			}
-		}
-		this.checkConfig(config, varOneConfPath, "fs.default.name");
-		this.checkConfig(config, varOneConfPath, "yarn.resourcemanager.address");
-		this.checkConfig(config, varOneConfPath, "spark.eventLog.dir");
-		
-		return config;
-	}
-	
-	private void checkConfig(Configuration config, File varOneConfPath, String key){
-		String value = config.get(key);
-		if(value == null){
-			throw new RuntimeException(varOneConfPath.getAbsolutePath() + "/*.xml not set " + key + " property");
-		}
 	}
 }
