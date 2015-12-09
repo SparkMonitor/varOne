@@ -1,4 +1,5 @@
 apply plugin: 'war'
+
 dependencies {
 	compile project(":varOne-node")
 	compile 'org.slf4j:slf4j-log4j12:1.6.3'
@@ -7,10 +8,4 @@ dependencies {
 	compile 'com.sun.jersey:jersey-server:1.9'
 
         provided 'org.apache.tomcat:tomcat-catalina:7.0.57'
-        compile 'org.apache.tomcat.embed:tomcat-embed-core:7.0.57'
-        compile 'org.apache.tomcat.embed:tomcat-embed-logging-juli:7.0.57'
-        compile 'org.apache.tomcat.embed:tomcat-embed-jasper:7.0.57'
-        compile 'org.apache.tomcat:tomcat-jasper:7.0.57'
-        compile 'org.apache.tomcat:tomcat-jasper-el:7.0.57'
-        compile 'org.apache.tomcat:tomcat-jsp-api:7.0.57'
 }

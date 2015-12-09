@@ -1,0 +1,13 @@
+dependencies {
+    compile 'org.apache.tomcat.embed:tomcat-embed-core:7.0.57'
+    compile 'org.apache.tomcat.embed:tomcat-embed-logging-juli:7.0.57'
+    compile 'org.apache.tomcat.embed:tomcat-embed-jasper:7.0.57'
+    compile 'org.apache.tomcat:tomcat-jasper:7.0.57'
+    compile 'org.apache.tomcat:tomcat-jasper-el:7.0.57'
+    compile 'org.apache.tomcat:tomcat-jsp-api:7.0.57'
+}
+jar {
+    manifest {
+       attributes 'Main-Class': 'com.varone.exec.TomcatServer'
+    }
+}
