@@ -55,6 +55,12 @@ public class VarOneConfiguration {
 		return loadProperties;
 	}
 	
+	public boolean isOneSecondsPeriod(){
+		MetricsProperties metricsConfiguration = this.loadMetricsConfiguration();
+		return metricsConfiguration.getCsvPeriod().equals("1") 
+				&& metricsConfiguration.getCsvUnit().equals("seconds");
+	}
+	
 	private void checkConfig(Configuration config, File varOneConfPath, String key){
 		String value = config.get(key);
 		if(value == null){
