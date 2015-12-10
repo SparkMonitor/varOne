@@ -10,8 +10,10 @@ import java.util.Map;
 
 import org.apache.hadoop.conf.Configuration;
 
+import com.varone.node.MetricsProperties;
 import com.varone.node.MetricsType;
 import com.varone.web.aggregator.UIDataAggregator;
+import com.varone.web.aggregator.timeperiod.TimePeriodHandler;
 import com.varone.web.eventlog.bean.SparkEventLogBean;
 import com.varone.web.eventlog.bean.SparkEventLogBean.AppStart;
 import com.varone.web.metrics.bean.NodeBean;
@@ -35,21 +37,25 @@ import com.varone.web.yarn.service.YarnService;
 public class SparkMonitorFacade {
 	
 	private Configuration config;
+	private MetricsProperties metricsProperties;
 	
 	public SparkMonitorFacade() {
 		VarOneConfiguration varOneConf = new VarOneConfiguration();
 		this.config = varOneConf.loadHadoopConfiguration();
+		this.metricsProperties = varOneConf.loadMetricsConfiguration();
 	}
 	
-	public DefaultTotalNodeVO getDefaultClusterDashBoard(List<String> metrics) throws Exception{
+	public DefaultTotalNodeVO getDefaultClusterDashBoard(List<String> metrics, String periodExpression) throws Exception{
 		DefaultTotalNodeVO result = null;
+		TimePeriodHandler timePeriodHandler = new TimePeriodHandler();
 		YarnService yarnService = new YarnService(this.config);
 				
 		Map<String, List<NodeBean>> nodeMetricsByAppId = new LinkedHashMap<String, List<NodeBean>>();
 		
 		try {
+			long[] startEndPeriod = timePeriodHandler.transferToLongPeriod(periodExpression);
 			List<String> allNodeHost = yarnService.getAllNodeHost();
-			List<String> runningSparkAppId = yarnService.getRunningSparkApplications();
+			List<String> runningSparkAppId = yarnService.getSparkApplicationsByPeriod(startEndPeriod[0], startEndPeriod[1]);
 			
 			EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
 			MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost); 
@@ -62,7 +68,7 @@ public class SparkMonitorFacade {
 			Map<String, SparkEventLogBean> inProgressEventLogByAppId = eventLogReader.getAllInProgressLog();
 			
 			result = new UIDataAggregator().aggregateClusterDashBoard(metrics, runningSparkAppId, allNodeHost, 
-							nodeMetricsByAppId, inProgressEventLogByAppId);
+							nodeMetricsByAppId, inProgressEventLogByAppId, this.metricsProperties);
 			
 		} finally{
 			yarnService.close();

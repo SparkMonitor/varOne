@@ -26,7 +26,8 @@ import com.varone.web.vo.DefaultTotalNodeVO;
 public class ClusterResource {
 	@GET
 	@Path("/")
-	public String fetchClusterDashBoard(@QueryParam("metrics") String metrics) throws Exception{
+	public String fetchClusterDashBoard(@QueryParam("metrics") String metrics, 
+			@QueryParam("period") String period) throws Exception{
 		SparkMonitorFacade facade = new SparkMonitorFacade();
 		List<String> metricsAsList = new ArrayList<String>();
 		if(metrics != null){
@@ -37,7 +38,7 @@ public class ClusterResource {
 			}
 		}
 		
-		DefaultTotalNodeVO result = facade.getDefaultClusterDashBoard(metricsAsList);
+		DefaultTotalNodeVO result = facade.getDefaultClusterDashBoard(metricsAsList, period);
 		Gson gson = new Gson();
 		return gson.toJson(result);
 	}
