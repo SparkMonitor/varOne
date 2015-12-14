@@ -22,18 +22,29 @@ public class TomcatJarFileLauncher {
 			"libs/tomcat-catalina-7.0.57.jar", "libs/jersey-client-1.9.jar", "libs/jersey-core-1.9.jar", "libs/jersey-guice-1.9.jar",
 			"libs/jersey-json-1.9.jar", "libs/jersey-server-1.9.jar", "libs/asm-3.1.jar"
 	};
+	private final String[] tomcatContextFile = {"conf/context.xml"};
 	
 	public TomcatJarFileLauncher(String warFilePath){
 		this.warFilePath = warFilePath;
 	}
 	
-	public String[] copyJarToTemp(String tempFilePath) throws IOException{
+	public String[] copyJarFileToTemp(String tempdstJarPath) throws IOException{
+		this.copyFileToTemp(tempdstJarPath, tomcatJars);
+		return this.tomcatJars;
+	}
+	
+	public String[] copyContextFileToTemp(String tempdstTomcatContextPath) throws IOException {
+		this.copyFileToTemp(tempdstTomcatContextPath, tomcatContextFile);
+		return this.tomcatContextFile;
+	}
+	
+	private void copyFileToTemp(String tempdstPath, String[] srcJars) throws IOException{
 		JarFile jarFile = new JarFile(this.warFilePath);
-		for(String tomcatJar : this.tomcatJars){
+		for(String tomcatJar : srcJars){
 			JarEntry jarEntry = jarFile.getJarEntry(tomcatJar);
 			InputStream inStream = jarFile.getInputStream(jarEntry);
 				
-			OutputStream outStream = new FileOutputStream(new File(tempFilePath, new File(tomcatJar).getName()));
+			OutputStream outStream = new FileOutputStream(new File(tempdstPath, new File(tomcatJar).getName()));
 			byte[] buffer = new byte[8192];
 			int readLength;
 			while((readLength = inStream.read(buffer)) > 0){
@@ -41,7 +52,6 @@ public class TomcatJarFileLauncher {
 			}
 			outStream.close();
 		}
-		return this.tomcatJars;
 	}
 	
 

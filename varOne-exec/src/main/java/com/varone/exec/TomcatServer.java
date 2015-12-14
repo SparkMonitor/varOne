@@ -5,11 +5,7 @@ import java.net.URL;
 import java.security.ProtectionDomain;
 
 import org.apache.catalina.Context;
-import org.apache.catalina.startup.ContextConfig;
 import org.apache.catalina.startup.Tomcat;
-import org.apache.tomcat.util.scan.StandardJarScanner;
-
-import com.varone.web.util.VarOneEnv;
 
 public class TomcatServer {
 
@@ -22,26 +18,31 @@ public class TomcatServer {
 		
 		   
 		   TomcatJarFileLauncher launcher = new TomcatJarFileLauncher(warFilePath);
-		   VarOneEnv varoneEnv = new VarOneEnv();
+		   TomcatEnv tomcatEnv = new TomcatEnv();
 		   
-		   File tempJarPath = varoneEnv.createVarOneTempJarPath();		   
-		   launcher.copyJarToTemp(tempJarPath.getAbsolutePath());
-		   launcher.dynamicLoadTomcatJar(tempJarPath);
+		   File tempdstJarPath = tomcatEnv.createVarOneTempJarPath();		   
+		   launcher.copyJarFileToTemp(tempdstJarPath.getAbsolutePath());
+		   launcher.dynamicLoadTomcatJar(tempdstJarPath);
 		   
 		   
 		   Tomcat tomcat = new Tomcat();
-		   File warPath = varoneEnv.createVarOneWarPath();
+		   File warPath = tomcatEnv.createVarOneWarPath();
 		
 		   tomcat.getHost().setAppBase(warPath.getAbsolutePath());   
 		   tomcat.setPort(8080);
 		   tomcat.setBaseDir(warPath.getAbsolutePath());
 		   
-	       Context context = tomcat.addWebapp(VarOneEnv.WEBAPPROOTNAME, warFilePath);	
-	       context.setConfigFile(new File("/home/user1/context.xml").toURI().toURL());
+		   
+	       Context context = tomcat.addWebapp(tomcatEnv.WEBAPPROOTNAME, warFilePath);	
+	       File tempdstTomcatContextPath = tomcatEnv.createVarOneTempTomcatConfPath();
+	       launcher.copyContextFileToTemp(tempdstTomcatContextPath.getAbsolutePath());  
+	       System.out.println(tempdstTomcatContextPath);
+	       context.setConfigFile(new File(tempdstTomcatContextPath, "context.xml").toURI().toURL());
+	      
 	       
 		   tomcat.start();
-		   
-		   launcher.dynamicLoadTomcatJar(new File("/home/user1/.varone/war/varOne-web/WEB-INF/lib"));
+		   String warLibPath = warPath.getAbsolutePath() + File.separator + tomcatEnv.WEBAPPROOTNAME + File.separator + "WEB-INF" + File.separator + "lib";
+		   launcher.dynamicLoadTomcatJar(new File(warLibPath));
 		   
 		   tomcat.getServer().await();
 		   
