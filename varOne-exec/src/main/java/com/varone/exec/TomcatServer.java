@@ -11,7 +11,7 @@ public class TomcatServer {
 
 	public static void main(String args[]){
 		try{
-			
+		   int port = 8080;
 		   ProtectionDomain protectionDomain = TomcatServer.class.getProtectionDomain();
 		   URL warUrl = protectionDomain.getCodeSource().getLocation();
 		   String warFilePath = warUrl.getFile();
@@ -29,7 +29,7 @@ public class TomcatServer {
 		   File warPath = tomcatEnv.createVarOneWarPath();
 		
 		   tomcat.getHost().setAppBase(warPath.getAbsolutePath());   
-		   tomcat.setPort(8080);
+		   tomcat.setPort(port);
 		   tomcat.setBaseDir(warPath.getAbsolutePath());
 		   
 		   
@@ -43,6 +43,10 @@ public class TomcatServer {
 		   tomcat.start();
 		   String warLibPath = warPath.getAbsolutePath() + File.separator + tomcatEnv.WEBAPPROOTNAME + File.separator + "WEB-INF" + File.separator + "lib";
 		   launcher.dynamicLoadTomcatJar(new File(warLibPath));
+		   
+		   ClientConsole console = new ClientConsole();
+		   console.createTrayIcon();
+		   console.openBrowser("http://localhost:" + port + "/" + TomcatEnv.WEBAPPROOTNAME  + "/index333.html");
 		   
 		   tomcat.getServer().await();
 		   
