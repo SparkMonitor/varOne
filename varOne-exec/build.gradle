@@ -20,11 +20,10 @@ task copyToLib(){
              }
              configurations.compile.each { File path ->
                   String dstJarFilePath = directory + "/" + path.name
-                  if((path.name.contains('jersey') || path.name.contains('tomcat')) && !new File(dstJarFilePath).exists()){
-                      Files.copy(path.toPath(), FileSystems.getDefault().getPath(dstJarFilePath))
-                  }
-		  if((path.name.contains('asm') || path.name.contains('commons-cli'))  && !new File(dstJarFilePath).exists()){
-		      Files.copy(path.toPath(), FileSystems.getDefault().getPath(dstJarFilePath))
+		  if(!new File(dstJarFilePath).exists()){
+			if(path.name.contains('tomcat') || path.name.contains('jersey') || path.name.contains('asm') || path.name.contains('commons-cli')){
+				Files.copy(path.toPath(), FileSystems.getDefault().getPath(dstJarFilePath))
+                        }
 
                   }
              }
