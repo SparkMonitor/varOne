@@ -23,7 +23,7 @@ task copyToLib(){
                   if((path.name.contains('jersey') || path.name.contains('tomcat')) && !new File(dstJarFilePath).exists()){
                       Files.copy(path.toPath(), FileSystems.getDefault().getPath(dstJarFilePath))
                   }
-		  if(path.name.contains('asm')  && !new File(dstJarFilePath).exists()){
+		  if((path.name.contains('asm') || path.name.contains('commons-cli'))  && !new File(dstJarFilePath).exists()){
 		      Files.copy(path.toPath(), FileSystems.getDefault().getPath(dstJarFilePath))
 
                   }
