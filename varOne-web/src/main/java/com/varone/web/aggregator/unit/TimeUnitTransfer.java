@@ -18,7 +18,7 @@ public class TimeUnitTransfer {
 		//without millisecond
 		if(length == 10) {
 //			return sdf.format(value * 1000);
-			return value+"000";
+			return String.valueOf(value * 1000);
 		}
 		
 		return null;

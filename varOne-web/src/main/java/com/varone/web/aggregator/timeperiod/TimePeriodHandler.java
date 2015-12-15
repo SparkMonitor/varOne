@@ -33,6 +33,22 @@ public class TimePeriodHandler {
 		TimePeriod timePeriod = TimePeriod.fromString(periodExpression);
 		long currentTimeMillis = System.currentTimeMillis();
 		
+		/**
+		 * Fix the timeMillis at thirty seconds or zero second on each time.
+		 * for example: 
+		 * 2:00:00, 2:00:30, 2:01:00, 2:01:30.... 
+		 * 
+		 */
+		int seconds = (int) (currentTimeMillis / 1000) % 60 ;
+		if(seconds < 30){
+			currentTimeMillis = currentTimeMillis - (seconds * 1000);
+		} else {
+			currentTimeMillis = currentTimeMillis - ((seconds-30) * 1000);
+		}
+		// change millisecond to 000
+		currentTimeMillis = currentTimeMillis / 1000 * 1000;
+		
+		
 		if(timePeriod.equals(TimePeriod.MINUTE_30)){
 			long thrityMinutesAgoMillis = currentTimeMillis - 30*60*1000;
 			return new long[]{thrityMinutesAgoMillis, currentTimeMillis};
