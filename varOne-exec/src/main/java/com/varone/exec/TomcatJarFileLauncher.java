@@ -14,12 +14,10 @@ import java.util.jar.JarFile;
 public class TomcatJarFileLauncher {
 	private String warFilePath;
 	private final String[] tomcatJars = {
-			"libs/tomcat-api-7.0.57.jar", "libs/tomcat-el-api-7.0.57.jar", "libs/tomcat-embed-core-7.0.57.jar",
-			"libs/tomcat-embed-el-7.0.57.jar", "libs/tomcat-embed-jasper-7.0.57.jar", "libs/tomcat-embed-logging-juli-7.0.57.jar",
-			"libs/tomcat-jasper-7.0.57.jar", "libs/tomcat-jasper-el-7.0.57.jar", "libs/tomcat-jsp-api-7.0.57.jar",
-			"libs/tomcat-juli-7.0.57.jar", "libs/tomcat-servlet-api-7.0.57.jar", "libs/tomcat-util-7.0.57.jar",
-			"libs/tomcat-catalina-7.0.57.jar", "libs/jersey-client-1.9.jar", "libs/jersey-core-1.9.jar", "libs/jersey-guice-1.9.jar",
-			"libs/jersey-json-1.9.jar", "libs/jersey-server-1.9.jar", "libs/asm-3.1.jar", "libs/commons-cli-1.2.jar"
+			"libs/tomcat-catalina-7.0.57.jar",  
+			"libs/jersey-core-1.9.jar", 
+			"libs/asm-3.1.jar", 
+			"libs/commons-cli-1.2.jar"
 	};
 	private final String[] tomcatContextFile = {"conf/context.xml"};
 	

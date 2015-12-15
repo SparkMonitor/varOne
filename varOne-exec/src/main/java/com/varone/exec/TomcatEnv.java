@@ -43,7 +43,7 @@ public class TomcatEnv {
 		return tomcatConfPath;
 	}
 	
-	public String getVarOneHomePath(){
+	private String getVarOneHomePath(){
 		VarOneEnv varOneEnv = new VarOneEnv();
 		return varOneEnv.getVarOneHomePath().getAbsolutePath();
 	}
