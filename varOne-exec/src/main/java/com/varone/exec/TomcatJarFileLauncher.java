@@ -16,6 +16,7 @@ public class TomcatJarFileLauncher {
 	private final String[] tomcatJars = {
 			"libs/tomcat-catalina-7.0.57.jar",  
 			"libs/tomcat-juli-7.0.57.jar",
+			"libs/tomcat-util-7.0.57.jar",
 			"libs/jersey-core-1.9.jar", 
 			"libs/asm-3.1.jar", 
 			"libs/commons-cli-1.2.jar"
