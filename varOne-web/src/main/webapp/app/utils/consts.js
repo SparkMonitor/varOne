@@ -1,4 +1,9 @@
 export default {
+
+  shared: {
+    timeperiod: ['30m', '1h', '2h', '6h']
+  },
+
   node:{
     summary: {
       NODE_QTY: "Node Qty",
