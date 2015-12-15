@@ -25,7 +25,7 @@ public class DefaultTotalNodeVO {
 	private Map<String, Integer> taskStartedNumByNode;
 	private Map<String, Integer> executorNumByNode;
 	
-	private Map<String, Map<String, String>> propToMetrics;
+	private Map<String, Map<String, List<TimeValueVO>>> propToMetrics;
 
 	public int getNodeNum() {
 		return nodeNum;
@@ -69,10 +69,10 @@ public class DefaultTotalNodeVO {
 	public void setMetricProps(List<MetricPropVO> metricProps) {
 		this.metricProps = metricProps;
 	}
-	public Map<String, Map<String, String>> getPropToMetrics() {
+	public Map<String, Map<String, List<TimeValueVO>>> getPropToMetrics() {
 		return propToMetrics;
 	}
-	public void setPropToMetrics(Map<String, Map<String, String>> propToMetrics) {
+	public void setPropToMetrics(Map<String, Map<String, List<TimeValueVO>>> propToMetrics) {
 		this.propToMetrics = propToMetrics;
 	}
 		

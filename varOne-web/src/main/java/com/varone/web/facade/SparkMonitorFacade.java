@@ -16,7 +16,9 @@ import com.varone.web.aggregator.UIDataAggregator;
 import com.varone.web.aggregator.timeperiod.TimePeriodHandler;
 import com.varone.web.eventlog.bean.SparkEventLogBean;
 import com.varone.web.eventlog.bean.SparkEventLogBean.AppStart;
+import com.varone.web.metrics.bean.MetricBean;
 import com.varone.web.metrics.bean.NodeBean;
+import com.varone.web.metrics.bean.TimeValuePairBean;
 import com.varone.web.reader.eventlog.EventLogReader;
 import com.varone.web.reader.eventlog.impl.EventLogHdfsReaderImpl;
 import com.varone.web.reader.metrics.MetricsReader;
@@ -47,28 +49,36 @@ public class SparkMonitorFacade {
 	
 	public DefaultTotalNodeVO getDefaultClusterDashBoard(List<String> metrics, String periodExpression) throws Exception{
 		DefaultTotalNodeVO result = null;
-		TimePeriodHandler timePeriodHandler = new TimePeriodHandler();
+		TimePeriodHandler timePeriodHandler = new TimePeriodHandler(this.metricsProperties);
 		YarnService yarnService = new YarnService(this.config);
 				
 		Map<String, List<NodeBean>> nodeMetricsByAppId = new LinkedHashMap<String, List<NodeBean>>();
 		
 		try {
-			long[] startEndPeriod = timePeriodHandler.transferToLongPeriod(periodExpression);
+			long[] startAndEndTime = timePeriodHandler.transferToLongPeriod(periodExpression);
 			List<String> allNodeHost = yarnService.getAllNodeHost();
-			List<String> runningSparkAppId = yarnService.getSparkApplicationsByPeriod(startEndPeriod[0], startEndPeriod[1]);
+			List<String> periodSparkAppId = yarnService.getSparkApplicationsByPeriod(startAndEndTime[0], startAndEndTime[1]);
 			
 			EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
 			MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost); 
 			
-			for(String applicationId: runningSparkAppId){
-				nodeMetricsByAppId.put(applicationId, 
-						metricsReader.getAllNodeMetrics(applicationId, metrics));
+			List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
+			
+			for(String applicationId: periodSparkAppId){				
+				List<NodeBean> allNodeMetrics = metricsReader.getAllNodeMetrics(applicationId, metrics);
+				for(NodeBean nodeBean: allNodeMetrics){
+					for(MetricBean metricBean: nodeBean.getMetrics()){
+						metricBean.setValues(timePeriodHandler.ingestPeriodData(
+								metricBean.getValues(), plotPointInPeriod));
+					}
+				}
+				nodeMetricsByAppId.put(applicationId, allNodeMetrics);
 			}
 			
 			Map<String, SparkEventLogBean> inProgressEventLogByAppId = eventLogReader.getAllInProgressLog();
 			
-			result = new UIDataAggregator().aggregateClusterDashBoard(metrics, runningSparkAppId, allNodeHost, 
-							nodeMetricsByAppId, inProgressEventLogByAppId, this.metricsProperties);
+			result = new UIDataAggregator().aggregateClusterDashBoard(metrics, periodSparkAppId, allNodeHost, 
+							nodeMetricsByAppId, inProgressEventLogByAppId, plotPointInPeriod);
 			
 		} finally{
 			yarnService.close();
