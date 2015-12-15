@@ -1,0 +1,33 @@
+import java.nio.file.*;
+dependencies {
+    compile 'org.apache.tomcat.embed:tomcat-embed-core:7.0.57'
+    compile 'org.apache.tomcat.embed:tomcat-embed-logging-juli:7.0.57'
+    compile 'org.apache.tomcat.embed:tomcat-embed-jasper:7.0.57'
+    compile project(":varOne-web")
+}
+jar {
+    manifest {
+       attributes 'Main-Class': 'com.varone.exec.TomcatServer'
+    }
+
+}
+task copyToLib(){
+    doLast{
+        configurations.compile.copy().allDependencies.each { dep ->
+             String directory = "$buildDir/lib"
+             if(!new File(directory).exists()){
+                  new File(directory).mkdirs()
+             }
+             configurations.compile.each { File path ->
+                  String dstJarFilePath = directory + "/" + path.name
+		  if(!new File(dstJarFilePath).exists()){
+			if(path.name.contains('tomcat') || path.name.contains('jersey') || path.name.contains('asm') || path.name.contains('commons-cli')){
+				Files.copy(path.toPath(), FileSystems.getDefault().getPath(dstJarFilePath))
+                        }
+
+                  }
+             }
+        }
+    }
+}
+jar.dependsOn('copyToLib')
