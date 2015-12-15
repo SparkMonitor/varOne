@@ -28,7 +28,7 @@ class ClusterContainer extends React.Component {
   }
 
   componentWillMount(){
-    ClusterAction.fetchTotalNodeDashBoard(this.selectMetrics);
+    ClusterAction.fetchTotalNodeDashBoard(this.selectMetrics, this.props.period);
   }
 
   componentWillUnmount(){
@@ -38,21 +38,28 @@ class ClusterContainer extends React.Component {
   componentDidUpdate(){
     clearInterval(this.fetchInterval);
     this.fetchInterval = setInterval(()=>{
-        ClusterAction.fetchTotalNodeDashBoard(this.selectMetrics);
+        ClusterAction.fetchTotalNodeDashBoard(this.selectMetrics, this.props.period);
     }, 6000);
   }
 
   handleModalSubmit(selectMetrics){
     this.selectMetrics = selectMetrics;
     clearInterval(this.fetchInterval);
-    ClusterAction.fetchTotalNodeDashBoard(selectMetrics);
+    ClusterAction.fetchTotalNodeDashBoard(selectMetrics, this.props.period);
+  }
+
+  handlePeriodSelect = period => {
+    clearInterval(this.fetchInterval);
+    ClusterAction.fetchTotalNodeDashBoard(this.selectMetrics, period);
   }
 
   render(){
     if(null !== this.props.data){
       return(
         <div id="page-wrapper">
-          <ClusterHeader/>
+          <ClusterHeader
+            period={this.props.period}
+            onPeriodSelect={this.handlePeriodSelect}/>
           <MetricsSettingModal modalTarget="Cluster" onModalSubmit={this.handleModalSubmit.bind(this)}/>
           <div>
             <ClusterSummary

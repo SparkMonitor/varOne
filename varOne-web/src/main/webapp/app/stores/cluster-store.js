@@ -7,9 +7,10 @@ class ClusterStore {
   constructor(){
     this.bindActions(ClusterAction);
 		this.data = null;
+    this.period = Const.shared.timeperiod[0];
   }
 
-  onFetchTotalNodeDashBoard(result){
+  onFetchTotalNodeDashBoard({ result, period }){
     var data = {};
     data.metrics = {};
 
@@ -72,6 +73,7 @@ class ClusterStore {
     data.displaySummaryInfo   = displaySummaryInfo;
     data.taskStartedNumByNode = taskDounts;
     data.executorNumByNode    = executorDounts;
+    this.period = period;
     this.data = data;
   }
 
