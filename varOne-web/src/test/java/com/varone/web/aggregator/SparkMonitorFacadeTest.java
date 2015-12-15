@@ -38,7 +38,7 @@ public class SparkMonitorFacadeTest extends TestCase {
 	 */
 	public void testGetDefaultTotalNodeDashBoard() throws Exception{
 		SparkMonitorFacade facade = new SparkMonitorFacade();
-		DefaultTotalNodeVO result = facade.getDefaultClusterDashBoard(new ArrayList<String>());
+		DefaultTotalNodeVO result = facade.getDefaultClusterDashBoard(new ArrayList<String>(), "30m");
 		
 		assertNotNull(result);
 		assertEquals(result.getExecutorNum(), 0);
@@ -59,7 +59,7 @@ public class SparkMonitorFacadeTest extends TestCase {
 	
 	public void testGetDefaultTotalNodeDashBoardWithRunningJob() throws Exception{
 		SparkMonitorFacade facade = new SparkMonitorFacade();
-		DefaultTotalNodeVO result = facade.getDefaultClusterDashBoard(new ArrayList<String>());
+		DefaultTotalNodeVO result = facade.getDefaultClusterDashBoard(new ArrayList<String>(), "30m");
 		
 		System.out.println("Node Num: " + result.getNodeNum());
 		System.out.println("Spark Running Job Num: " + result.getJobNum());
