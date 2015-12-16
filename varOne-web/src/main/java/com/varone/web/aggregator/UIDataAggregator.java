@@ -147,13 +147,13 @@ public class UIDataAggregator {
 	}
 	
 	public DefaultApplicationVO aggregateJobDashBoard(List<String> metrics, List<String> allNodeHost, 
-			SparkEventLogBean inProgressLog, List<NodeBean> nodeMetrics){
+			SparkEventLogBean inProgressLog, List<NodeBean> nodeMetrics, List<Long> plotPointInPeriod){
 		DefaultApplicationVO result = new DefaultApplicationVO();
 		
 		List<MetricPropVO> metricProps = new ArrayList<MetricPropVO>();
 		Map<String, String> taskStartedNumByNode = new LinkedHashMap<String, String>();
 		Map<String, Integer> executorNumByNode = new LinkedHashMap<String, Integer>();
-		Map<String, Map<String, String>> propToMetrics = new LinkedHashMap<String, Map<String, String>>();
+		Map<String, Map<String, List<TimeValueVO>>> propToMetrics = new LinkedHashMap<String, Map<String, List<TimeValueVO>>>();
 		
 		for(String metric: metrics){
 			String[] propertyAndTitle = UIMrtricsPropTransfer.getUIMetricPropertyByMetricName(metric);
@@ -161,9 +161,19 @@ public class UIDataAggregator {
 			metricPropVO.setProperty(propertyAndTitle[0]);
 			metricPropVO.setTitle(propertyAndTitle[1]);
 			metricProps.add(metricPropVO);
-			Map<String, String> host2Metrics = new LinkedHashMap<String, String>();
-			for(String host: allNodeHost)
-				host2Metrics.put(host, "0");
+			Map<String, List<TimeValueVO>> host2Metrics = new LinkedHashMap<String, List<TimeValueVO>>();
+			for(String host: allNodeHost){
+				
+				List<TimeValueVO> defaultValues = new ArrayList<TimeValueVO>();
+				for(Long time: plotPointInPeriod){
+					TimeValueVO pair = new TimeValueVO();
+					pair.setTime(this.timeUnitTransfer.transferToAxisX(time));
+					pair.setValue("0");
+					defaultValues.add(pair);
+				}
+				
+				host2Metrics.put(host, defaultValues);
+			}
 			propToMetrics.put(propertyAndTitle[0], host2Metrics);
 		}
 		
@@ -187,36 +197,34 @@ public class UIDataAggregator {
 		for(NodeBean node: nodeMetrics){
 			String host = node.getHost();
 			for(MetricBean metric: node.getMetrics()){
-//				if(metric.getName().indexOf("completeTasks") != -1){
-//					//get last one metric
-//					TimeValuePairBean timeValuePairBean = metric.getValues().get(metric.getValues().size()-1);
-//					int value = Integer.parseInt(timeValuePairBean.getValue());
-//					completedTaskNum += value;
-//					
-//					int n = taskStartedNumByNode.get(host) + value;
-//					taskStartedNumByNode.put(host, n);
-//					
-//				} else if(metric.getName().indexOf("heap.used") != -1){
-//					//get last one metric
-//					TimeValuePairBean timeValuePairBean = metric.getValues().get(metric.getValues().size()-1);
-//					long value = Long.parseLong(timeValuePairBean.getValue());
-////					jvmUsedByNode.put(host, jvmUsedByNode.get(host)+value);
-//				}
 				String propertyName = UIMrtricsPropTransfer.getUIMetricPropertyByMetricValue(metric.getName());
-				Map<String, String> host2Metric = propToMetrics.get(propertyName);
+				Map<String, List<TimeValueVO>> host2Metric = propToMetrics.get(propertyName);
 				
-				//get last one metric
-				TimeValuePairBean timeValuePairBean = metric.getValues().get(metric.getValues().size()-1);
-				long value = Long.parseLong(timeValuePairBean.getValue());
-				//get current metric value
-				long currValue = Long.parseLong(host2Metric.get(host));
-				//aggregate and store
-				host2Metric.put(host, String.valueOf(value + currValue));
-//				if(metric.getName())
+				// get a new one
+				List<TimeValuePairBean> newValues = metric.getValues();
+				// get current value
+				List<TimeValueVO> currValues = host2Metric.get(host);
+				// aggregate and store
 				
-				if(metric.getName().indexOf("completeTasks") != -1){
-					completedTaskNum += value;
-					taskStartedNumByNode.put(host, host2Metric.get(host));
+				for(TimeValuePairBean newPair: newValues){
+					for(TimeValueVO currPair: currValues){
+						if(this.timeUnitTransfer.transferToAxisX(
+								newPair.getTime()).equals(currPair.getTime())){
+							long newValue = Long.parseLong(newPair.getValue());
+							long currValue = Long.parseLong(currPair.getValue());
+							currPair.setValue(String.valueOf(newValue+currValue));
+							break;
+						}
+					}
+				}
+								
+				if(metric.getName().indexOf("completeTasks") != -1){					
+					String newestValue = currValues.get(currValues.size()-1).getValue();
+					if(currValues.size() > 2 && newestValue.equals("0")){
+						newestValue = currValues.get(currValues.size()-2).getValue();
+					} 
+					taskStartedNumByNode.put(host, newestValue);
+					completedTaskNum += Integer.valueOf(newestValue);
 				}
 					
 			}
@@ -224,6 +232,11 @@ public class UIDataAggregator {
 		
 		for(TaskEnd taskEnd: inProgressLog.getTaskEnd()){
 			failedTaskNum += taskEnd.getInfo().isFailed()?1:0;
+			// calculate the completedTaskNum on here, but it's too slow
+//			if(taskEnd.getInfo().isFailed())
+//				failedTaskNum++;
+//			else
+//				completedTaskNum++;
 		}
 		
 		for(ExecutorAdded executorAdded: inProgressLog.getExecutorAdd()){

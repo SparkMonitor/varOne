@@ -38,7 +38,8 @@ public class JobResource {
 	
 	@GET
 	@Path("/{applicationId}")
-	public String fetchJob(@PathParam("applicationId") String applicationId, @QueryParam("metrics") String metrics) throws Exception{
+	public String fetchJob(@PathParam("applicationId") String applicationId, 
+			@QueryParam("metrics") String metrics, @QueryParam("period") String period) throws Exception{
 		SparkMonitorFacade facade = new SparkMonitorFacade();
 		List<String> metricsAsList = new ArrayList<String>();
 		if(metrics != null){
@@ -49,7 +50,7 @@ public class JobResource {
 			}
 //			metricsAsList = Arrays.asList(metrics.split(","));
 		}
-		DefaultApplicationVO result = facade.getJobDashBoard(applicationId, metricsAsList);
+		DefaultApplicationVO result = facade.getJobDashBoard(applicationId, metricsAsList, period);
 		Gson gson = new Gson();
 		return gson.toJson(result);
 	}

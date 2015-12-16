@@ -89,9 +89,11 @@ public class SparkMonitorFacade {
 	}
 	
 	
-	public DefaultApplicationVO getJobDashBoard(String applicationId, List<String> metrics) throws Exception{
+	public DefaultApplicationVO getJobDashBoard(String applicationId, 
+			List<String> metrics, String periodExpression) throws Exception{
 		DefaultApplicationVO result = null;
 		YarnService yarnService = new YarnService(this.config);
+		TimePeriodHandler timePeriodHandler = new TimePeriodHandler(this.metricsProperties);
 		
 		if(!metrics.contains(MetricsType.EXEC_THREADPOOL_COMPLETETASK))
 			metrics.add(MetricsType.EXEC_THREADPOOL_COMPLETETASK.name());
@@ -100,13 +102,24 @@ public class SparkMonitorFacade {
 			List<String> allNodeHost = yarnService.getAllNodeHost();
 			
 			if(yarnService.isStartRunningSparkApplication(applicationId)){
+				
+				long[] startAndEndTime = timePeriodHandler.transferToLongPeriod(periodExpression);
+				List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
+				
 				EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
 				MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost); 
 				
 				SparkEventLogBean inProgressLog = eventLogReader.getInProgressLog(applicationId);
 				List<NodeBean> nodeMetrics = metricsReader.getAllNodeMetrics(applicationId, metrics);
+				for(NodeBean nodeBean: nodeMetrics){
+					for(MetricBean metricBean: nodeBean.getMetrics()){
+						metricBean.setValues(timePeriodHandler.ingestPeriodData(
+								metricBean.getValues(), plotPointInPeriod));
+					}
+				}
 				
-				result = new UIDataAggregator().aggregateJobDashBoard(metrics, allNodeHost, inProgressLog, nodeMetrics);
+				result = new UIDataAggregator().aggregateJobDashBoard(metrics, allNodeHost, 
+						inProgressLog, nodeMetrics, plotPointInPeriod);
 			}
 		} finally{
 			yarnService.close();
