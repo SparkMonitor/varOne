@@ -9,6 +9,7 @@ buildscript {
 subprojects {
     apply plugin: 'com.github.johnrengelman.shadow'
     apply plugin: 'java'
+    apply plugin: 'project-report'
     sourceCompatibility = 1.7
     group = 'com.haredb'
     version = '1.0'
@@ -84,7 +85,16 @@ subprojects {
     }
 
     dependencies {
-        hadoopConf 'org.apache.hadoop:hadoop-client:2.3.0'
+        //hadoopConf 'org.apache.hadoop:hadoop-client:2.3.0'
+        hadoopConf('org.apache.hadoop:hadoop-mapreduce-client-jobclient:2.3.0'){
+           exclude group: "javax.servlet", module: "servlet-api"
+        }
+        hadoopConf('org.apache.hadoop:hadoop-client:2.3.0'){
+           exclude group: "org.apache.hadoop", module: "hadoop-mapreduce-client-app"
+           exclude group: "org.apache.hadoop", module: "hadoop-mapreduce-client-shuffle"
+           exclude group: "org.apache.hadoop", module: "hadoop-mapreduce-client-core"
+           exclude group: "org.apache.hadoop", module: "hadoop-mapreduce-client-jobclient"
+        }
     }
 
     dependencies {

@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VarOneEnv {
-
+	
+	
 	public static String VARONE_HOME_NAME = ".varone";
 	public static String CONFIG = "conf";
+	
+	
 	public static String YARNSITEFILENAME = "yarn-site.xml";
 	public static String HDFSSITEFILENAME = "hdfs-site.xml";
 	public static String CORESITEFILENAME = "core-site.xml";
@@ -34,6 +37,7 @@ public class VarOneEnv {
 		return confPath;
 	}
 	
+
 	public boolean checkHadoopConfXMLFile(File confPath){
 		File hdfsSite = new File(confPath, HDFSSITEFILENAME);
 		File yarnSite = new File(confPath, YARNSITEFILENAME);
