@@ -34,17 +34,36 @@ export default class ClusterMetric extends React.Component{
   }
 
   reloadCharting(){
+    var columns = [this.props.metric.x];
+
+    for(let i=0;i<this.props.metric.value.length;i++){
+      columns.push(this.props.metric.value[i]);
+    }
     this.cluster_metrics_chart.load({
-        columns: this.props.metric.value
+        columns: columns
     });
   }
 
   defaultCharting(){
+    var columns = [this.props.metric.x];
+
+    for(let i=0;i<this.props.metric.value.length;i++){
+      columns.push(this.props.metric.value[i]);
+    }
+
     this.cluster_metrics_chart = c3.generate({
         bindto: '#'+this.props.metric.id,
         data: {
-            columns: this.props.metric.value,
-            type: 'bar'
+            x: 'x',
+            columns: columns
+        },
+        axis: {
+            x: {
+                type: 'timeseries',
+                tick: {
+                    format: '%H:%M:%S'
+                }
+            }
         }
     });
   }

@@ -64,10 +64,22 @@ public class YarnService implements Closeable{
 				break;
 			}
 		}
-		System.out.println(valid);
 		return valid;
 	}
 
+	public List<String> getSparkApplicationsByPeriod(long start, long end) throws YarnException, IOException {
+		List<String> applicationIds = new ArrayList<String>();
+		for(ApplicationReport report : this.yarnClient.getApplications()){
+			if(report.getApplicationType().equals("SPARK")){
+				if((start <= report.getStartTime() && report.getStartTime() <= end) || 
+						(start <= report.getFinishTime() && report.getFinishTime() <= end)){
+					applicationIds.add(report.getApplicationId().toString());
+				}
+			}
+		}
+		return applicationIds;
+	}
+	
 	@Override
 	public void close() throws IOException {
 		this.yarnClient.close();

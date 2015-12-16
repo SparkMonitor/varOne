@@ -3,25 +3,27 @@
  */
 package com.varone.web.facade;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.Path;
 
+import com.varone.node.MetricsProperties;
 import com.varone.node.MetricsType;
 import com.varone.web.aggregator.UIDataAggregator;
+import com.varone.web.aggregator.timeperiod.TimePeriodHandler;
 import com.varone.web.eventlog.bean.SparkEventLogBean;
 import com.varone.web.eventlog.bean.SparkEventLogBean.AppStart;
+import com.varone.web.metrics.bean.MetricBean;
 import com.varone.web.metrics.bean.NodeBean;
+import com.varone.web.metrics.bean.TimeValuePairBean;
 import com.varone.web.reader.eventlog.EventLogReader;
 import com.varone.web.reader.eventlog.impl.EventLogHdfsReaderImpl;
 import com.varone.web.reader.metrics.MetricsReader;
 import com.varone.web.reader.metrics.impl.MetricsRpcReaderImpl;
-import com.varone.web.util.VarOneEnv;
+import com.varone.web.util.VarOneConfiguration;
 import com.varone.web.vo.DefaultApplicationVO;
 import com.varone.web.vo.DefaultNodeVO;
 import com.varone.web.vo.DefaultTotalNodeVO;
@@ -37,34 +39,47 @@ import com.varone.web.yarn.service.YarnService;
 public class SparkMonitorFacade {
 	
 	private Configuration config;
+	private MetricsProperties metricsProperties;
 	
 	public SparkMonitorFacade() {
-		VarOneEnv env = new VarOneEnv();
-		this.config = this.loadConfiguration(env.getVarOneConfPath());		
+		VarOneConfiguration varOneConf = new VarOneConfiguration();
+		this.config = varOneConf.loadHadoopConfiguration();
+		this.metricsProperties = varOneConf.loadMetricsConfiguration();
 	}
 	
-	public DefaultTotalNodeVO getDefaultClusterDashBoard(List<String> metrics) throws Exception{
+	public DefaultTotalNodeVO getDefaultClusterDashBoard(List<String> metrics, String periodExpression) throws Exception{
 		DefaultTotalNodeVO result = null;
+		TimePeriodHandler timePeriodHandler = new TimePeriodHandler(this.metricsProperties);
 		YarnService yarnService = new YarnService(this.config);
 				
 		Map<String, List<NodeBean>> nodeMetricsByAppId = new LinkedHashMap<String, List<NodeBean>>();
 		
 		try {
+			long[] startAndEndTime = timePeriodHandler.transferToLongPeriod(periodExpression);
 			List<String> allNodeHost = yarnService.getAllNodeHost();
-			List<String> runningSparkAppId = yarnService.getRunningSparkApplications();
+			int runningAppNum = yarnService.getRunningSparkApplications().size();
+			List<String> periodSparkAppId = yarnService.getSparkApplicationsByPeriod(startAndEndTime[0], startAndEndTime[1]);
 			
 			EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
 			MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost); 
 			
-			for(String applicationId: runningSparkAppId){
-				nodeMetricsByAppId.put(applicationId, 
-						metricsReader.getAllNodeMetrics(applicationId, metrics));
+			List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
+			
+			for(String applicationId: periodSparkAppId){				
+				List<NodeBean> allNodeMetrics = metricsReader.getAllNodeMetrics(applicationId, metrics);
+				for(NodeBean nodeBean: allNodeMetrics){
+					for(MetricBean metricBean: nodeBean.getMetrics()){
+						metricBean.setValues(timePeriodHandler.ingestPeriodData(
+								metricBean.getValues(), plotPointInPeriod));
+					}
+				}
+				nodeMetricsByAppId.put(applicationId, allNodeMetrics);
 			}
 			
 			Map<String, SparkEventLogBean> inProgressEventLogByAppId = eventLogReader.getAllInProgressLog();
 			
-			result = new UIDataAggregator().aggregateClusterDashBoard(metrics, runningSparkAppId, allNodeHost, 
-							nodeMetricsByAppId, inProgressEventLogByAppId);
+			result = new UIDataAggregator().aggregateClusterDashBoard(metrics, runningAppNum, periodSparkAppId, allNodeHost, 
+							nodeMetricsByAppId, inProgressEventLogByAppId, plotPointInPeriod);
 			
 		} finally{
 			yarnService.close();
@@ -74,9 +89,11 @@ public class SparkMonitorFacade {
 	}
 	
 	
-	public DefaultApplicationVO getJobDashBoard(String applicationId, List<String> metrics) throws Exception{
+	public DefaultApplicationVO getJobDashBoard(String applicationId, 
+			List<String> metrics, String periodExpression) throws Exception{
 		DefaultApplicationVO result = null;
 		YarnService yarnService = new YarnService(this.config);
+		TimePeriodHandler timePeriodHandler = new TimePeriodHandler(this.metricsProperties);
 		
 		if(!metrics.contains(MetricsType.EXEC_THREADPOOL_COMPLETETASK))
 			metrics.add(MetricsType.EXEC_THREADPOOL_COMPLETETASK.name());
@@ -85,13 +102,24 @@ public class SparkMonitorFacade {
 			List<String> allNodeHost = yarnService.getAllNodeHost();
 			
 			if(yarnService.isStartRunningSparkApplication(applicationId)){
+				
+				long[] startAndEndTime = timePeriodHandler.transferToLongPeriod(periodExpression);
+				List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
+				
 				EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
 				MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost); 
 				
 				SparkEventLogBean inProgressLog = eventLogReader.getInProgressLog(applicationId);
 				List<NodeBean> nodeMetrics = metricsReader.getAllNodeMetrics(applicationId, metrics);
+				for(NodeBean nodeBean: nodeMetrics){
+					for(MetricBean metricBean: nodeBean.getMetrics()){
+						metricBean.setValues(timePeriodHandler.ingestPeriodData(
+								metricBean.getValues(), plotPointInPeriod));
+					}
+				}
 				
-				result = new UIDataAggregator().aggregateJobDashBoard(metrics, allNodeHost, inProgressLog, nodeMetrics);
+				result = new UIDataAggregator().aggregateJobDashBoard(metrics, allNodeHost, 
+						inProgressLog, nodeMetrics, plotPointInPeriod);
 			}
 		} finally{
 			yarnService.close();
@@ -170,26 +198,5 @@ public class SparkMonitorFacade {
 		SparkEventLogBean eventLog = eventLogReader.getJobStages(applicationId, jobId);
 		
 		return new UIDataAggregator().aggregateJobStages(applicationId, jobId, eventLog);
-	}
-	
-	protected Configuration loadConfiguration(File varOneConfPath) {
-		Configuration config = new Configuration();
-		for(File file : varOneConfPath.listFiles()){
-			if(file.getName().endsWith(".xml")){
-				config.addResource(new Path(file.getAbsolutePath()));
-			}
-		}
-		this.checkConfig(config, varOneConfPath, "fs.default.name");
-		this.checkConfig(config, varOneConfPath, "yarn.resourcemanager.address");
-		this.checkConfig(config, varOneConfPath, "spark.eventLog.dir");
-		
-		return config;
-	}
-	
-	private void checkConfig(Configuration config, File varOneConfPath, String key){
-		String value = config.get(key);
-		if(value == null){
-			throw new RuntimeException(varOneConfPath.getAbsolutePath() + "/*.xml not set " + key + " property");
-		}
 	}
 }

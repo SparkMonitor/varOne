@@ -7,22 +7,33 @@ class ClusterStore {
   constructor(){
     this.bindActions(ClusterAction);
 		this.data = null;
+    this.period = Const.shared.timeperiod[0];
   }
 
-  onFetchTotalNodeDashBoard(result){
+  onFetchTotalNodeDashBoard({ result, period }){
     var data = {};
     data.metrics = {};
 
     result.metricProps.forEach(metric => {
+      let isCollectX = false;
       data.metrics[metric.property] = {};
       data.metrics[metric.property].id = metric.property;
       data.metrics[metric.property].title = metric.title;
       data.metrics[metric.property].value = [];
+      data.metrics[metric.property].x = ['x'];
       let host2Metrics = result.propToMetrics[metric.property];
       for(let host in host2Metrics){
-        data.metrics[metric.property].value.push([
-          host,host2Metrics[host]
-        ]);
+        let metricsValues = [host];
+        for(let i=0;i<host2Metrics[host].length;i++){
+          if(!isCollectX){
+            data.metrics[metric.property].x.push(
+              parseInt(host2Metrics[host][i].time)
+            );
+          }
+          metricsValues.push(host2Metrics[host][i].value);
+        }
+        isCollectX = true;
+        data.metrics[metric.property].value.push(metricsValues);
       }
     });
 
@@ -62,6 +73,7 @@ class ClusterStore {
     data.displaySummaryInfo   = displaySummaryInfo;
     data.taskStartedNumByNode = taskDounts;
     data.executorNumByNode    = executorDounts;
+    this.period = period;
     this.data = data;
   }
 
