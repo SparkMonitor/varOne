@@ -49,12 +49,12 @@ public class UIDataAggregator {
 	}
 	
 	
-	public DefaultTotalNodeVO aggregateClusterDashBoard(List<String> metrics, List<String> runningSparkAppId, 
+	public DefaultTotalNodeVO aggregateClusterDashBoard(List<String> metrics, int runningAppNum, List<String> periodSparkAppId, 
 			List<String> allNodeHost, Map<String, List<NodeBean>> nodeMetricsByAppId, 
 			Map<String, SparkEventLogBean> inProgressEventLogByAppId, List<Long> plotPointInPeriod) throws Exception{
 		DefaultTotalNodeVO result = new DefaultTotalNodeVO();
 		int nodeNum = allNodeHost.size();
-		int jobNum  = runningSparkAppId.size();
+		int jobNum  = runningAppNum;
 		int taskNum = 0, executorNum = 0;
 		
 		List<MetricPropVO> metricProps = new ArrayList<MetricPropVO>();

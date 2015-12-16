@@ -57,6 +57,7 @@ public class SparkMonitorFacade {
 		try {
 			long[] startAndEndTime = timePeriodHandler.transferToLongPeriod(periodExpression);
 			List<String> allNodeHost = yarnService.getAllNodeHost();
+			int runningAppNum = yarnService.getRunningSparkApplications().size();
 			List<String> periodSparkAppId = yarnService.getSparkApplicationsByPeriod(startAndEndTime[0], startAndEndTime[1]);
 			
 			EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
@@ -77,7 +78,7 @@ public class SparkMonitorFacade {
 			
 			Map<String, SparkEventLogBean> inProgressEventLogByAppId = eventLogReader.getAllInProgressLog();
 			
-			result = new UIDataAggregator().aggregateClusterDashBoard(metrics, periodSparkAppId, allNodeHost, 
+			result = new UIDataAggregator().aggregateClusterDashBoard(metrics, runningAppNum, periodSparkAppId, allNodeHost, 
 							nodeMetricsByAppId, inProgressEventLogByAppId, plotPointInPeriod);
 			
 		} finally{
