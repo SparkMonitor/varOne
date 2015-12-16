@@ -8,13 +8,14 @@ class NodeStore {
     this.bindActions(NodeAction);
 		this.nodes = [];
     this.data = null;
+    this.period = Const.shared.timeperiod[0];
   }
 
   onFetchNodes(result){
     this.nodes = result;
   }
 
-  onFetchNodeDashBoard(result){
+  onFetchNodeDashBoard({ result, period }){
     var data = {};
     data.metrics = [];
 
@@ -27,6 +28,7 @@ class NodeStore {
     });
 
     this.data = data;
+    this.period = period;
   }
 
 }
