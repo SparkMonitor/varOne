@@ -18,6 +18,7 @@ import com.varone.node.MetricsProperties;
  */
 public class MetricsPropertiesParser {
 	
+	public final static String CSV_SINK = "*.sink.csv.class";
 	public final static String CSV_PERIOD = "*.sink.csv.period";
 	public final static String CSV_UNIT = "*.sink.csv.unit";
 	public final static String CSV_DIR = "*.sink.csv.directory";
@@ -33,6 +34,12 @@ public class MetricsPropertiesParser {
 			prop.load(input);
 			
 			metricsProps = new MetricsProperties();
+			
+			String csvSink;
+			if(null == (csvSink = prop.getProperty(CSV_SINK)) || 
+					!csvSink.equals("org.apache.spark.metrics.sink.CsvSink")){
+				throw new RuntimeException("Should allow output metrics to csv by setting *.sink.csv.class=org.apache.spark.metrics.sink.CsvSink");
+			} 
 			
 			String csvPeriod;
 			if(null == (csvPeriod = prop.getProperty(CSV_PERIOD))){
