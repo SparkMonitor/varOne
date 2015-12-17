@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class DefaultNodeVO {
 	private List<MetricPropVO> metricProps;
-	private Map<String, String> propToMetrics;
+	private Map<String, List<TimeValueVO>> propToMetrics;
 	
 	public List<MetricPropVO> getMetricProps() {
 		return metricProps;
@@ -23,10 +23,10 @@ public class DefaultNodeVO {
 	public void setMetricProps(List<MetricPropVO> metricProps) {
 		this.metricProps = metricProps;
 	}
-	public Map<String, String> getPropToMetrics() {
+	public Map<String, List<TimeValueVO>> getPropToMetrics() {
 		return propToMetrics;
 	}
-	public void setPropToMetrics(Map<String, String> propToMetrics) {
+	public void setPropToMetrics(Map<String, List<TimeValueVO>> propToMetrics) {
 		this.propToMetrics = propToMetrics;
 	}
 	

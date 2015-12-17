@@ -127,20 +127,30 @@ public class SparkMonitorFacade {
 		return result;
 	}
 	
-	public DefaultNodeVO getNodeDashBoard(String node, List<String> metrics) throws Exception {
+	public DefaultNodeVO getNodeDashBoard(String node, 
+			List<String> metrics, String periodExpression) throws Exception {
 		DefaultNodeVO result = null;
 		YarnService yarnService = new YarnService(this.config);
+		TimePeriodHandler timePeriodHandler = new TimePeriodHandler(this.metricsProperties);
 		Map<String, NodeBean> nodeMetricsByAppId = new LinkedHashMap<String, NodeBean>();
 		
 		MetricsReader metricsReader = new MetricsRpcReaderImpl(); 
 		try {
-			List<String> runningSparkAppId = yarnService.getRunningSparkApplications();
-			for(String applicationId: runningSparkAppId){
-				nodeMetricsByAppId.put(applicationId, 
-						metricsReader.getNodeMetrics(node, applicationId, metrics));
+			long[] startAndEndTime = timePeriodHandler.transferToLongPeriod(periodExpression);
+			List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
+			
+			List<String> periodSparkAppId = yarnService.getSparkApplicationsByPeriod(startAndEndTime[0], startAndEndTime[1]);
+			
+			for(String applicationId: periodSparkAppId){
+				NodeBean nodeBean = metricsReader.getNodeMetrics(node, applicationId, metrics);
+				for(MetricBean metricBean: nodeBean.getMetrics()){
+					metricBean.setValues(timePeriodHandler.ingestPeriodData(
+							metricBean.getValues(), plotPointInPeriod));
+				}
+				nodeMetricsByAppId.put(applicationId, nodeBean);
 			}
 						
-			result = new UIDataAggregator().aggregateNodeDashBoard(metrics, runningSparkAppId, node, nodeMetricsByAppId);
+			result = new UIDataAggregator().aggregateNodeDashBoard(metrics, node, nodeMetricsByAppId, plotPointInPeriod);
 			
 		} finally{
 			yarnService.close();
