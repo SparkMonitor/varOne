@@ -36,7 +36,8 @@ public class NodeResource {
 	
 	@GET
 	@Path("/{node}")
-	public String fetchNodeDashBoard(@PathParam("node") String node, @QueryParam("metrics") String metrics) throws Exception{
+	public String fetchNodeDashBoard(@PathParam("node") String node, 
+			@QueryParam("metrics") String metrics, @QueryParam("period") String period) throws Exception{
 		SparkMonitorFacade facade = new SparkMonitorFacade();
 		List<String> metricsAsList = new ArrayList<String>();
 		if(metrics != null){
@@ -46,7 +47,7 @@ public class NodeResource {
 					metricsAsList.add(metric);
 			}
 		}
-		DefaultNodeVO nodeDashBoard = facade.getNodeDashBoard(node, metricsAsList);
+		DefaultNodeVO nodeDashBoard = facade.getNodeDashBoard(node, metricsAsList, period);
 		Gson gson = new Gson();
 		return gson.toJson(nodeDashBoard);
 	}

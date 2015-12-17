@@ -255,12 +255,11 @@ public class UIDataAggregator {
 	}
 
 
-	public DefaultNodeVO aggregateNodeDashBoard(List<String> metrics,
-			List<String> runningSparkAppId, String node,
-			Map<String, NodeBean> nodeMetricsByAppId) {
+	public DefaultNodeVO aggregateNodeDashBoard(List<String> metrics, String node,
+			Map<String, NodeBean> nodeMetricsByAppId, List<Long> plotPointInPeriod) {
 		DefaultNodeVO result = new DefaultNodeVO();
 		List<MetricPropVO> metricProps = new ArrayList<MetricPropVO>();
-		Map<String, String> propToMetrics = new LinkedHashMap<String, String>();
+		Map<String, List<TimeValueVO>> propToMetrics = new LinkedHashMap<String, List<TimeValueVO>>();
 		
 		for(String metric: metrics){
 			String[] propertyAndTitle = UIMrtricsPropTransfer.getUIMetricPropertyByMetricName(metric);
@@ -268,16 +267,40 @@ public class UIDataAggregator {
 			metricPropVO.setProperty(propertyAndTitle[0]);
 			metricPropVO.setTitle(propertyAndTitle[1]);
 			metricProps.add(metricPropVO);
-
-			propToMetrics.put(propertyAndTitle[0], "0");
+			
+			List<TimeValueVO> defaultValues = new ArrayList<TimeValueVO>();
+			for(Long time: plotPointInPeriod){
+				TimeValueVO pair = new TimeValueVO();
+				pair.setTime(this.timeUnitTransfer.transferToAxisX(time));
+				pair.setValue("0");
+				defaultValues.add(pair);
+			}
+			
+			propToMetrics.put(propertyAndTitle[0], defaultValues);
 		}
 		
 		for(Entry<String, NodeBean> entry: nodeMetricsByAppId.entrySet()){
 			NodeBean nodeBean = entry.getValue();
 			for(MetricBean metricBean: nodeBean.getMetrics()){
 				String propertyName = UIMrtricsPropTransfer.getUIMetricPropertyByMetricValue(metricBean.getName());
-				TimeValuePairBean timeValuePairBean = metricBean.getValues().get(metricBean.getValues().size()-1);
-				propToMetrics.put(propertyName, timeValuePairBean.getValue());
+				
+				// get a new one
+				List<TimeValuePairBean> newValues = metricBean.getValues();
+				// get current value
+				List<TimeValueVO> currValues = propToMetrics.get(propertyName);
+				// aggregate and store
+				
+				for(TimeValuePairBean newPair: newValues){
+					for(TimeValueVO currPair: currValues){
+						if(this.timeUnitTransfer.transferToAxisX(
+								newPair.getTime()).equals(currPair.getTime())){
+							long newValue = Long.parseLong(newPair.getValue());
+							long currValue = Long.parseLong(currPair.getValue());
+							currPair.setValue(String.valueOf(newValue+currValue));
+							break;
+						}
+					}
+				}
 			}
 		}
 		
