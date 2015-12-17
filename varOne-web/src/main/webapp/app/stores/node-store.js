@@ -15,7 +15,7 @@ class NodeStore {
     this.nodes = result;
   }
 
-  onFetchNodeDashBoard({ result, period }){
+  onFetchNodeDashBoard({ node, result, period }){
     var data = {};
     data.metrics = [];
 
@@ -23,7 +23,16 @@ class NodeStore {
       let o = {};
       o.id = metric.property;
       o.title = metric.title;
-      o.value = result.propToMetrics[metric.property];
+      o.x = ['x'];
+      let values =  result.propToMetrics[metric.property];
+      let metricsValues = [node];
+      for(let i=0;i<values.length;i++){
+        o.x.push(
+          parseInt(values[i].time)
+        );
+        metricsValues.push(values[i].value);
+      }
+      o.value = metricsValues;
       data.metrics.push(o);
     });
 

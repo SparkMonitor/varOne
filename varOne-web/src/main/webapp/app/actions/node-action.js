@@ -17,7 +17,7 @@ class NodeAction {
                                 .query({metrics: selectMetrics, period: period})
                                 .set('Accept', 'application/json');
     let result = JSON.parse(response.text);
-    this.dispatch({ result, period });
+    this.dispatch({ node, result, period });
   }
 
 }
