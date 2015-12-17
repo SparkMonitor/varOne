@@ -40,8 +40,8 @@ public class SPMNode {
         try {
             cmd = parser.parse( options, args);
             metricsDir = cmd.getOptionValue("d", "");
-            port = cmd.getOptionValue("p", Consts.HARE_SPARK_MONITOR_NODE_DEFAULT_PORT.toString());
-            thread = cmd.getOptionValue("t", Consts.HARE_SPARK_MONITOR_NODE_DEFAULT_THREAD.toString());
+            port = cmd.getOptionValue("p", Consts.VARONE_NODE_DEFAULT_PORT.toString());
+            thread = cmd.getOptionValue("t", Consts.VARONE_NODE_DEFAULT_THREAD_NUM.toString());
         } catch (ParseException e) {
             System.err.println(e.getMessage());
             formatter.printHelp( "spmn.jar", options );
@@ -63,9 +63,9 @@ public class SPMNode {
         } 
         
 		Configuration config = new Configuration();
-		config.set(Consts.HARE_SPARK_METRICS_CSV_DIR, metricsDir);
-		config.set(Consts.HARE_SPARK_MONITOR_NODE_PORT, port);
-		config.set(Consts.HARE_SPARK_MONITOR_NODE_THREAD, thread);
+		config.set(Consts.VARONE_SPARK_METRICS_CSV_DIR, metricsDir);
+		config.set(Consts.VARONE_NODE_PORT, port);
+		config.set(Consts.VARONE_NODE_THREAD_NUM, thread);
 		
 		NodeMetricsService service = new NodeMetricsService(config);
 		service.start();
