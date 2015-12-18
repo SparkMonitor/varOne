@@ -29,7 +29,7 @@ jar {
 
 shadowJar {
     //jar filename = [baseName]-[version]-[classifier].[extension]
-    baseName = "haredb_" + project.name
+    baseName = "varOned"
     version= project.version
     classifier = "" //default:all
     extension = "jar"
