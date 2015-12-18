@@ -34,7 +34,7 @@ public class NodeMetricsService extends AbstractServer implements MetricsService
 	 */
 	public NodeMetricsService(Configuration config) throws Exception {
 		this.constructServer(config);
-		this.reader = new NodeMetricsReader(config.get(Consts.VARONE_SPARK_METRICS_CSV_DIR));
+		this.reader = new NodeMetricsReader(config.get(Consts.SPARK_METRICS_CSV_DIR));
 	}
 
 	/* (non-Javadoc)
