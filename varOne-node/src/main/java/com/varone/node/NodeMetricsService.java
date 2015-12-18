@@ -34,7 +34,7 @@ public class NodeMetricsService extends AbstractServer implements MetricsService
 	 */
 	public NodeMetricsService(Configuration config) throws Exception {
 		this.constructServer(config);
-		this.reader = new NodeMetricsReader(config.get(Consts.HARE_SPARK_METRICS_CSV_DIR));
+		this.reader = new NodeMetricsReader(config.get(Consts.SPARK_METRICS_CSV_DIR));
 	}
 
 	/* (non-Javadoc)
@@ -67,8 +67,8 @@ public class NodeMetricsService extends AbstractServer implements MetricsService
 	public void constructServer(Configuration config) throws Exception {
 		super.constructHadoopServer(
 				MetricsService.class, config, this, 
-				Integer.parseInt(config.get(Consts.HARE_SPARK_MONITOR_NODE_THREAD)), 
-				Integer.parseInt(config.get(Consts.HARE_SPARK_MONITOR_NODE_PORT)));
+				Integer.parseInt(config.get(Consts.VARONE_NODE_THREAD_NUM)), 
+				Integer.parseInt(config.get(Consts.VARONE_NODE_PORT)));
 	}
 
 }
