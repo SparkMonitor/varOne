@@ -27,6 +27,7 @@ import com.varone.web.util.VarOneConfiguration;
 import com.varone.web.vo.DefaultApplicationVO;
 import com.varone.web.vo.DefaultNodeVO;
 import com.varone.web.vo.DefaultTotalNodeVO;
+import com.varone.web.vo.HistoryDetailStageVO;
 import com.varone.web.vo.HistoryVO;
 import com.varone.web.vo.JobVO;
 import com.varone.web.vo.StageVO;
@@ -157,6 +158,20 @@ public class SparkMonitorFacade {
 		}
 		return result;
 	}
+	
+	public HistoryDetailStageVO getHistoryDetailStageTask(String applicationId){
+		try{
+			EventLogHdfsReaderImpl hdfsReader = new EventLogHdfsReaderImpl(config);
+			SparkEventLogBean sparkEventLog = hdfsReader.getHistoryStageDetails(applicationId);
+	
+			UIDataAggregator aggregator = new UIDataAggregator();
+			return aggregator.getHistoryDetialStage(applicationId, sparkEventLog);
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
 	
 	public List<String> getRunningJobs() throws Exception {
 		YarnService yarnService = new YarnService(this.config);
