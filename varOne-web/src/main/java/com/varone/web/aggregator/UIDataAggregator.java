@@ -11,6 +11,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.NumberUtils;
+
 import com.varone.web.aggregator.unit.TimeUnitTransfer;
 import com.varone.web.eventlog.bean.SparkEventLogBean;
 import com.varone.web.eventlog.bean.SparkEventLogBean.ExecutorAdded;
@@ -63,10 +65,11 @@ public class UIDataAggregator {
 		Map<String, Map<String, List<TimeValueVO>>> propToMetrics = new LinkedHashMap<String, Map<String, List<TimeValueVO>>>();
 		
 		for(String metric: metrics){
-			String[] propertyAndTitle = UIMrtricsPropTransfer.getUIMetricPropertyByMetricName(metric);
+			String[] metricInfo = UIMrtricsPropTransfer.getUIMetricPropertyByMetricName(metric);
 			MetricPropVO metricPropVO = new MetricPropVO();
-			metricPropVO.setProperty(propertyAndTitle[0]);
-			metricPropVO.setTitle(propertyAndTitle[1]);
+			metricPropVO.setProperty(metricInfo[0]);
+			metricPropVO.setTitle(metricInfo[1]);
+			metricPropVO.setFormat(metricInfo[2]);
 			metricProps.add(metricPropVO);
 			Map<String, List<TimeValueVO>> host2Metrics = new LinkedHashMap<String, List<TimeValueVO>>();
 			for(String host: allNodeHost){
@@ -75,13 +78,19 @@ public class UIDataAggregator {
 				for(Long time: plotPointInPeriod){
 					TimeValueVO pair = new TimeValueVO();
 					pair.setTime(this.timeUnitTransfer.transferToAxisX(time));
-					pair.setValue("0");
+					if(metricInfo[2].equals("PERCENTAGE") || 
+					   metricInfo[2].equals("MILLIS") || 
+					   metricInfo[2].equals("OPS")){
+						pair.setValue("0,0");
+					} else {
+						pair.setValue("0");
+					}
 					defaultValues.add(pair);
 				}
 				
 				host2Metrics.put(host, defaultValues);
 			}
-			propToMetrics.put(propertyAndTitle[0], host2Metrics);
+			propToMetrics.put(metricInfo[0], host2Metrics);
 		}
 		
 		for(String host: allNodeHost){
@@ -112,7 +121,7 @@ public class UIDataAggregator {
 				String host = node.getHost();
 				for(MetricBean metric: node.getMetrics()){
 					String propertyName = UIMrtricsPropTransfer.getUIMetricPropertyByMetricValue(metric.getName());
-					
+					String format = UIMrtricsPropTransfer.getUIMetricPropertyByJsProp(propertyName)[2];
 					Map<String, List<TimeValueVO>> host2Metric = propToMetrics.get(propertyName);
 					
 					// get a new one
@@ -125,9 +134,25 @@ public class UIDataAggregator {
 						for(TimeValueVO currPair: currValues){
 							if(this.timeUnitTransfer.transferToAxisX(
 									newPair.getTime()).equals(currPair.getTime())){
-								long newValue = Long.parseLong(newPair.getValue());
-								long currValue = Long.parseLong(currPair.getValue());
-								currPair.setValue(String.valueOf(newValue+currValue));
+								if(format.equals("BYTE") || format.equals("NONE")){
+									long newValue = Long.parseLong(newPair.getValue());
+									long currValue = Long.parseLong(currPair.getValue());
+									currPair.setValue(String.valueOf(newValue+currValue));
+								} else if(format.equals("PERCENTAGE")){
+									String[] valueAndCount = currPair.getValue().split(",");
+									double newValue = Double.parseDouble(newPair.getValue());
+									double currValue = Double.parseDouble(valueAndCount[0]);
+									valueAndCount[1] = Integer.valueOf(valueAndCount[1])+1+"";
+									currPair.setValue(String.valueOf(newValue+currValue)+","+valueAndCount[1]);
+								} else {
+									//MILLIS or OPS
+									String[] valueAndCount = currPair.getValue().split(",");
+									long newValue = Long.parseLong(newPair.getValue());
+									long currValue = Long.parseLong(valueAndCount[0]);
+									valueAndCount[1] = Integer.valueOf(valueAndCount[1])+1+"";
+									currPair.setValue(String.valueOf(newValue+currValue)+","+valueAndCount[1]);
+								}
+								
 								break;
 							}
 						}
@@ -135,6 +160,39 @@ public class UIDataAggregator {
 				}
 			}
 		}
+		
+		for(MetricPropVO metricPropVO: metricProps){
+			if(metricPropVO.getFormat().equals("PERCENTAGE")){
+				Map<String, List<TimeValueVO>> map = propToMetrics.get(metricPropVO.getProperty());
+				for(List<TimeValueVO> periodData: map.values()){
+					for(TimeValueVO timeValue: periodData){
+						String[] valueAndCount = timeValue.getValue().split(",");
+						double sum = Double.parseDouble(valueAndCount[0]);
+						if(sum > 0){
+							double avg = sum / Integer.parseInt(valueAndCount[1]);
+							timeValue.setValue(String.valueOf(avg));
+						} else {
+							timeValue.setValue("0");
+						}
+					}
+				}
+			} else if(metricPropVO.getFormat().equals("MILLIS") || metricPropVO.getFormat().equals("OPS")) {
+				Map<String, List<TimeValueVO>> map = propToMetrics.get(metricPropVO.getProperty());
+				for(List<TimeValueVO> periodData: map.values()){
+					for(TimeValueVO timeValue: periodData){
+						String[] valueAndCount = timeValue.getValue().split(",");
+						long sum = Long.parseLong(valueAndCount[0]);
+						if(sum > 0){
+							long avg = sum / Integer.parseInt(valueAndCount[1]);
+							timeValue.setValue(String.valueOf(avg));
+						} else {
+							timeValue.setValue("0");
+						}
+					}
+				}
+			}
+		}
+
 		result.setExecutorNumByNode(executorNumByNode);
 		result.setExecutorNum(executorNum);
 		result.setJobNum(jobNum);
