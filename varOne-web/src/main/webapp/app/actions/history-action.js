@@ -30,6 +30,14 @@ class HistoryAction {
     const result = {stages, jobId};
     this.dispatch(result);
   }
+  
+  async fetchStageDetails(applicationId, stagesId){
+	let response = await request.get('/varOne-web/rest/history/'+applicationId+"/job0/" + stagesId)
+                                .set('Accept', 'application/json');
+    let stageDetails = JSON.parse(response.text);
+    const result = {stageDetails}
+    this.dispatch(result);
+  }
 }
 
 export default alt.createActions(HistoryAction);

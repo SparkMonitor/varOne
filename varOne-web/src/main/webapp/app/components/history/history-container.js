@@ -4,6 +4,7 @@ import HistoryHeader from './history-header';
 import HistoryList from './history-list';
 import JobsList from './job-list';
 import StageList from './stage-list';
+import StageDetailsList from './stageDetail-list';
 import BreadCrumb from '../commons/breadcrumb';
 import HistoryAction from '../../actions/history-action';
 import HistoryStore from '../../stores/history-store';
@@ -16,6 +17,7 @@ class HistoryContainer extends React.Component {
     histories: React.PropTypes.array,
     job: React.PropTypes.array,
     stages: React.PropTypes.array,
+    stageDetails: React.PropTypes.array,
     breadcrumb: React.PropTypes.array,
     tab: React.PropTypes.string,
     selectApplicationId: React.PropTypes.string,
@@ -50,6 +52,7 @@ class HistoryContainer extends React.Component {
     } else if(tab === Const.history.tab.JOB_TAB){
       HistoryAction.switchToJobTab();
     }
+    
   }
 
   handleHistorySelect = (id) => {
@@ -61,7 +64,7 @@ class HistoryContainer extends React.Component {
   }
 
   handleStageSelect = (stageId) => {
-
+	HistoryAction.fetchStageDetails(this.props.selectApplicationId, stageId);
   }
 
   renderContent = () => {
@@ -77,7 +80,12 @@ class HistoryContainer extends React.Component {
       return <StageList
                 stages={this.props.stages}
                 onStageSelect={this.handleStageSelect}/>;
+    } else if(this.props.tab === Const.history.tab.STAGE_DETAILS_TAB){
+      return <StageDetailsList 
+                stageDetails={this.props.stageDetails}/>;
+    	
     } else {
+    	
       return null;
     }
   }

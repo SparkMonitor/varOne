@@ -26,7 +26,8 @@ export default {
     tab: {
       HISTORY_TAB: 'history',
       JOB_TAB: 'job',
-      STAGE_TAB: 'stage'
+      STAGE_TAB: 'stage',
+      STAGE_DETAILS_TAB: 'stage details'
     }
   },
 
