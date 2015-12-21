@@ -23,6 +23,7 @@ class NodeStore {
       let o = {};
       o.id = metric.property;
       o.title = metric.title;
+      o.format = metric.format;
       o.x = ['x'];
       let values =  result.propToMetrics[metric.property];
       let metricsValues = [node];

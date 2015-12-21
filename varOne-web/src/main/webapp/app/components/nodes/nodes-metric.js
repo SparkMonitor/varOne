@@ -1,5 +1,6 @@
 import React from 'react';
 import c3 from 'c3';
+import { byte_format, percentage_format, millis_format } from '../../utils/data-format';
 
 export default class NodeMetric extends React.Component{
 
@@ -48,6 +49,15 @@ export default class NodeMetric extends React.Component{
 
   defaultCharting(){
     var columns = [this.props.metric.x, this.props.metric.value];
+
+    var formatter;
+    if(this.props.metric.format === "BYTE")
+      formatter = byte_format;
+    else if(this.props.metric.format === "PERCENTAGE")
+      formatter = percentage_format;
+    else if(this.props.metric.format === "MILLIS")
+      formatter = millis_format;
+
     this.node_metrics_chart = c3.generate({
         bindto: '#'+this.props.metric.id,
         data: {
@@ -60,6 +70,12 @@ export default class NodeMetric extends React.Component{
                 tick: {
                     format: '%H:%M:%S'
                 }
+            },
+            y: {
+              padding: {bottom: 1},
+              tick: {
+                format: formatter
+              }
             }
         }
     });

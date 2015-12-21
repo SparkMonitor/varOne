@@ -379,13 +379,20 @@ public class UIDataAggregator {
 			MetricPropVO metricPropVO = new MetricPropVO();
 			metricPropVO.setProperty(metricInfo[0]);
 			metricPropVO.setTitle(metricInfo[1]);
+			metricPropVO.setFormat(metricInfo[2]);
 			metricProps.add(metricPropVO);
 			
 			List<TimeValueVO> defaultValues = new ArrayList<TimeValueVO>();
 			for(Long time: plotPointInPeriod){
 				TimeValueVO pair = new TimeValueVO();
 				pair.setTime(this.timeUnitTransfer.transferToAxisX(time));
-				pair.setValue("0");
+				if(metricInfo[2].equals("PERCENTAGE") || 
+				   metricInfo[2].equals("MILLIS") || 
+				   metricInfo[2].equals("OPS")){
+					pair.setValue("0,0");
+				} else {
+					pair.setValue("0");
+				}
 				defaultValues.add(pair);
 			}
 			
@@ -396,7 +403,7 @@ public class UIDataAggregator {
 			NodeBean nodeBean = entry.getValue();
 			for(MetricBean metricBean: nodeBean.getMetrics()){
 				String propertyName = UIMrtricsPropTransfer.getUIMetricPropertyByMetricValue(metricBean.getName());
-				
+				String format = UIMrtricsPropTransfer.getUIMetricPropertyByJsProp(propertyName)[2];
 				// get a new one
 				List<TimeValuePairBean> newValues = metricBean.getValues();
 				// get current value
@@ -407,11 +414,54 @@ public class UIDataAggregator {
 					for(TimeValueVO currPair: currValues){
 						if(this.timeUnitTransfer.transferToAxisX(
 								newPair.getTime()).equals(currPair.getTime())){
-							long newValue = Long.parseLong(newPair.getValue());
-							long currValue = Long.parseLong(currPair.getValue());
-							currPair.setValue(String.valueOf(newValue+currValue));
+							if(format.equals("BYTE") || format.equals("NONE")){
+								long newValue = Long.parseLong(newPair.getValue());
+								long currValue = Long.parseLong(currPair.getValue());
+								currPair.setValue(String.valueOf(newValue+currValue));
+							} else if(format.equals("PERCENTAGE")){
+								String[] valueAndCount = currPair.getValue().split(",");
+								double newValue = Double.parseDouble(newPair.getValue());
+								double currValue = Double.parseDouble(valueAndCount[0]);
+								valueAndCount[1] = Integer.valueOf(valueAndCount[1])+1+"";
+								currPair.setValue(String.valueOf(newValue+currValue)+","+valueAndCount[1]);
+							} else {
+								//MILLIS or OPS
+								String[] valueAndCount = currPair.getValue().split(",");
+								long newValue = Long.parseLong(newPair.getValue());
+								long currValue = Long.parseLong(valueAndCount[0]);
+								valueAndCount[1] = Integer.valueOf(valueAndCount[1])+1+"";
+								currPair.setValue(String.valueOf(newValue+currValue)+","+valueAndCount[1]);
+							}
 							break;
 						}
+					}
+				}
+			}
+		}
+		
+		for(MetricPropVO metricPropVO: metricProps){
+			if(metricPropVO.getFormat().equals("PERCENTAGE")){
+				List<TimeValueVO> periodData = propToMetrics.get(metricPropVO.getProperty());
+				for(TimeValueVO timeValue: periodData){
+					String[] valueAndCount = timeValue.getValue().split(",");
+					double sum = Double.parseDouble(valueAndCount[0]);
+					if(sum > 0){
+						double avg = sum / Integer.parseInt(valueAndCount[1]);
+						timeValue.setValue(String.valueOf(avg));
+					} else {
+						timeValue.setValue("0");
+					}
+				}
+			} else if(metricPropVO.getFormat().equals("MILLIS") || metricPropVO.getFormat().equals("OPS")) {
+				List<TimeValueVO> periodData = propToMetrics.get(metricPropVO.getProperty());
+				for(TimeValueVO timeValue: periodData){
+					String[] valueAndCount = timeValue.getValue().split(",");
+					long sum = Long.parseLong(valueAndCount[0]);
+					if(sum > 0){
+						long avg = sum / Integer.parseInt(valueAndCount[1]);
+						timeValue.setValue(String.valueOf(avg));
+					} else {
+						timeValue.setValue("0");
 					}
 				}
 			}
