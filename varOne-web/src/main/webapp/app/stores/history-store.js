@@ -54,7 +54,10 @@ class HistoryStore {
     this.breadcrumb = [Const.history.tab.HISTORY_TAB, Const.history.tab.JOB_TAB];
   }
   
-
+  onSwitchToStageTab(){
+	this.tab = Const.history.tab.STAGE_TAB;
+	this.breadcrumb = [Const.history.tab.HISTORY_TAB, Const.history.tab.JOB_TAB, Const.history.tab.STAGE_TAB];
+  }
 
   onSwitchToHistoryTab(){
     this.tab = Const.history.tab.HISTORY_TAB;
