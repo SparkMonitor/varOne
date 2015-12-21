@@ -51,6 +51,8 @@ class HistoryContainer extends React.Component {
       HistoryAction.fetchApplications();
     } else if(tab === Const.history.tab.JOB_TAB){
       HistoryAction.switchToJobTab();
+    } else if(tab === Const.history.tab.STAGE_TAB){
+      HistoryAction.switchToStageTab();
     }
     
   }
