@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.google.gson.Gson;
 import com.varone.web.facade.SparkMonitorFacade;
+import com.varone.web.vo.HistoryDetailStageVO;
 import com.varone.web.vo.HistoryVO;
 import com.varone.web.vo.JobVO;
 import com.varone.web.vo.StageVO;
@@ -63,11 +64,9 @@ public class HistoryResource {
 	public String fetchStageDetail(@PathParam("applicationId") String applicationId, 
 			@PathParam("jobId") String jobId, @PathParam("stageId") String stageId) throws Exception{
 		SparkMonitorFacade facade = new SparkMonitorFacade();
-		
-//		@TODO
-//		facade.getSparkStageDetails(applicationId, jobId, stageId); 
-		
+		HistoryDetailStageVO historyDetailStage = facade.getHistoryDetailStageTask(applicationId);
+			
 		Gson gson = new Gson();
-		return gson.toJson("");
+		return gson.toJson(historyDetailStage);
 	}
 }

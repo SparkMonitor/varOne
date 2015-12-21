@@ -25,15 +25,18 @@ import com.varone.web.eventlog.bean.SparkEventLogBean.StageSubmit;
 import com.varone.web.eventlog.bean.SparkEventLogBean.TaskEnd;
 import com.varone.web.eventlog.bean.SparkEventLogBean.TaskEnd.TaskMetrics;
 import com.varone.web.eventlog.bean.SparkEventLogBean.TaskStart;
+import com.varone.web.eventlog.bean.SparkEventLogBean.TaskStart.TaskInfo;
 import com.varone.web.metrics.bean.MetricBean;
 import com.varone.web.metrics.bean.NodeBean;
 import com.varone.web.metrics.bean.TimeValuePairBean;
 import com.varone.web.vo.DefaultApplicationVO;
 import com.varone.web.vo.DefaultNodeVO;
 import com.varone.web.vo.DefaultTotalNodeVO;
+import com.varone.web.vo.HistoryDetailStageVO;
 import com.varone.web.vo.JobVO;
 import com.varone.web.vo.MetricPropVO;
 import com.varone.web.vo.StageVO;
+import com.varone.web.vo.TasksVO;
 import com.varone.web.vo.TimeValueVO;
 
 /**
@@ -430,6 +433,28 @@ public class UIDataAggregator {
 		}
 		
 		return result;
+	}
+	
+	public HistoryDetailStageVO getHistoryDetialStage(String applicationId, SparkEventLogBean eventLog){
+		HistoryDetailStageVO historyStage = new HistoryDetailStageVO();
+		List<TasksVO> taskVOList = new ArrayList<TasksVO>();
+		
+		List<TaskStart> taskStartList = eventLog.getTaskStart();
+		for(TaskStart taskStart : taskStartList){
+			TasksVO taskVO = new TasksVO();
+			
+			TaskInfo taskInfo = taskStart.getInfo();
+			taskVO.setAttempt(taskInfo.getAttempt());
+			taskVO.setIndex(taskInfo.getIndex());
+			taskVO.setId(taskInfo.getId());
+			taskVO.setLaunchTime(String.valueOf(taskInfo.getLanuchTime()));
+			taskVO.setLocality(taskInfo.getLocality());
+			
+			taskVOList.add(taskVO);
+		}
+		
+		historyStage.setTasks(taskVOList);
+		return historyStage;
 	}
 	
 	private void calculateAvgWithSingleNode(List<MetricPropVO> metricProps, Map<String, List<TimeValueVO>> propToMetrics){
