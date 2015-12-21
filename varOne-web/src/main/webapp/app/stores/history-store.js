@@ -11,6 +11,7 @@ class HistoryStore {
     this.histories = [];
     this.jobs = [];
     this.stages = [];
+    this.stageDetails = [];
     this.tab = Const.history.tab.HISTORY_TAB;
     this.breadcrumb = [Const.history.tab.HISTORY_TAB];
   }
@@ -37,11 +38,23 @@ class HistoryStore {
     this.stages = result.stages;
     this.jobId  = result.jobId;
   }
+  
+  onFetchStageDetails(result){
+	this.tab = Const.history.tab.STAGE_DETAILS_TAB;
+	this.breadcrumb = [
+    Const.history.tab.HISTORY_TAB, 
+	Const.history.tab.JOB_TAB, 
+	Const.history.tab.STAGE_TAB,
+	Const.history.tab.STAGE_DETAILS_TAB];
+	this.stageDetails = result.stageDetails.tasks;
+  }
 
   onSwitchToJobTab(){
     this.tab = Const.history.tab.JOB_TAB;
     this.breadcrumb = [Const.history.tab.HISTORY_TAB, Const.history.tab.JOB_TAB];
   }
+  
+
 
   onSwitchToHistoryTab(){
     this.tab = Const.history.tab.HISTORY_TAB;
