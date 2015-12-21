@@ -21,6 +21,7 @@ class JobStore {
       data.metrics[metric.property].title = metric.title;
       data.metrics[metric.property].value = [];
       data.metrics[metric.property].x = ['x'];
+      data.metrics[metric.property].format = metric.format;
       let host2Metrics = result.propToMetrics[metric.property];
       for(let host in host2Metrics){
         let metricsValues = [host];
