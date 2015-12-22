@@ -11,6 +11,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.varone.web.aggregator.unit.AbstractUnitAggregator;
+import com.varone.web.aggregator.unit.AverageAggregator;
+import com.varone.web.aggregator.unit.QuantityAggregator;
 import com.varone.web.aggregator.unit.TimeUnitTransfer;
 import com.varone.web.eventlog.bean.SparkEventLogBean;
 import com.varone.web.eventlog.bean.SparkEventLogBean.ExecutorAdded;
@@ -20,8 +23,8 @@ import com.varone.web.eventlog.bean.SparkEventLogBean.StageCompleted;
 import com.varone.web.eventlog.bean.SparkEventLogBean.StageInfos;
 import com.varone.web.eventlog.bean.SparkEventLogBean.StageSubmit;
 import com.varone.web.eventlog.bean.SparkEventLogBean.TaskEnd;
-import com.varone.web.eventlog.bean.SparkEventLogBean.TaskStart;
 import com.varone.web.eventlog.bean.SparkEventLogBean.TaskEnd.TaskMetrics;
+import com.varone.web.eventlog.bean.SparkEventLogBean.TaskStart;
 import com.varone.web.metrics.bean.MetricBean;
 import com.varone.web.metrics.bean.NodeBean;
 import com.varone.web.metrics.bean.TimeValuePairBean;
@@ -40,12 +43,16 @@ import com.varone.web.vo.TimeValueVO;
 public class UIDataAggregator {
 	
 	private TimeUnitTransfer timeUnitTransfer;
+	private AbstractUnitAggregator quantityAggregator;
+	private AbstractUnitAggregator averageAggregator;
 	
 	/**
 	 * 
 	 */
 	public UIDataAggregator() {
 		this.timeUnitTransfer = new TimeUnitTransfer();
+		this.quantityAggregator = new QuantityAggregator();
+		this.averageAggregator = new AverageAggregator();
 	}
 	
 	
@@ -63,10 +70,11 @@ public class UIDataAggregator {
 		Map<String, Map<String, List<TimeValueVO>>> propToMetrics = new LinkedHashMap<String, Map<String, List<TimeValueVO>>>();
 		
 		for(String metric: metrics){
-			String[] propertyAndTitle = UIMrtricsPropTransfer.getUIMetricPropertyByMetricName(metric);
+			String[] metricInfo = UIMrtricsPropTransfer.getUIMetricPropertyByMetricName(metric);
 			MetricPropVO metricPropVO = new MetricPropVO();
-			metricPropVO.setProperty(propertyAndTitle[0]);
-			metricPropVO.setTitle(propertyAndTitle[1]);
+			metricPropVO.setProperty(metricInfo[0]);
+			metricPropVO.setTitle(metricInfo[1]);
+			metricPropVO.setFormat(metricInfo[2]);
 			metricProps.add(metricPropVO);
 			Map<String, List<TimeValueVO>> host2Metrics = new LinkedHashMap<String, List<TimeValueVO>>();
 			for(String host: allNodeHost){
@@ -75,13 +83,19 @@ public class UIDataAggregator {
 				for(Long time: plotPointInPeriod){
 					TimeValueVO pair = new TimeValueVO();
 					pair.setTime(this.timeUnitTransfer.transferToAxisX(time));
-					pair.setValue("0");
+					if(metricInfo[2].equals("PERCENTAGE") || 
+					   metricInfo[2].equals("MILLIS") || 
+					   metricInfo[2].equals("OPS")){
+						pair.setValue("0,0");
+					} else {
+						pair.setValue("0");
+					}
 					defaultValues.add(pair);
 				}
 				
 				host2Metrics.put(host, defaultValues);
 			}
-			propToMetrics.put(propertyAndTitle[0], host2Metrics);
+			propToMetrics.put(metricInfo[0], host2Metrics);
 		}
 		
 		for(String host: allNodeHost){
@@ -112,7 +126,7 @@ public class UIDataAggregator {
 				String host = node.getHost();
 				for(MetricBean metric: node.getMetrics()){
 					String propertyName = UIMrtricsPropTransfer.getUIMetricPropertyByMetricValue(metric.getName());
-					
+					String format = UIMrtricsPropTransfer.getUIMetricPropertyByJsProp(propertyName)[2];
 					Map<String, List<TimeValueVO>> host2Metric = propToMetrics.get(propertyName);
 					
 					// get a new one
@@ -120,21 +134,13 @@ public class UIDataAggregator {
 					// get current value
 					List<TimeValueVO> currValues = host2Metric.get(host);
 					// aggregate and store
-					
-					for(TimeValuePairBean newPair: newValues){
-						for(TimeValueVO currPair: currValues){
-							if(this.timeUnitTransfer.transferToAxisX(
-									newPair.getTime()).equals(currPair.getTime())){
-								long newValue = Long.parseLong(newPair.getValue());
-								long currValue = Long.parseLong(currPair.getValue());
-								currPair.setValue(String.valueOf(newValue+currValue));
-								break;
-							}
-						}
-					}
+					this.aggregrateNewMetricToCurrentMetric(format, newValues, currValues);
 				}
 			}
 		}
+		
+		this.calculateAvgWithMultiNode(metricProps, propToMetrics);
+
 		result.setExecutorNumByNode(executorNumByNode);
 		result.setExecutorNum(executorNum);
 		result.setJobNum(jobNum);
@@ -156,10 +162,11 @@ public class UIDataAggregator {
 		Map<String, Map<String, List<TimeValueVO>>> propToMetrics = new LinkedHashMap<String, Map<String, List<TimeValueVO>>>();
 		
 		for(String metric: metrics){
-			String[] propertyAndTitle = UIMrtricsPropTransfer.getUIMetricPropertyByMetricName(metric);
+			String[] metricInfo = UIMrtricsPropTransfer.getUIMetricPropertyByMetricName(metric);
 			MetricPropVO metricPropVO = new MetricPropVO();
-			metricPropVO.setProperty(propertyAndTitle[0]);
-			metricPropVO.setTitle(propertyAndTitle[1]);
+			metricPropVO.setProperty(metricInfo[0]);
+			metricPropVO.setTitle(metricInfo[1]);
+			metricPropVO.setFormat(metricInfo[2]);
 			metricProps.add(metricPropVO);
 			Map<String, List<TimeValueVO>> host2Metrics = new LinkedHashMap<String, List<TimeValueVO>>();
 			for(String host: allNodeHost){
@@ -168,13 +175,19 @@ public class UIDataAggregator {
 				for(Long time: plotPointInPeriod){
 					TimeValueVO pair = new TimeValueVO();
 					pair.setTime(this.timeUnitTransfer.transferToAxisX(time));
-					pair.setValue("0");
+					if(metricInfo[2].equals("PERCENTAGE") || 
+					   metricInfo[2].equals("MILLIS") || 
+					   metricInfo[2].equals("OPS")){
+						pair.setValue("0,0");
+					} else {
+						pair.setValue("0");
+					}
 					defaultValues.add(pair);
 				}
 				
 				host2Metrics.put(host, defaultValues);
 			}
-			propToMetrics.put(propertyAndTitle[0], host2Metrics);
+			propToMetrics.put(metricInfo[0], host2Metrics);
 		}
 		
 		for(String host: allNodeHost) executorNumByNode.put(host, 0);
@@ -198,6 +211,7 @@ public class UIDataAggregator {
 			String host = node.getHost();
 			for(MetricBean metric: node.getMetrics()){
 				String propertyName = UIMrtricsPropTransfer.getUIMetricPropertyByMetricValue(metric.getName());
+				String format = UIMrtricsPropTransfer.getUIMetricPropertyByJsProp(propertyName)[2];
 				Map<String, List<TimeValueVO>> host2Metric = propToMetrics.get(propertyName);
 				
 				// get a new one
@@ -205,18 +219,7 @@ public class UIDataAggregator {
 				// get current value
 				List<TimeValueVO> currValues = host2Metric.get(host);
 				// aggregate and store
-				
-				for(TimeValuePairBean newPair: newValues){
-					for(TimeValueVO currPair: currValues){
-						if(this.timeUnitTransfer.transferToAxisX(
-								newPair.getTime()).equals(currPair.getTime())){
-							long newValue = Long.parseLong(newPair.getValue());
-							long currValue = Long.parseLong(currPair.getValue());
-							currPair.setValue(String.valueOf(newValue+currValue));
-							break;
-						}
-					}
-				}
+				this.aggregrateNewMetricToCurrentMetric(format, newValues, currValues);
 								
 				if(metric.getName().indexOf("completeTasks") != -1){					
 					String newestValue = currValues.get(currValues.size()-1).getValue();
@@ -229,6 +232,8 @@ public class UIDataAggregator {
 					
 			}
 		}
+		
+		this.calculateAvgWithMultiNode(metricProps, propToMetrics);
 		
 		for(TaskEnd taskEnd: inProgressLog.getTaskEnd()){
 			failedTaskNum += taskEnd.getInfo().isFailed()?1:0;
@@ -254,7 +259,6 @@ public class UIDataAggregator {
 		return result;
 	}
 
-
 	public DefaultNodeVO aggregateNodeDashBoard(List<String> metrics, String node,
 			Map<String, NodeBean> nodeMetricsByAppId, List<Long> plotPointInPeriod) {
 		DefaultNodeVO result = new DefaultNodeVO();
@@ -262,47 +266,45 @@ public class UIDataAggregator {
 		Map<String, List<TimeValueVO>> propToMetrics = new LinkedHashMap<String, List<TimeValueVO>>();
 		
 		for(String metric: metrics){
-			String[] propertyAndTitle = UIMrtricsPropTransfer.getUIMetricPropertyByMetricName(metric);
+			String[] metricInfo = UIMrtricsPropTransfer.getUIMetricPropertyByMetricName(metric);
 			MetricPropVO metricPropVO = new MetricPropVO();
-			metricPropVO.setProperty(propertyAndTitle[0]);
-			metricPropVO.setTitle(propertyAndTitle[1]);
+			metricPropVO.setProperty(metricInfo[0]);
+			metricPropVO.setTitle(metricInfo[1]);
+			metricPropVO.setFormat(metricInfo[2]);
 			metricProps.add(metricPropVO);
 			
 			List<TimeValueVO> defaultValues = new ArrayList<TimeValueVO>();
 			for(Long time: plotPointInPeriod){
 				TimeValueVO pair = new TimeValueVO();
 				pair.setTime(this.timeUnitTransfer.transferToAxisX(time));
-				pair.setValue("0");
+				if(metricInfo[2].equals("PERCENTAGE") || 
+				   metricInfo[2].equals("MILLIS") || 
+				   metricInfo[2].equals("OPS")){
+					pair.setValue("0,0");
+				} else {
+					pair.setValue("0");
+				}
 				defaultValues.add(pair);
 			}
 			
-			propToMetrics.put(propertyAndTitle[0], defaultValues);
+			propToMetrics.put(metricInfo[0], defaultValues);
 		}
 		
 		for(Entry<String, NodeBean> entry: nodeMetricsByAppId.entrySet()){
 			NodeBean nodeBean = entry.getValue();
 			for(MetricBean metricBean: nodeBean.getMetrics()){
 				String propertyName = UIMrtricsPropTransfer.getUIMetricPropertyByMetricValue(metricBean.getName());
-				
+				String format = UIMrtricsPropTransfer.getUIMetricPropertyByJsProp(propertyName)[2];
 				// get a new one
 				List<TimeValuePairBean> newValues = metricBean.getValues();
 				// get current value
 				List<TimeValueVO> currValues = propToMetrics.get(propertyName);
 				// aggregate and store
-				
-				for(TimeValuePairBean newPair: newValues){
-					for(TimeValueVO currPair: currValues){
-						if(this.timeUnitTransfer.transferToAxisX(
-								newPair.getTime()).equals(currPair.getTime())){
-							long newValue = Long.parseLong(newPair.getValue());
-							long currValue = Long.parseLong(currPair.getValue());
-							currPair.setValue(String.valueOf(newValue+currValue));
-							break;
-						}
-					}
-				}
+				this.aggregrateNewMetricToCurrentMetric(format, newValues, currValues);
 			}
 		}
+		
+		this.calculateAvgWithSingleNode(metricProps, propToMetrics);
 		
 		result.setPropToMetrics(propToMetrics);
 		result.setMetricProps(metricProps);
@@ -429,5 +431,50 @@ public class UIDataAggregator {
 		
 		return result;
 	}
-
+	
+	private void calculateAvgWithSingleNode(List<MetricPropVO> metricProps, Map<String, List<TimeValueVO>> propToMetrics){
+		String format;
+		AverageAggregator avgAggregaror = (AverageAggregator)this.averageAggregator;
+		for(MetricPropVO metricPropVO: metricProps){
+			format = metricPropVO.getFormat();
+			if(format.equals("PERCENTAGE") || format.equals("MILLIS") || format.equals("OPS")) {
+				List<TimeValueVO> periodData = propToMetrics.get(metricPropVO.getProperty());
+				avgAggregaror.calculateAvg(periodData);
+			}
+		}
+	}
+	
+	private void calculateAvgWithMultiNode(List<MetricPropVO> metricProps, 
+			Map<String, Map<String, List<TimeValueVO>>> propToMetrics){
+		String format;
+		AverageAggregator avgAggregaror = (AverageAggregator)this.averageAggregator;
+		for(MetricPropVO metricPropVO: metricProps){
+			format = metricPropVO.getFormat();
+			if(format.equals("PERCENTAGE") || format.equals("MILLIS") || format.equals("OPS")) {
+				Map<String, List<TimeValueVO>> node2Metrics = propToMetrics.get(metricPropVO.getProperty());
+				for(List<TimeValueVO> periodData: node2Metrics.values()){
+					avgAggregaror.calculateAvg(periodData);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * This function will summary the value from newPair to currPair
+	 * **/
+	private void aggregrateNewMetricToCurrentMetric(String format, List<TimeValuePairBean> newValues, List<TimeValueVO> currValues){
+		for(TimeValuePairBean newPair: newValues){
+			for(TimeValueVO currPair: currValues){
+				if(this.timeUnitTransfer.transferToAxisX(newPair.getTime())
+						.equals(currPair.getTime())){
+					if(format.equals("BYTE") || format.equals("NONE")){
+						this.quantityAggregator.aggregate(format, newPair, currPair);
+					} else {
+						this.averageAggregator.aggregate(format, newPair, currPair);
+					}
+					break;
+				}
+			}
+		}
+	}
 }
