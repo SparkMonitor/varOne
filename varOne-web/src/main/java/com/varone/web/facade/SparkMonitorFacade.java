@@ -165,7 +165,7 @@ public class SparkMonitorFacade {
 			SparkEventLogBean sparkEventLog = hdfsReader.getHistoryStageDetails(applicationId);
 	
 			UIDataAggregator aggregator = new UIDataAggregator();
-			return aggregator.getHistoryDetialStage(applicationId, sparkEventLog);
+			return aggregator.getHistoryDetialStage(sparkEventLog);
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}
