@@ -4,6 +4,7 @@
 package com.varone.web.aggregator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -433,6 +434,54 @@ public class UIDataAggregator {
 		}
 		
 		return result;
+	}
+	
+	public HistoryDetailStageVO getHistoryDetialStage(SparkEventLogBean eventLog){
+		HistoryDetailStageVO historyStage = new HistoryDetailStageVO();
+		
+		
+		List<TaskStart> taskStartList = eventLog.getTaskStart();
+		List<TaskEnd> taskEndList = eventLog.getTaskEnd();
+		
+		Map<Integer, TaskStart> tempMapTaskStart = new HashMap<Integer, TaskStart>();
+		for(TaskStart taskStart : taskStartList){
+			tempMapTaskStart.put(taskStart.getInfo().getIndex(), taskStart);
+		}
+		
+		Map<Integer, TaskEnd> tempMapTaskEnd = new HashMap<Integer, TaskEnd>();
+		for(TaskEnd taskEnd : taskEndList){
+			tempMapTaskEnd.put(taskEnd.getInfo().getIndex(), taskEnd);
+		}
+		
+		List<TasksVO> taskVOList = new ArrayList<TasksVO>();
+		for(int i = 0 ; i < tempMapTaskStart.size(); i++){
+			TasksVO taskVO = new TasksVO();
+			TaskStart taskStart = tempMapTaskStart.get(i);
+			TaskEnd taskEnd = tempMapTaskEnd.get(i);
+			if(taskStart != null){
+				taskVO.setAttempt(taskStart.getInfo().getAttempt());
+				taskVO.setIndex(taskStart.getInfo().getIndex());
+				taskVO.setId(taskStart.getInfo().getId());
+				taskVO.setLaunchTime(String.valueOf(taskStart.getInfo().getLanuchTime()));
+				taskVO.setLocality(taskStart.getInfo().getLocality());
+				taskVO.setExecutorIDAndHost(taskStart.getInfo().getExecutorId() + "/" + taskStart.getInfo().getHost());
+			}
+			if(taskEnd != null){
+				taskVO.setFinishTime(String.valueOf(taskEnd.getInfo().getFinishTime()));
+				taskVO.setGcTime(String.valueOf(taskEnd.getMetrics().getGcTime()));
+				taskVO.setResultSize(taskEnd.getMetrics().getResultSize());
+				taskVO.setRunTime(taskEnd.getMetrics().getRunTime());
+				taskVO.setStatus(taskEnd.getReason().getReason());
+				taskVO.setInputSizeAndRecords(taskEnd.getMetrics().getInputMetrics().getReadByte() + "/" +
+						                      taskEnd.getMetrics().getInputMetrics().getRecordRead());
+			}
+			
+			taskVOList.add(taskVO);
+		}
+		
+		
+		historyStage.setTasks(taskVOList);
+		return historyStage;
 	}
 	
 	public HistoryDetailStageVO getHistoryDetialStage(String applicationId, SparkEventLogBean eventLog){
