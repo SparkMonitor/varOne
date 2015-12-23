@@ -36,7 +36,7 @@ class NodeHeader extends React.Component {
     return(
       <div className="row">
           <div className="col-md-3">
-              <h1 className="page-header">
+              <h2 className="page-header">
                 Nodes&nbsp;&nbsp;
                 <div className="btn-group">
                   <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -48,12 +48,12 @@ class NodeHeader extends React.Component {
                   &nbsp;
                   <i className="fa fa-x fa-pencil-square-o" data-toggle="modal" data-target="#metricsModal"></i>
                 </div>
-              </h1>
+              </h2>
           </div>
           <div className="col-md-5">
-              <h3 className="page-header">
+              <h4 className="page-header">
                 <TimePeriodPill active={this.props.period} onPeriodSelect={this.props.onPeriodSelect}/>
-              </h3>
+              </h4>
           </div>
       </div>
     );

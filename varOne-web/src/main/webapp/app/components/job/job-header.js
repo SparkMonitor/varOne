@@ -17,9 +17,9 @@ class JobHeader extends React.Component {
                 <i className="fa fa-x fa-bar-chart" data-toggle="modal" data-target="#metricsModal"></i></h3>
           </div>
           <div className="col-md-5">
-              <h3 className="page-header">
+              <h5 className="page-header">
                 <TimePeriodPill active={this.props.period} onPeriodSelect={this.props.onPeriodSelect}/>
-              </h3>
+              </h5>
           </div>
       </div>
     );
