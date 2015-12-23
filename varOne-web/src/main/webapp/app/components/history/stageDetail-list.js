@@ -6,6 +6,7 @@ import ProcessBar from '../commons/process-bar';
 class StageDetailsList extends React.Component {
 	static propTypes = {
 		stageDetails: React.PropTypes.array,
+		completeTaskSize: React.PropTypes.func,
 		stageAggregator: React.PropTypes.array
 	}
 
@@ -13,7 +14,7 @@ class StageDetailsList extends React.Component {
     	return(
     		<div>
     		
-    			<h2>Summary Metrics for xxx Completed Tasks</h2>
+    			<h2>Summary Metrics for {this.props.completeTaskSize} Completed Tasks</h2>
     			<BootstrapTable
                           data={this.props.stageDetails}
  	                      striped={true}

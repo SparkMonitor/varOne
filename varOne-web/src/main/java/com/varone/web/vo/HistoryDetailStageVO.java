@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class HistoryDetailStageVO {
 
+	private int completeTaskSize;
 	private List<SummaryExecutorVO> aggregatorExecutor;
 	private List<TasksVO> tasks;
 	
@@ -26,5 +27,12 @@ public class HistoryDetailStageVO {
 		this.tasks = tasks;
 	}
 
+	public int getCompleteTaskSize() {
+		return completeTaskSize;
+	}
+
+	public void setCompleteTaskSize(int completeTaskSize) {
+		this.completeTaskSize = completeTaskSize;
+	}
 	
 }

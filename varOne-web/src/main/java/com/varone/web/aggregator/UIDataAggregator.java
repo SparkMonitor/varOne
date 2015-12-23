@@ -444,6 +444,7 @@ public class UIDataAggregator {
 		
 		List<TaskStart> taskStartList = eventLog.getTaskStart();
 		List<TaskEnd> taskEndList = eventLog.getTaskEnd();
+	
 		
 		Map<Integer, TaskStart> tempMapTaskStart = new HashMap<Integer, TaskStart>();
 		
@@ -589,7 +590,7 @@ public class UIDataAggregator {
 			aggregatorExecutor.add(summaryExecutorVO);
 		}
 		historyStage.setAggregatorExecutor(aggregatorExecutor);
-		
+		historyStage.setCompleteTaskSize(tempMapTaskStart.size());
 		
 		return historyStage;
 	}
