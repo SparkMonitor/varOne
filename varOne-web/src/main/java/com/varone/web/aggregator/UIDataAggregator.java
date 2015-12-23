@@ -593,6 +593,7 @@ public class UIDataAggregator {
 		
 		return historyStage;
 	}
+
 	
 	public HistoryDetailStageVO getHistoryDetialStage(String applicationId, SparkEventLogBean eventLog){
 		HistoryDetailStageVO historyStage = new HistoryDetailStageVO();
@@ -661,4 +662,5 @@ public class UIDataAggregator {
 			}
 		}
 	}
+
 }
