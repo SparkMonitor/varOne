@@ -30,7 +30,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2989d8', end
 
 #page-wrapper {
     padding: 0 15px;
-    min-height: 568px;
+    min-height: 94.5vh;
     background-color: #ecf0f5;  /*#fff*/
     /*height: 100vh;*/
 }
