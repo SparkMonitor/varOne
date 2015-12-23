@@ -14,6 +14,7 @@ import java.util.TreeSet;
 
 import com.varone.web.aggregator.unit.TimeUnitTransfer;
 import com.varone.web.eventlog.bean.SparkEventLogBean;
+import com.varone.web.eventlog.bean.SparkEventLogBean.BlockManager;
 import com.varone.web.eventlog.bean.SparkEventLogBean.ExecutorAdded;
 import com.varone.web.eventlog.bean.SparkEventLogBean.JobEnd;
 import com.varone.web.eventlog.bean.SparkEventLogBean.JobStart;
@@ -33,6 +34,7 @@ import com.varone.web.vo.HistoryDetailStageVO;
 import com.varone.web.vo.JobVO;
 import com.varone.web.vo.MetricPropVO;
 import com.varone.web.vo.StageVO;
+import com.varone.web.vo.SummaryExecutorVO;
 import com.varone.web.vo.TasksVO;
 import com.varone.web.vo.TimeValueVO;
 
@@ -433,7 +435,7 @@ public class UIDataAggregator {
 		return result;
 	}
 	
-	public HistoryDetailStageVO getHistoryDetialStage(SparkEventLogBean eventLog){
+	public HistoryDetailStageVO aggregateHistoryDetialStage(SparkEventLogBean eventLog){
 		HistoryDetailStageVO historyStage = new HistoryDetailStageVO();
 		
 		
@@ -441,6 +443,14 @@ public class UIDataAggregator {
 		List<TaskEnd> taskEndList = eventLog.getTaskEnd();
 		
 		Map<Integer, TaskStart> tempMapTaskStart = new HashMap<Integer, TaskStart>();
+		
+		Map<String, Integer> totalTasks = new HashMap<String, Integer>();
+		Map<String, Integer> failedTotalTasks = new HashMap<String, Integer>();
+		Map<String, Integer> succeededTotalTasks = new HashMap<String, Integer>();
+		Map<String, Long> taskTotalTaskTime = new HashMap<String, Long>();
+		Map<String, Long> inputSizeTotalTasks = new HashMap<String, Long>();
+		Map<String, Long> recordTotalTasks = new HashMap<String, Long>();
+		
 		for(TaskStart taskStart : taskStartList){
 			tempMapTaskStart.put(taskStart.getInfo().getIndex(), taskStart);
 		}
@@ -461,7 +471,19 @@ public class UIDataAggregator {
 				taskVO.setId(taskStart.getInfo().getId());
 				taskVO.setLaunchTime(String.valueOf(taskStart.getInfo().getLanuchTime()));
 				taskVO.setLocality(taskStart.getInfo().getLocality());
-				taskVO.setExecutorIDAndHost(taskStart.getInfo().getExecutorId() + "/" + taskStart.getInfo().getHost());
+				
+				String host = taskStart.getInfo().getHost();
+				taskVO.setExecutorIDAndHost(taskStart.getInfo().getExecutorId() + "/" + host);
+			
+				//sum total tasks
+				if(totalTasks.get(host) != null){
+					int taskNumber = totalTasks.get(host);
+					totalTasks.put(host, taskNumber + 1);
+				}else{
+					totalTasks.put(host, 1);
+				}
+				
+			
 			}
 			if(taskEnd != null){
 				taskVO.setFinishTime(String.valueOf(taskEnd.getInfo().getFinishTime()));
@@ -469,15 +491,103 @@ public class UIDataAggregator {
 				taskVO.setResultSize(taskEnd.getMetrics().getResultSize());
 				taskVO.setRunTime(taskEnd.getMetrics().getRunTime());
 				taskVO.setStatus(taskEnd.getReason().getReason());
-				taskVO.setInputSizeAndRecords(taskEnd.getMetrics().getInputMetrics().getReadByte() + "/" +
-						                      taskEnd.getMetrics().getInputMetrics().getRecordRead());
+				
+				//sum task end failed
+				if(taskEnd.getInfo().isFailed() == true){
+					if(failedTotalTasks.get(taskEnd.getMetrics().getHost()) != null){
+						Integer failedNumber = failedTotalTasks.get(taskEnd.getMetrics().getHost());
+						failedTotalTasks.put(taskEnd.getMetrics().getHost(), failedNumber + 1);
+					}else{
+						failedTotalTasks.put(taskEnd.getMetrics().getHost(), 1);
+					}
+				}
+				//sum succeeded task
+				if(taskEnd.getReason().getReason().equals("Success")){
+					if(succeededTotalTasks.get(taskEnd.getMetrics().getHost()) != null){
+						Integer succeededNumber = succeededTotalTasks.get(taskEnd.getMetrics().getHost());
+						succeededTotalTasks.put(taskEnd.getMetrics().getHost(), succeededNumber + 1);
+					}else{
+						succeededTotalTasks.put(taskEnd.getMetrics().getHost(), 1);
+					}
+				}
+				//sum runtime 
+				if(taskTotalTaskTime.get(taskEnd.getMetrics().getHost()) != null){
+					Long taskTotalTimeNumber = taskTotalTaskTime.get(taskEnd.getMetrics().getHost());
+					taskTotalTaskTime.put(taskEnd.getMetrics().getHost(), taskTotalTimeNumber + taskEnd.getMetrics().getRunTime());
+				}else{
+					taskTotalTaskTime.put(taskEnd.getMetrics().getHost(), taskEnd.getMetrics().getRunTime());
+				}
+				
+			
 			}
+			if(taskEnd.getMetrics() != null && taskEnd.getMetrics().getInputMetrics() != null){
+				taskVO.setInputSizeAndRecords(taskEnd.getMetrics().getInputMetrics().getReadByte() + "/" +
+	                      taskEnd.getMetrics().getInputMetrics().getRecordRead());
+			
+				//sum input size
+				if(inputSizeTotalTasks.get(taskEnd.getMetrics().getHost()) != null){
+					Long inputSizeTotalNumber = inputSizeTotalTasks.get(taskEnd.getMetrics().getHost());
+					inputSizeTotalTasks.put(taskEnd.getMetrics().getHost(), inputSizeTotalNumber + taskEnd.getMetrics().getInputMetrics().getReadByte());
+				}else{
+					inputSizeTotalTasks.put(taskEnd.getMetrics().getHost(), taskEnd.getMetrics().getInputMetrics().getReadByte());
+				}
+				//sum records
+				if(recordTotalTasks.get(taskEnd.getMetrics().getHost()) != null){
+					Long recordTotalNumber = recordTotalTasks.get(taskEnd.getMetrics().getHost());
+					recordTotalTasks.put(taskEnd.getMetrics().getHost(), recordTotalNumber + taskEnd.getMetrics().getInputMetrics().getRecordRead());
+				}else{
+					recordTotalTasks.put(taskEnd.getMetrics().getHost(), taskEnd.getMetrics().getInputMetrics().getRecordRead());
+				}
+			}
+			
 			
 			taskVOList.add(taskVO);
 		}
 		
 		
 		historyStage.setTasks(taskVOList);
+		
+		
+		List<BlockManager> blockManagerList = eventLog.getBlockManager();
+		List<SummaryExecutorVO> aggregatorExecutor = new ArrayList<SummaryExecutorVO>();
+		for(BlockManager blockManager : blockManagerList){
+			SummaryExecutorVO summaryExecutorVO = new SummaryExecutorVO();
+			summaryExecutorVO.setAddress(blockManager.getBlockManagerID().getHost() + ":" + blockManager.getBlockManagerID().getPort());
+			if(totalTasks.get(blockManager.getBlockManagerID().getHost()) != null){
+				Integer resultTotalTasks = totalTasks.get(blockManager.getBlockManagerID().getHost());
+				summaryExecutorVO.setTotalTasks(resultTotalTasks);
+			}
+			if(failedTotalTasks.get(blockManager.getBlockManagerID().getHost()) != null){
+				Integer resultFailedTotalTasks = failedTotalTasks.get(blockManager.getBlockManagerID().getHost());
+				summaryExecutorVO.setFailedTasks(resultFailedTotalTasks);
+			}
+			if(succeededTotalTasks.get(blockManager.getBlockManagerID().getHost()) != null){
+				Integer resultSucceededTotalTasks = succeededTotalTasks.get(blockManager.getBlockManagerID().getHost());
+				summaryExecutorVO.setSucceededTasks(resultSucceededTotalTasks);
+			}
+			if(taskTotalTaskTime.get(blockManager.getBlockManagerID().getHost()) != null){
+				Long resultTaskTotalTaskTime = taskTotalTaskTime.get(blockManager.getBlockManagerID().getHost());
+				summaryExecutorVO.setTaskTime(resultTaskTotalTaskTime);
+			}
+			String inputSizeAndRecords = "";
+			if(inputSizeTotalTasks.get(blockManager.getBlockManagerID().getHost()) != null){
+				Long inputTotalTask = inputSizeTotalTasks.get(blockManager.getBlockManagerID().getHost());
+				inputSizeAndRecords = String.valueOf(inputTotalTask) + "/";
+			}
+			if(recordTotalTasks.get(blockManager.getBlockManagerID().getHost()) != null){
+				Long recordTotalTask = recordTotalTasks.get(blockManager.getBlockManagerID().getHost());
+				inputSizeAndRecords = inputSizeAndRecords + recordTotalTask;
+			}
+			
+			summaryExecutorVO.setInputSizeAndrecords(inputSizeAndRecords);
+			summaryExecutorVO.setExecuteId(String.valueOf(blockManager.getBlockManagerID().getId()));
+			summaryExecutorVO.setMaxMemory(blockManager.getMaxMemory());
+			
+			aggregatorExecutor.add(summaryExecutorVO);
+		}
+		historyStage.setAggregatorExecutor(aggregatorExecutor);
+		
+		
 		return historyStage;
 	}
 

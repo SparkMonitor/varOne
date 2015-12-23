@@ -126,6 +126,7 @@ public class EventLogHdfsReaderImpl implements EventLogReader {
 		eventNames.add(SparkEventLogParser.TASK_END);
 		eventNames.add(SparkEventLogParser.STAGE_SUBMIT);
 		eventNames.add(SparkEventLogParser.STAGE_COMPLETED);
+		eventNames.add(SparkEventLogParser.BLOCKMANAGER_ADD);
 		
 		FileStatus[] applicationHistoryFileState = fs.listStatus(this.logDir, filter);
 		FileStatus status = applicationHistoryFileState[0];

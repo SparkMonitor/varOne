@@ -27,6 +27,7 @@ public class SparkEventLogParserTest {
 		List<BlockManager> blockManagerList = result.getBlockManager();
 		
 		for(BlockManager blockManager : blockManagerList){
+			assertEquals("1", blockManager.getBlockManagerID().getId());
 			assertEquals("server-a2", blockManager.getBlockManagerID().getHost());
 			assertEquals(34086, blockManager.getBlockManagerID().getPort());
 			assertEquals(1450686022248L, blockManager.getTimestamp());
