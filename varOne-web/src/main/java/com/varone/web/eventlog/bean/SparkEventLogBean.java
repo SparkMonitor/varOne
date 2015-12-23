@@ -720,13 +720,13 @@ public class SparkEventLogBean {
 	//{"Event":"SparkListenerBlockManagerAdded","Block Manager ID":{"Executor ID":"1","Host":"server-a2","Port":34086},"Maximum Memory":556038881,"Timestamp":1450686022248}
 	public class BlockManager{
 		public class BlockManagerID{
-			@SerializedName("Executor ID")private int id;
+			@SerializedName("Executor ID")private String id;
 			@SerializedName("Host")private String host;
 			@SerializedName("Port")private int port;
-			public int getId() {
+			public String getId() {
 				return id;
 			}
-			public void setId(int id) {
+			public void setId(String id) {
 				this.id = id;
 			}
 			public String getHost() {

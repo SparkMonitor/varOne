@@ -18,6 +18,7 @@ class HistoryContainer extends React.Component {
     job: React.PropTypes.array,
     stages: React.PropTypes.array,
     stageDetails: React.PropTypes.array,
+    stageAggregator: React.PropTypes.array,
     breadcrumb: React.PropTypes.array,
     tab: React.PropTypes.string,
     selectApplicationId: React.PropTypes.string,
@@ -84,7 +85,8 @@ class HistoryContainer extends React.Component {
                 onStageSelect={this.handleStageSelect}/>;
     } else if(this.props.tab === Const.history.tab.STAGE_DETAILS_TAB){
       return <StageDetailsList 
-                stageDetails={this.props.stageDetails}/>;
+                stageDetails={this.props.stageDetails}
+                stageAggregator={this.props.stageAggregator}/>;
     	
     } else {
     	

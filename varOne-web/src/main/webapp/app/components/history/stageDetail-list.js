@@ -5,7 +5,8 @@ import ProcessBar from '../commons/process-bar';
 
 class StageDetailsList extends React.Component {
 	static propTypes = {
-		stageDetails: React.PropTypes.array
+		stageDetails: React.PropTypes.array,
+		stageAggregator: React.PropTypes.array
 	}
 
 	render(){
@@ -16,6 +17,7 @@ class StageDetailsList extends React.Component {
     			<BootstrapTable
                           data={this.props.stageDetails}
  	                      striped={true}
+    					  pagination={true}
                           keyField="id">
 	                <TableHeaderColumn dataField="" width="5%">Metric</TableHeaderColumn>
                     <TableHeaderColumn dataField="">Min</TableHeaderColumn>
@@ -27,17 +29,18 @@ class StageDetailsList extends React.Component {
     			
     			<h2>Aggregated Metrics by Executor:</h2>
     	        <BootstrapTable
-    	                  data={this.props.stageDetails}
+    	                  data={this.props.stageAggregator}
     	   	              striped={true}
     	                  pagination={true}
     	                  keyField="id">
-	    	         <TableHeaderColumn dataField="" width="5%">Executor ID</TableHeaderColumn>
-	                 <TableHeaderColumn dataField="">Address</TableHeaderColumn>
-	                 <TableHeaderColumn dataField="" width="10%">Task Time</TableHeaderColumn>
-	                 <TableHeaderColumn dataField="" width="10%">Total Tasks</TableHeaderColumn>
-	                 <TableHeaderColumn dataField="" width="9%">Failed Tasks</TableHeaderColumn>
-	                 <TableHeaderColumn dataField="" width="9%">Succeeded Tasks</TableHeaderColumn>
-	                 <TableHeaderColumn dataField="" width="9%">Input Size/Records</TableHeaderColumn>
+	    	         <TableHeaderColumn dataField="executeId">Executor ID</TableHeaderColumn>
+	                 <TableHeaderColumn dataField="address">Address</TableHeaderColumn>
+	                 <TableHeaderColumn dataField="maxMemory">Max Memory</TableHeaderColumn>
+	                 <TableHeaderColumn dataField="taskTime">Task Time</TableHeaderColumn>
+	                 <TableHeaderColumn dataField="totalTasks">Total Tasks</TableHeaderColumn>
+	                 <TableHeaderColumn dataField="failedTasks">Failed Tasks</TableHeaderColumn>
+	                 <TableHeaderColumn dataField="succeededTasks">Succeeded Tasks</TableHeaderColumn>
+	                 <TableHeaderColumn dataField="inputSizeAndrecords">Input Size/Records</TableHeaderColumn>
     	         </BootstrapTable>
     	   
     	         <h2>Tasks:</h2>

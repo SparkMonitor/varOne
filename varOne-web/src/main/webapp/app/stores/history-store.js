@@ -47,6 +47,7 @@ class HistoryStore {
 	Const.history.tab.STAGE_TAB,
 	Const.history.tab.STAGE_DETAILS_TAB];
 	this.stageDetails = result.stageDetails.tasks;
+	this.stageAggregator = result.stageDetails.aggregatorExecutor;
   }
 
   onSwitchToJobTab(){
