@@ -1,2 +1,2 @@
 ## Table of Contents
-* [RESTful](/api.md)
+* [RESTful](/docs/api.md)
