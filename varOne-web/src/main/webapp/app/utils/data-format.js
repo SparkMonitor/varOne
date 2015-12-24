@@ -47,3 +47,8 @@ export function millis_format(d) {
     return second / 60 + ' minute';
   }
 }
+
+export function date_format(timestamp){
+	var d = new Date(timestamp*1);
+	return d;
+}

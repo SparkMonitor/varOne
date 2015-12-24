@@ -14,9 +14,10 @@ public class TasksVO {
 	private String locality;
 	private String gcTime;
 	private long resultSize;
-	private String inputSize;
 	private String executorIDAndHost;
-	private String inputSizeAndRecords;
+	private String inputSize;
+	private String records;
+	
 	private long runTime;
 	
 	public int getIndex() {
@@ -98,13 +99,13 @@ public class TasksVO {
 	public void setResultSize(long resultSize) {
 		this.resultSize = resultSize;
 	}
-	public String getInputSizeAndRecords() {
-		return inputSizeAndRecords;
+	public String getRecords() {
+		return records;
 	}
-	public void setInputSizeAndRecords(String inputSizeAndRecords) {
-		this.inputSizeAndRecords = inputSizeAndRecords;
+	public void setRecords(String records) {
+		this.records = records;
 	}
-	
+
 	
 	
 }

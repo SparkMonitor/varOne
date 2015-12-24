@@ -7,7 +7,8 @@ public class SummaryExecutorVO {
 	private int totalTasks;
 	private int failedTasks;
 	private int succeededTasks;
-	private String inputSizeAndrecords;
+	private String inputSize;
+	private String records;
 	private long maxMemory;
 	
 	public String getExecuteId() {
@@ -46,11 +47,17 @@ public class SummaryExecutorVO {
 	public void setSucceededTasks(int succeededTasks) {
 		this.succeededTasks = succeededTasks;
 	}
-	public String getInputSizeAndrecords() {
-		return inputSizeAndrecords;
+	public String getInputSize() {
+		return inputSize;
 	}
-	public void setInputSizeAndrecords(String inputSizeAndrecords) {
-		this.inputSizeAndrecords = inputSizeAndrecords;
+	public void setInputSize(String inputSize) {
+		this.inputSize = inputSize;
+	}
+	public String getRecords() {
+		return records;
+	}
+	public void setRecords(String records) {
+		this.records = records;
 	}
 	public long getMaxMemory() {
 		return maxMemory;

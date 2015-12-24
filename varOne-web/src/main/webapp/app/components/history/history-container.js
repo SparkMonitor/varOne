@@ -20,7 +20,7 @@ class HistoryContainer extends React.Component {
     stageDetails: React.PropTypes.array,
     stageAggregator: React.PropTypes.array,
     metricCompletedTasks: React.PropTypes.array,
-    completeTaskSize: React.PropTypes.func,
+    completeTaskSize: React.PropTypes.number,
     breadcrumb: React.PropTypes.array,
     tab: React.PropTypes.string,
     selectApplicationId: React.PropTypes.string,

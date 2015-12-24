@@ -548,9 +548,9 @@ public class UIDataAggregator {
 				
 			}
 			if(taskEnd.getMetrics() != null && taskEnd.getMetrics().getInputMetrics() != null){
-				taskVO.setInputSizeAndRecords(taskEnd.getMetrics().getInputMetrics().getReadByte() + "/" +
-	                      taskEnd.getMetrics().getInputMetrics().getRecordRead());
-			
+				taskVO.setInputSize(String.valueOf(taskEnd.getMetrics().getInputMetrics().getReadByte()));
+				taskVO.setRecords(String.valueOf(taskEnd.getMetrics().getInputMetrics().getRecordRead()));
+
 				//sum input size
 				if(inputSizeTotalTasks.get(taskEnd.getMetrics().getHost()) != null){
 					Long inputSizeTotalNumber = inputSizeTotalTasks.get(taskEnd.getMetrics().getHost());
@@ -603,17 +603,14 @@ public class UIDataAggregator {
 				Long resultTaskTotalTaskTime = taskTotalTaskTime.get(blockManager.getBlockManagerID().getHost());
 				summaryExecutorVO.setTaskTime(resultTaskTotalTaskTime);
 			}
-			String inputSizeAndRecords = "";
 			if(inputSizeTotalTasks.get(blockManager.getBlockManagerID().getHost()) != null){
 				Long inputTotalTask = inputSizeTotalTasks.get(blockManager.getBlockManagerID().getHost());
-				inputSizeAndRecords = String.valueOf(inputTotalTask) + "/";
+				summaryExecutorVO.setInputSize(String.valueOf(inputTotalTask));
 			}
 			if(recordTotalTasks.get(blockManager.getBlockManagerID().getHost()) != null){
 				Long recordTotalTask = recordTotalTasks.get(blockManager.getBlockManagerID().getHost());
-				inputSizeAndRecords = inputSizeAndRecords + recordTotalTask;
+				summaryExecutorVO.setRecords(String.valueOf(recordTotalTask));
 			}
-			
-			summaryExecutorVO.setInputSizeAndrecords(inputSizeAndRecords);
 			summaryExecutorVO.setExecuteId(String.valueOf(blockManager.getBlockManagerID().getId()));
 			summaryExecutorVO.setMaxMemory(blockManager.getMaxMemory());
 			
@@ -642,15 +639,19 @@ public class UIDataAggregator {
 		metricCompletedInputSize.setMetric("Input Size");
 		metricCompletedInputSize.setMin(minInputSize);
 		metricCompletedInputSize.setMax(maxInputSize);
-		metricCompletedInputSize.setMedian(this.medianValue(inputSizeList.toArray()));
+		if(inputSizeList.toArray().length > 0){
+			metricCompletedInputSize.setMedian(this.medianValue(inputSizeList.toArray()));
+		}
+		
 		
 		
 		MetricCompletedTasksVO metricRecords = new MetricCompletedTasksVO();
 		metricRecords.setMetric("Record");
 		metricRecords.setMin(minRecord);
 		metricRecords.setMax(maxRecord);
-		metricRecords.setMedian(this.medianValue(recordList.toArray()));
-		
+		if(recordList.toArray().length > 0){
+			metricRecords.setMedian(this.medianValue(recordList.toArray()));
+		}
 		
 		metricCompletedTasks.add(metricCompletedDuration);
 		metricCompletedTasks.add(metricCompletedGCTime);
