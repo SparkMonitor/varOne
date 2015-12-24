@@ -36,6 +36,7 @@ import com.varone.web.vo.DefaultNodeVO;
 import com.varone.web.vo.DefaultTotalNodeVO;
 import com.varone.web.vo.HistoryDetailStageVO;
 import com.varone.web.vo.JobVO;
+import com.varone.web.vo.MetricCompletedTasksVO;
 import com.varone.web.vo.MetricPropVO;
 import com.varone.web.vo.StageVO;
 import com.varone.web.vo.SummaryExecutorVO;
@@ -449,6 +450,22 @@ public class UIDataAggregator {
 		Map<Integer, TaskStart> tempMapTaskStart = new HashMap<Integer, TaskStart>();
 		
 		Map<String, Integer> totalTasks = new HashMap<String, Integer>();
+		long mindurationTask = Integer.MAX_VALUE;
+		long minGCTime = Integer.MAX_VALUE;
+		long minInputSize = Integer.MAX_VALUE;
+		long minRecord = Integer.MAX_VALUE;
+		
+		long maxdurationTask = 0;
+		long maxGCTime = 0;
+		long maxInputSize = 0;
+		long maxRecord = 0;
+		
+		List<Long> durationTaskList = new ArrayList<Long>();
+		List<Long> gcTimeList = new ArrayList<Long>();
+		List<Long> inputSizeList = new ArrayList<Long>();
+		List<Long> recordList = new ArrayList<Long>();
+		
+		
 		Map<String, Integer> failedTotalTasks = new HashMap<String, Integer>();
 		Map<String, Integer> succeededTotalTasks = new HashMap<String, Integer>();
 		Map<String, Long> taskTotalTaskTime = new HashMap<String, Long>();
@@ -492,6 +509,10 @@ public class UIDataAggregator {
 			if(taskEnd != null){
 				taskVO.setFinishTime(String.valueOf(taskEnd.getInfo().getFinishTime()));
 				taskVO.setGcTime(String.valueOf(taskEnd.getMetrics().getGcTime()));
+				minGCTime = this.minValue(minGCTime, taskEnd.getMetrics().getGcTime());
+				maxGCTime = this.maxValue(maxGCTime,  taskEnd.getMetrics().getGcTime());
+				gcTimeList.add(maxGCTime);
+				
 				taskVO.setResultSize(taskEnd.getMetrics().getResultSize());
 				taskVO.setRunTime(taskEnd.getMetrics().getRunTime());
 				taskVO.setStatus(taskEnd.getReason().getReason());
@@ -521,8 +542,10 @@ public class UIDataAggregator {
 				}else{
 					taskTotalTaskTime.put(taskEnd.getMetrics().getHost(), taskEnd.getMetrics().getRunTime());
 				}
+				mindurationTask = minValue(mindurationTask, taskEnd.getMetrics().getRunTime());
+				maxdurationTask = maxValue(maxdurationTask, taskEnd.getMetrics().getRunTime());
+				durationTaskList.add(taskEnd.getMetrics().getRunTime());
 				
-			
 			}
 			if(taskEnd.getMetrics() != null && taskEnd.getMetrics().getInputMetrics() != null){
 				taskVO.setInputSizeAndRecords(taskEnd.getMetrics().getInputMetrics().getReadByte() + "/" +
@@ -535,6 +558,10 @@ public class UIDataAggregator {
 				}else{
 					inputSizeTotalTasks.put(taskEnd.getMetrics().getHost(), taskEnd.getMetrics().getInputMetrics().getReadByte());
 				}
+				minInputSize = minValue(minInputSize, taskEnd.getMetrics().getInputMetrics().getReadByte());
+				maxInputSize = maxValue(maxInputSize, taskEnd.getMetrics().getInputMetrics().getReadByte());
+				inputSizeList.add(taskEnd.getMetrics().getInputMetrics().getReadByte());
+				
 				//sum records
 				if(recordTotalTasks.get(taskEnd.getMetrics().getHost()) != null){
 					Long recordTotalNumber = recordTotalTasks.get(taskEnd.getMetrics().getHost());
@@ -542,6 +569,9 @@ public class UIDataAggregator {
 				}else{
 					recordTotalTasks.put(taskEnd.getMetrics().getHost(), taskEnd.getMetrics().getInputMetrics().getRecordRead());
 				}
+				minRecord = minValue(minRecord, taskEnd.getMetrics().getInputMetrics().getRecordRead());
+				maxRecord = maxValue(maxRecord, taskEnd.getMetrics().getInputMetrics().getRecordRead());
+				recordList.add(taskEnd.getMetrics().getInputMetrics().getRecordRead());
 			}
 			
 			
@@ -592,30 +622,74 @@ public class UIDataAggregator {
 		historyStage.setAggregatorExecutor(aggregatorExecutor);
 		historyStage.setCompleteTaskSize(tempMapTaskStart.size());
 		
+		
+		List<MetricCompletedTasksVO> metricCompletedTasks = new ArrayList<MetricCompletedTasksVO>();
+		
+		MetricCompletedTasksVO metricCompletedDuration = new MetricCompletedTasksVO();
+		metricCompletedDuration.setMetric("Duration");
+		metricCompletedDuration.setMin(mindurationTask);
+		metricCompletedDuration.setMax(maxdurationTask);
+		metricCompletedDuration.setMedian(this.medianValue(durationTaskList.toArray()));
+		
+		MetricCompletedTasksVO metricCompletedGCTime = new MetricCompletedTasksVO();
+		metricCompletedGCTime.setMetric("GC Time");
+		metricCompletedGCTime.setMin(minGCTime);
+		metricCompletedGCTime.setMax(maxGCTime);
+		metricCompletedGCTime.setMedian(this.medianValue(gcTimeList.toArray()));
+		
+		
+		MetricCompletedTasksVO metricCompletedInputSize = new MetricCompletedTasksVO();
+		metricCompletedInputSize.setMetric("Input Size");
+		metricCompletedInputSize.setMin(minInputSize);
+		metricCompletedInputSize.setMax(maxInputSize);
+		metricCompletedInputSize.setMedian(this.medianValue(inputSizeList.toArray()));
+		
+		
+		MetricCompletedTasksVO metricRecords = new MetricCompletedTasksVO();
+		metricRecords.setMetric("Record");
+		metricRecords.setMin(minRecord);
+		metricRecords.setMax(maxRecord);
+		metricRecords.setMedian(this.medianValue(recordList.toArray()));
+		
+		
+		metricCompletedTasks.add(metricCompletedDuration);
+		metricCompletedTasks.add(metricCompletedGCTime);
+		metricCompletedTasks.add(metricCompletedInputSize);
+		metricCompletedTasks.add(metricRecords);
+		
+		
+		historyStage.setMetricCompletedTasks(metricCompletedTasks);
+		
 		return historyStage;
 	}
-
 	
-	public HistoryDetailStageVO getHistoryDetialStage(String applicationId, SparkEventLogBean eventLog){
-		HistoryDetailStageVO historyStage = new HistoryDetailStageVO();
-		List<TasksVO> taskVOList = new ArrayList<TasksVO>();
-		
-		List<TaskStart> taskStartList = eventLog.getTaskStart();
-		for(TaskStart taskStart : taskStartList){
-			TasksVO taskVO = new TasksVO();
-			
-			TaskInfo taskInfo = taskStart.getInfo();
-			taskVO.setAttempt(taskInfo.getAttempt());
-			taskVO.setIndex(taskInfo.getIndex());
-			taskVO.setId(taskInfo.getId());
-			taskVO.setLaunchTime(String.valueOf(taskInfo.getLanuchTime()));
-			taskVO.setLocality(taskInfo.getLocality());
-			
-			taskVOList.add(taskVO);
+	public double medianValue(Object array[]){
+		double result = 0;
+		int n = array.length;
+
+		if((array.length % 2) == 0){
+			result = ((Long)array[n / 2] + (Long)array[(n / 2) - 1]) / 2.0;
+		}else{
+			result = (Long)array[(n - 1) / 2];
+		}
+		return result;
+	}
+	
+	private long minValue(long value1, long value2){
+		if(value1 < value2){
+			return value1;
+		}else{
+			return value2;
+		}
+	}
+	
+	private long maxValue(long value1, long value2){
+		if(value1 > value2){
+			return value1;
+		}else{
+			return value2;
 		}
 		
-		historyStage.setTasks(taskVOList);
-		return historyStage;
 	}
 	
 	private void calculateAvgWithSingleNode(List<MetricPropVO> metricProps, Map<String, List<TimeValueVO>> propToMetrics){

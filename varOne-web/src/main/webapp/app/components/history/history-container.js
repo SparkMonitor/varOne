@@ -19,6 +19,7 @@ class HistoryContainer extends React.Component {
     stages: React.PropTypes.array,
     stageDetails: React.PropTypes.array,
     stageAggregator: React.PropTypes.array,
+    metricCompletedTasks: React.PropTypes.array,
     completeTaskSize: React.PropTypes.func,
     breadcrumb: React.PropTypes.array,
     tab: React.PropTypes.string,
@@ -87,6 +88,7 @@ class HistoryContainer extends React.Component {
     } else if(this.props.tab === Const.history.tab.STAGE_DETAILS_TAB){
       return <StageDetailsList 
       			completeTaskSize={this.props.completeTaskSize}
+      			metricCompletedTasks={this.props.metricCompletedTasks}
                 stageDetails={this.props.stageDetails}
                 stageAggregator={this.props.stageAggregator}/>;
     	

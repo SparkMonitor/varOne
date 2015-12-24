@@ -2,6 +2,8 @@ package com.varone.web.aggregator;
 
 import java.util.List;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.apache.hadoop.conf.Configuration;
 import org.junit.Test;
 
@@ -32,11 +34,20 @@ public class UIDataAggregatorTest {
 			
 		}
 		
-		/*List<TaskEnd> taskEndList = sparkEventLog.getTaskEnd();
-		for(TaskEnd taskEnd : taskEndList){
-			System.out.println(taskEnd.getInfo().getIndex() + "    " + taskEnd.getMetrics().getGcTime());
-		}*/
-		
-		
+	}
+	
+
+	@Test
+	public void testMedian(){
+		int[] a = {1, 2, 3, 4, 5, 6};
+		double result = 0;
+		int n = a.length;
+
+		if((a.length % 2) == 0){
+			result = (a[n / 2] + a[(n / 2) - 1]) / 2.0;
+		}else{
+			result = a[(n - 1) / 2];
+		}
+		System.out.println(result);
 	}
 }

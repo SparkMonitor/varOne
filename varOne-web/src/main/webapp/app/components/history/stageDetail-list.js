@@ -7,6 +7,7 @@ class StageDetailsList extends React.Component {
 	static propTypes = {
 		stageDetails: React.PropTypes.array,
 		completeTaskSize: React.PropTypes.func,
+		metricCompletedTasks: React.PropTypes.array,
 		stageAggregator: React.PropTypes.array
 	}
 
@@ -15,17 +16,16 @@ class StageDetailsList extends React.Component {
     		<div>
     		
     			<h2>Summary Metrics for {this.props.completeTaskSize} Completed Tasks</h2>
+    			
     			<BootstrapTable
-                          data={this.props.stageDetails}
+                          data={this.props.metricCompletedTasks}
  	                      striped={true}
     					  pagination={true}
                           keyField="id">
-	                <TableHeaderColumn dataField="" width="5%">Metric</TableHeaderColumn>
-                    <TableHeaderColumn dataField="">Min</TableHeaderColumn>
-                    <TableHeaderColumn dataField="" width="10%">25th percentile</TableHeaderColumn>
-                    <TableHeaderColumn dataField="" width="10%">Median</TableHeaderColumn>
-                    <TableHeaderColumn dataField="" width="9%">75th percentile</TableHeaderColumn>
-                    <TableHeaderColumn dataField="" width="9%">Max</TableHeaderColumn>
+	                <TableHeaderColumn dataField="metric">Metric</TableHeaderColumn>
+                    <TableHeaderColumn dataField="min">Min</TableHeaderColumn>
+                    <TableHeaderColumn dataField="median">Median</TableHeaderColumn>
+                    <TableHeaderColumn dataField="max">Max</TableHeaderColumn>
            	    </BootstrapTable>
     			
     			<h2>Aggregated Metrics by Executor:</h2>

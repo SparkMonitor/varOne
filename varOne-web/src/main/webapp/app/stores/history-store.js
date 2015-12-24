@@ -49,6 +49,7 @@ class HistoryStore {
 	this.stageDetails = result.stageDetails.tasks;
 	this.stageAggregator = result.stageDetails.aggregatorExecutor;
 	this.completeTaskSize = result.stageDetails.completeTaskSize;
+	this.metricCompletedTasks = result.stageDetails.metricCompletedTasks;
   }
 
   onSwitchToJobTab(){

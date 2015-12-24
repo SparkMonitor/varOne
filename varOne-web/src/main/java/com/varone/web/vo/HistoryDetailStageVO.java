@@ -10,6 +10,7 @@ public class HistoryDetailStageVO {
 	private int completeTaskSize;
 	private List<SummaryExecutorVO> aggregatorExecutor;
 	private List<TasksVO> tasks;
+	private List<MetricCompletedTasksVO> metricCompletedTasks;
 	
 	public List<SummaryExecutorVO> getAggregatorExecutor() {
 		return aggregatorExecutor;
@@ -34,5 +35,15 @@ public class HistoryDetailStageVO {
 	public void setCompleteTaskSize(int completeTaskSize) {
 		this.completeTaskSize = completeTaskSize;
 	}
+
+	public List<MetricCompletedTasksVO> getMetricCompletedTasks() {
+		return metricCompletedTasks;
+	}
+
+	public void setMetricCompletedTasks(
+			List<MetricCompletedTasksVO> metricCompletedTasks) {
+		this.metricCompletedTasks = metricCompletedTasks;
+	}
+	
 	
 }
