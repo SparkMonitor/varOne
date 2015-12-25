@@ -29,10 +29,9 @@ public class UIDataAggregatorTest {
 		HistoryDetailStageVO historyDetailsVO = aggregator.aggregateHistoryDetialStage(sparkEventLog, 1);
 		List<TasksVO> taskVOList = historyDetailsVO.getTasks();
 		
-		for(TasksVO taskVO : taskVOList){
+		/*for(TasksVO taskVO : taskVOList){
 			System.out.println(taskVO.getIndex() + "   " + taskVO.getGcTime());
-			
-		}
+		}*/
 		
 	}
 	
