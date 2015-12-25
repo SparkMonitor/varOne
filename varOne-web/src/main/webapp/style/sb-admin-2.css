@@ -39,6 +39,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2989d8', end
     /*height: 100vh;*/
 }
 
+.varOne-setting {
+  background-color: transparent;
+  color: white;
+}
+
 @media(min-width:768px) {
     #page-wrapper {
         position: inherit;
