@@ -20,7 +20,6 @@ class StageDetailsList extends React.Component {
 		return date_format(cell);
 	}
 	summaryMetricsCompleteFormatter = (cell, row) => {
-		console.log(typeof cell);
 		if(row.metric == 'Duration' || row.metric == 'GC Time'){
 			return millis_format(cell);
 		}else if(row.metric == 'Input Size'){
@@ -70,7 +69,8 @@ class StageDetailsList extends React.Component {
                            data={this.props.stageDetails}
    	                       striped={true}
                            pagination={true}
-                           keyField="id">
+                           keyField="id"
+                           options={{sizePerPage: 50}}>
     	         
     	             <TableHeaderColumn dataField="index">Index</TableHeaderColumn>
 	                 <TableHeaderColumn dataField="id">ID</TableHeaderColumn>
