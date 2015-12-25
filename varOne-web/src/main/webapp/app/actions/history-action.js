@@ -6,6 +6,7 @@ class HistoryAction {
   constructor() {
     this.generateActions('switchToJobTab');
     this.generateActions('switchToHistoryTab');
+    this.generateActions('switchToStageTab');
   }
 
   async fetchApplications(){
@@ -28,6 +29,14 @@ class HistoryAction {
                                 .set('Accept', 'application/json');
     let stages = JSON.parse(response.text);
     const result = {stages, jobId};
+    this.dispatch(result);
+  }
+  
+  async fetchStageDetails(applicationId, stageId){
+	let response = await request.get('/varOne-web/rest/history/'+applicationId+"/jobs/" + stageId)
+                                .set('Accept', 'application/json');
+    let stageDetails = JSON.parse(response.text);
+    const result = {stageDetails}
     this.dispatch(result);
   }
 }

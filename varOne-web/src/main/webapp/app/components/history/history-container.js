@@ -4,6 +4,7 @@ import HistoryHeader from './history-header';
 import HistoryList from './history-list';
 import JobsList from './job-list';
 import StageList from './stage-list';
+import StageDetailsList from './stageDetail-list';
 import BreadCrumb from '../commons/breadcrumb';
 import HistoryAction from '../../actions/history-action';
 import HistoryStore from '../../stores/history-store';
@@ -16,6 +17,10 @@ class HistoryContainer extends React.Component {
     histories: React.PropTypes.array,
     job: React.PropTypes.array,
     stages: React.PropTypes.array,
+    stageDetails: React.PropTypes.array,
+    stageAggregator: React.PropTypes.array,
+    metricCompletedTasks: React.PropTypes.array,
+    completeTaskSize: React.PropTypes.number,
     breadcrumb: React.PropTypes.array,
     tab: React.PropTypes.string,
     selectApplicationId: React.PropTypes.string,
@@ -49,7 +54,10 @@ class HistoryContainer extends React.Component {
       HistoryAction.fetchApplications();
     } else if(tab === Const.history.tab.JOB_TAB){
       HistoryAction.switchToJobTab();
+    } else if(tab === Const.history.tab.STAGE_TAB){
+      HistoryAction.switchToStageTab();
     }
+    
   }
 
   handleHistorySelect = (id) => {
@@ -61,7 +69,7 @@ class HistoryContainer extends React.Component {
   }
 
   handleStageSelect = (stageId) => {
-
+	HistoryAction.fetchStageDetails(this.props.selectApplicationId, stageId);
   }
 
   renderContent = () => {
@@ -77,7 +85,15 @@ class HistoryContainer extends React.Component {
       return <StageList
                 stages={this.props.stages}
                 onStageSelect={this.handleStageSelect}/>;
+    } else if(this.props.tab === Const.history.tab.STAGE_DETAILS_TAB){
+      return <StageDetailsList 
+      			completeTaskSize={this.props.completeTaskSize}
+      			metricCompletedTasks={this.props.metricCompletedTasks}
+                stageDetails={this.props.stageDetails}
+                stageAggregator={this.props.stageAggregator}/>;
+    	
     } else {
+    	
       return null;
     }
   }

@@ -27,7 +27,7 @@ public class SparkEventLogParser {
 	public final static String STAGE_COMPLETED = "SparkListenerStageCompleted";
 	public final static String JOB_END         = "SparkListenerJobEnd";
 	public final static String APP_END         = "SparkListenerApplicationEnd";
-	
+	public final static String BLOCKMANAGER_ADD = "SparkListenerBlockManagerAdded";
 	
 	/***
 	 * If you just want to find only one event,
@@ -107,6 +107,9 @@ public class SparkEventLogParser {
 						break;
 					case STAGE_SUBMIT:
 						this.eventLogs.addStageSubmit(this.gson.fromJson(element, SparkEventLogBean.StageSubmit.class));
+						break;
+					case BLOCKMANAGER_ADD:
+						this.eventLogs.addBlocKManager(this.gson.fromJson(element, SparkEventLogBean.BlockManager.class));
 						break;
 					case STAGE_COMPLETED:
 						this.eventLogs.addStageComplete(this.gson.fromJson(element, SparkEventLogBean.StageCompleted.class));

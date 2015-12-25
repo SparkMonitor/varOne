@@ -22,6 +22,7 @@ public class SparkEventLogBean {
 	private List<StageCompleted> stageComplete;
 	private List<JobEnd> jobEnd;
 	private AppEnd appEnd;
+	private List<BlockManager> blockManager; 
 	
 	
 	public SparkEventLogBean(){
@@ -32,6 +33,7 @@ public class SparkEventLogBean {
 		this.setJobEnd(new ArrayList<JobEnd>());
 		this.setStageSubmit(new ArrayList<StageSubmit>());
 		this.setStageComplete(new ArrayList<StageCompleted>());
+		this.setBlockManager(new ArrayList<BlockManager>());
 	}
 
 	public List<ExecutorAdded> getExecutorAdd() {
@@ -134,8 +136,18 @@ public class SparkEventLogBean {
 		this.stageComplete = stageComplete;
 	}
 
+	public void addBlocKManager(BlockManager blockManager){
+		this.blockManager.add(blockManager);
+	}
 
-
+	public void setBlockManager(List<BlockManager> blockManager){
+		this.blockManager = blockManager;
+	}
+	
+	public List<BlockManager> getBlockManager(){
+		return this.blockManager;
+	}
+	
 	public class StageInfos{ 
 		@SerializedName("Stage ID")private int id;
 		@SerializedName("Stage Name")private String name;
@@ -705,7 +717,53 @@ public class SparkEventLogBean {
 		}
 		
 	}
-	
+	//{"Event":"SparkListenerBlockManagerAdded","Block Manager ID":{"Executor ID":"1","Host":"server-a2","Port":34086},"Maximum Memory":556038881,"Timestamp":1450686022248}
+	public class BlockManager{
+		public class BlockManagerID{
+			@SerializedName("Executor ID")private String id;
+			@SerializedName("Host")private String host;
+			@SerializedName("Port")private int port;
+			public String getId() {
+				return id;
+			}
+			public void setId(String id) {
+				this.id = id;
+			}
+			public String getHost() {
+				return host;
+			}
+			public void setHost(String host) {
+				this.host = host;
+			}
+			public int getPort() {
+				return port;
+			}
+			public void setPort(int port) {
+				this.port = port;
+			}
+		}
+		@SerializedName("Block Manager ID")private BlockManagerID blockManagerID;
+		@SerializedName("Maximum Memory")private long maxMemory;
+		@SerializedName("Timestamp")private long timestamp;
+		public long getMaxMemory() {
+			return maxMemory;
+		}
+		public void setMaxMemory(long maxMemory) {
+			this.maxMemory = maxMemory;
+		}
+		public long getTimestamp() {
+			return timestamp;
+		}
+		public void setTimestamp(long timestamp) {
+			this.timestamp = timestamp;
+		}
+		public BlockManagerID getBlockManagerID() {
+			return blockManagerID;
+		}
+		public void setBlockManagerID(BlockManagerID blockManagerID) {
+			this.blockManagerID = blockManagerID;
+		}
+	}
 	
 	
 	

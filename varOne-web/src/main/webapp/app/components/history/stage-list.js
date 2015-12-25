@@ -1,6 +1,7 @@
 import React from 'react';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import ProcessBar from '../commons/process-bar';
+import { millis_format } from '../../utils/data-format';
 
 class StageNameLink extends React.Component {
 
@@ -34,7 +35,9 @@ class StageList extends React.Component {
   stageNameFormatter = (cell, row) => {
     return <StageNameLink stage={row} onLinkSelect={this.props.onStageSelect}/>;
   }
-
+  timeUnitFormatter = (cell, row) => {
+	return millis_format(cell);
+  }
   render(){
     return(
       <BootstrapTable
@@ -43,8 +46,8 @@ class StageList extends React.Component {
         keyField="id">
         <TableHeaderColumn dataField="id" width="5%">Stage ID</TableHeaderColumn>
         <TableHeaderColumn dataField="description" dataFormat={this.stageNameFormatter}>Description</TableHeaderColumn>
-        <TableHeaderColumn dataField="submitTime" width="10%">Submitted</TableHeaderColumn>
-        <TableHeaderColumn dataField="duration" width="10%">Duration</TableHeaderColumn>
+        <TableHeaderColumn dataField="submitTime" width="10%" dataFormat={this.timeUnitFormatter}>Submitted</TableHeaderColumn>
+        <TableHeaderColumn dataField="duration" width="10%" dataFormat={this.timeUnitFormatter}>Duration</TableHeaderColumn>
         <TableHeaderColumn dataField="tasksSuccessVSTotal" dataFormat={this.taskFormatter}>Tasks: Succeeded/Total</TableHeaderColumn>
         <TableHeaderColumn dataField="readAmount" width="9%">Input</TableHeaderColumn>
         <TableHeaderColumn dataField="writeAmount" width="9%">Ouput</TableHeaderColumn>

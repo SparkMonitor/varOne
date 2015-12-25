@@ -105,6 +105,41 @@ public class EventLogHdfsReaderImpl implements EventLogReader {
         br.close();
 		return parser.result();
 	}
+	
+	public SparkEventLogBean getHistoryStageDetails(final String applicationId) 
+			throws Exception{
+		PathFilter filter = new PathFilter() {
+			@Override
+			public boolean accept(Path path) {
+			    if(path.getName().endsWith(applicationId)){
+			    	return true;
+			    }else{
+			    	return false;
+			    }
+			}
+		};
+		List<String> eventNames = new ArrayList<String>();
+		eventNames.add(SparkEventLogParser.EXECUTOR_ADD);
+		eventNames.add(SparkEventLogParser.JOB_START);
+		eventNames.add(SparkEventLogParser.JOB_END);
+		eventNames.add(SparkEventLogParser.TASK_START);
+		eventNames.add(SparkEventLogParser.TASK_END);
+		eventNames.add(SparkEventLogParser.STAGE_SUBMIT);
+		eventNames.add(SparkEventLogParser.STAGE_COMPLETED);
+		eventNames.add(SparkEventLogParser.BLOCKMANAGER_ADD);
+		
+		FileStatus[] applicationHistoryFileState = fs.listStatus(this.logDir, filter);
+		FileStatus status = applicationHistoryFileState[0];
+		SparkEventLogParser parser = new SparkEventLogParser(eventNames);
+		FSDataInputStream fis = fs.open(status.getPath());
+		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+		String line;
+		while(null != (line=br.readLine())){
+			parser.parseLine(line);
+		}
+		br.close();
+		return parser.result();
+	}
 
 	@Override
 	public List<SparkEventLogBean> getAllSparkAppLog() throws Exception {
