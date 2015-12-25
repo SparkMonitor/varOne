@@ -30,4 +30,6 @@ public class MetricCompletedTasksVO {
 	public void setMax(long max) {
 		this.max = max;
 	}
+
+	
 }

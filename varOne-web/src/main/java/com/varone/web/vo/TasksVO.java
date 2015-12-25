@@ -14,7 +14,8 @@ public class TasksVO {
 	private String locality;
 	private String gcTime;
 	private long resultSize;
-	private String executorIDAndHost;
+	private String executorID;
+	private String host;
 	private String inputSize;
 	private String records;
 	
@@ -81,12 +82,6 @@ public class TasksVO {
 	public void setInputSize(String inputSize) {
 		this.inputSize = inputSize;
 	}
-	public String getExecutorIDAndHost() {
-		return executorIDAndHost;
-	}
-	public void setExecutorIDAndHost(String executorIDAndHost) {
-		this.executorIDAndHost = executorIDAndHost;
-	}
 	public long getRunTime() {
 		return runTime;
 	}
@@ -104,6 +99,18 @@ public class TasksVO {
 	}
 	public void setRecords(String records) {
 		this.records = records;
+	}
+	public String getExecutorID() {
+		return executorID;
+	}
+	public void setExecutorID(String executorID) {
+		this.executorID = executorID;
+	}
+	public String getHost() {
+		return host;
+	}
+	public void setHost(String host) {
+		this.host = host;
 	}
 
 	

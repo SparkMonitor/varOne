@@ -494,7 +494,8 @@ public class UIDataAggregator {
 				taskVO.setLocality(taskStart.getInfo().getLocality());
 				
 				String host = taskStart.getInfo().getHost();
-				taskVO.setExecutorIDAndHost(taskStart.getInfo().getExecutorId() + "/" + host);
+				taskVO.setExecutorID(taskStart.getInfo().getExecutorId());
+				taskVO.setHost(host);
 			
 				//sum total tasks
 				if(totalTasks.get(host) != null){
@@ -676,6 +677,7 @@ public class UIDataAggregator {
 		return result;
 	}
 	
+	
 	private long minValue(long value1, long value2){
 		if(value1 < value2){
 			return value1;
@@ -693,6 +695,7 @@ public class UIDataAggregator {
 		
 	}
 	
+
 	private void calculateAvgWithSingleNode(List<MetricPropVO> metricProps, Map<String, List<TimeValueVO>> propToMetrics){
 		String format;
 		AverageAggregator avgAggregaror = (AverageAggregator)this.averageAggregator;

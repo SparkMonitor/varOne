@@ -19,6 +19,16 @@ class StageDetailsList extends React.Component {
 	dateUnitFormatter = (cell, row) => {
 		return date_format(cell);
 	}
+	summaryMetricsCompleteFormatter = (cell, row) => {
+		console.log(typeof cell);
+		if(row.metric == 'Duration' || row.metric == 'GC Time'){
+			return millis_format(cell);
+		}else if(row.metric == 'Input Size'){
+			return byte_format(cell);
+		}else{
+			return cell;
+		}
+	}
 	
 	render(){
     	return(
@@ -32,9 +42,9 @@ class StageDetailsList extends React.Component {
     					  pagination={true}
                           keyField="id">
 	                <TableHeaderColumn dataField="metric">Metric</TableHeaderColumn>
-                    <TableHeaderColumn dataField="min">Min</TableHeaderColumn>
-                    <TableHeaderColumn dataField="median">Median</TableHeaderColumn>
-                    <TableHeaderColumn dataField="max">Max</TableHeaderColumn>
+                    <TableHeaderColumn dataField="min" dataFormat={this.summaryMetricsCompleteFormatter}>Min</TableHeaderColumn>
+                    <TableHeaderColumn dataField="median" dataFormat={this.summaryMetricsCompleteFormatter}>Median</TableHeaderColumn>
+                    <TableHeaderColumn dataField="max" dataFormat={this.summaryMetricsCompleteFormatter}>Max</TableHeaderColumn>
            	    </BootstrapTable>
     			
     			<h2>Aggregated Metrics by Executor:</h2>
@@ -63,10 +73,11 @@ class StageDetailsList extends React.Component {
                            keyField="id">
     	         
     	             <TableHeaderColumn dataField="index">Index</TableHeaderColumn>
-	                 <TableHeaderColumn dataField="id">Stage ID</TableHeaderColumn>
+	                 <TableHeaderColumn dataField="id">ID</TableHeaderColumn>
 	                 <TableHeaderColumn dataField="attempt">Attempt</TableHeaderColumn>
 	                 <TableHeaderColumn dataField="locality">Locality Level</TableHeaderColumn>
-	                 <TableHeaderColumn dataField="executorIDAndHost">Executor ID/Host</TableHeaderColumn>
+	                 <TableHeaderColumn dataField="executorID">Executor ID</TableHeaderColumn>
+	                 <TableHeaderColumn dataField="host">Host</TableHeaderColumn>
                      <TableHeaderColumn dataField="launchTime" dataFormat={this.dateUnitFormatter}>Launch Time</TableHeaderColumn>
                      <TableHeaderColumn dataField="finishTime" dataFormat={this.dateUnitFormatter}>Finish Time</TableHeaderColumn>
                      <TableHeaderColumn dataField="runTime" dataFormat={this.timeUnitFormatter}>Duration</TableHeaderColumn>
