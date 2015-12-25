@@ -28,6 +28,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2989d8', end
 
 }
 
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover{
+  background-color: #39BAE2;
+}
+
 #page-wrapper {
     padding: 0 15px;
     min-height: 94.5vh;
