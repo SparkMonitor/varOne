@@ -159,13 +159,13 @@ public class SparkMonitorFacade {
 		return result;
 	}
 	
-	public HistoryDetailStageVO getHistoryDetailStageTask(String applicationId){
+	public HistoryDetailStageVO getHistoryDetailStageTask(String applicationId, int stageId){
 		try{
 			EventLogHdfsReaderImpl hdfsReader = new EventLogHdfsReaderImpl(config);
 			SparkEventLogBean sparkEventLog = hdfsReader.getHistoryStageDetails(applicationId);
 	
 			UIDataAggregator aggregator = new UIDataAggregator();
-			return aggregator.aggregateHistoryDetialStage(sparkEventLog);
+			return aggregator.aggregateHistoryDetialStage(sparkEventLog, stageId);
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}

@@ -32,8 +32,8 @@ class HistoryAction {
     this.dispatch(result);
   }
   
-  async fetchStageDetails(applicationId, stagesId){
-	let response = await request.get('/varOne-web/rest/history/'+applicationId+"/job0/" + stagesId)
+  async fetchStageDetails(applicationId, stageId){
+	let response = await request.get('/varOne-web/rest/history/'+applicationId+"/jobs/" + stageId)
                                 .set('Accept', 'application/json');
     let stageDetails = JSON.parse(response.text);
     const result = {stageDetails}

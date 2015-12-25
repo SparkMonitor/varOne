@@ -439,7 +439,7 @@ public class UIDataAggregator {
 		return result;
 	}
 	
-	public HistoryDetailStageVO aggregateHistoryDetialStage(SparkEventLogBean eventLog){
+	public HistoryDetailStageVO aggregateHistoryDetialStage(SparkEventLogBean eventLog, int stageId){
 		HistoryDetailStageVO historyStage = new HistoryDetailStageVO();
 		
 		
@@ -450,6 +450,8 @@ public class UIDataAggregator {
 		Map<Integer, TaskStart> tempMapTaskStart = new HashMap<Integer, TaskStart>();
 		
 		Map<String, Integer> totalTasks = new HashMap<String, Integer>();
+		int totalCompletedTask = 0;
+		
 		long mindurationTask = Integer.MAX_VALUE;
 		long minGCTime = Integer.MAX_VALUE;
 		long minInputSize = Integer.MAX_VALUE;
@@ -486,7 +488,8 @@ public class UIDataAggregator {
 			TasksVO taskVO = new TasksVO();
 			TaskStart taskStart = tempMapTaskStart.get(i);
 			TaskEnd taskEnd = tempMapTaskEnd.get(i);
-			if(taskStart != null){
+			
+			if(taskStart != null && taskStart.getStageId() == stageId){
 				taskVO.setAttempt(taskStart.getInfo().getAttempt());
 				taskVO.setIndex(taskStart.getInfo().getIndex());
 				taskVO.setId(taskStart.getInfo().getId());
@@ -504,15 +507,16 @@ public class UIDataAggregator {
 				}else{
 					totalTasks.put(host, 1);
 				}
-				
+				totalCompletedTask++;
 			
 			}
-			if(taskEnd != null){
+		
+			if(taskEnd != null && taskEnd.getStageId() == stageId){
 				taskVO.setFinishTime(String.valueOf(taskEnd.getInfo().getFinishTime()));
 				taskVO.setGcTime(String.valueOf(taskEnd.getMetrics().getGcTime()));
 				minGCTime = this.minValue(minGCTime, taskEnd.getMetrics().getGcTime());
 				maxGCTime = this.maxValue(maxGCTime,  taskEnd.getMetrics().getGcTime());
-				gcTimeList.add(maxGCTime);
+				gcTimeList.add(taskEnd.getMetrics().getGcTime());
 				
 				taskVO.setResultSize(taskEnd.getMetrics().getResultSize());
 				taskVO.setRunTime(taskEnd.getMetrics().getRunTime());
@@ -548,7 +552,7 @@ public class UIDataAggregator {
 				durationTaskList.add(taskEnd.getMetrics().getRunTime());
 				
 			}
-			if(taskEnd.getMetrics() != null && taskEnd.getMetrics().getInputMetrics() != null){
+			if(taskEnd.getMetrics() != null && taskEnd.getMetrics().getInputMetrics() != null && taskEnd.getStageId() == stageId){
 				taskVO.setInputSize(String.valueOf(taskEnd.getMetrics().getInputMetrics().getReadByte()));
 				taskVO.setRecords(String.valueOf(taskEnd.getMetrics().getInputMetrics().getRecordRead()));
 
@@ -618,29 +622,32 @@ public class UIDataAggregator {
 			aggregatorExecutor.add(summaryExecutorVO);
 		}
 		historyStage.setAggregatorExecutor(aggregatorExecutor);
-		historyStage.setCompleteTaskSize(tempMapTaskStart.size());
+		historyStage.setCompleteTaskSize(totalCompletedTask);
 		
 		
 		List<MetricCompletedTasksVO> metricCompletedTasks = new ArrayList<MetricCompletedTasksVO>();
 		
 		MetricCompletedTasksVO metricCompletedDuration = new MetricCompletedTasksVO();
 		metricCompletedDuration.setMetric("Duration");
-		metricCompletedDuration.setMin(mindurationTask);
-		metricCompletedDuration.setMax(maxdurationTask);
-		metricCompletedDuration.setMedian(this.medianValue(durationTaskList.toArray()));
-		
+	
+		if(durationTaskList.toArray().length > 0){
+			metricCompletedDuration.setMin(mindurationTask);
+			metricCompletedDuration.setMax(maxdurationTask);
+			metricCompletedDuration.setMedian(this.medianValue(durationTaskList.toArray()));
+		}
 		MetricCompletedTasksVO metricCompletedGCTime = new MetricCompletedTasksVO();
 		metricCompletedGCTime.setMetric("GC Time");
-		metricCompletedGCTime.setMin(minGCTime);
-		metricCompletedGCTime.setMax(maxGCTime);
-		metricCompletedGCTime.setMedian(this.medianValue(gcTimeList.toArray()));
-		
+		if(gcTimeList.toArray().length > 0){
+			metricCompletedGCTime.setMin(minGCTime);
+			metricCompletedGCTime.setMax(maxGCTime);
+			metricCompletedGCTime.setMedian(this.medianValue(gcTimeList.toArray()));
+		}
 		
 		MetricCompletedTasksVO metricCompletedInputSize = new MetricCompletedTasksVO();
 		metricCompletedInputSize.setMetric("Input Size");
-		metricCompletedInputSize.setMin(minInputSize);
-		metricCompletedInputSize.setMax(maxInputSize);
 		if(inputSizeList.toArray().length > 0){
+			metricCompletedInputSize.setMin(minInputSize);
+			metricCompletedInputSize.setMax(maxInputSize);
 			metricCompletedInputSize.setMedian(this.medianValue(inputSizeList.toArray()));
 		}
 		
@@ -648,9 +655,9 @@ public class UIDataAggregator {
 		
 		MetricCompletedTasksVO metricRecords = new MetricCompletedTasksVO();
 		metricRecords.setMetric("Record");
-		metricRecords.setMin(minRecord);
-		metricRecords.setMax(maxRecord);
 		if(recordList.toArray().length > 0){
+			metricRecords.setMin(minRecord);
+			metricRecords.setMax(maxRecord);
 			metricRecords.setMedian(this.medianValue(recordList.toArray()));
 		}
 		

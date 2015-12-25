@@ -26,7 +26,7 @@ public class UIDataAggregatorTest {
 		EventLogHdfsReaderImpl hdfsReader = new EventLogHdfsReaderImpl(config);
 		SparkEventLogBean sparkEventLog = hdfsReader.getHistoryStageDetails("application_1449569227858_0664");
 		
-		HistoryDetailStageVO historyDetailsVO = aggregator.aggregateHistoryDetialStage(sparkEventLog);
+		HistoryDetailStageVO historyDetailsVO = aggregator.aggregateHistoryDetialStage(sparkEventLog, 1);
 		List<TasksVO> taskVOList = historyDetailsVO.getTasks();
 		
 		for(TasksVO taskVO : taskVOList){

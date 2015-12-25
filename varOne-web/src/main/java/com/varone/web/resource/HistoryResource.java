@@ -64,7 +64,7 @@ public class HistoryResource {
 	public String fetchStageDetail(@PathParam("applicationId") String applicationId, 
 			@PathParam("jobId") String jobId, @PathParam("stageId") String stageId) throws Exception{
 		SparkMonitorFacade facade = new SparkMonitorFacade();
-		HistoryDetailStageVO historyDetailStage = facade.getHistoryDetailStageTask(applicationId);
+		HistoryDetailStageVO historyDetailStage = facade.getHistoryDetailStageTask(applicationId, Integer.parseInt(stageId));
 			
 		Gson gson = new Gson();
 		return gson.toJson(historyDetailStage);
