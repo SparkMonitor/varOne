@@ -672,7 +672,7 @@ public class UIDataAggregator {
 		return historyStage;
 	}
 	
-	public double medianValue(Object array[]){
+	private double medianValue(Object array[]){
 		double result = 0;
 		int n = array.length;
 
