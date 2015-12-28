@@ -34,7 +34,7 @@ public class VarOneResource {
 	
 	@POST
 	@Path("/conf")
-	public String updateVarOneConfig(final VarOneConfigForm conf) {
+	public String updateVarOneConfig(final VarOneConfigForm conf) throws Exception{
 		
 		SparkMonitorFacade facade = new SparkMonitorFacade();
 

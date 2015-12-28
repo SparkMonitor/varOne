@@ -4,14 +4,13 @@
 package com.varone.web.reader.metrics.impl;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
 import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto;
 import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto.TupleProto;
+import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
 import com.varone.node.utils.MetricsDataTransfer;
 import com.varone.web.metrics.bean.MetricBean;
 import com.varone.web.metrics.bean.NodeBean;
@@ -26,12 +25,12 @@ import com.varone.web.reader.metrics.stub.MetricsStubCenter;
 public class MetricsRpcReaderImpl implements MetricsReader {
 	private MetricsStubCenter stubCenter;
 
-	public MetricsRpcReaderImpl() {
-		this.stubCenter = new MetricsStubCenter();
+	public MetricsRpcReaderImpl(String port) {
+		this.stubCenter = new MetricsStubCenter(port);
 	}
 	
-	public MetricsRpcReaderImpl(List<String> nodes) {
-		this.stubCenter = new MetricsStubCenter(nodes);
+	public MetricsRpcReaderImpl(List<String> nodes, String port) {
+		this.stubCenter = new MetricsStubCenter(nodes, port);
 	}
 
 	/* (non-Javadoc)

@@ -42,12 +42,14 @@ import com.varone.web.yarn.service.YarnService;
  */
 public class SparkMonitorFacade {
 	
+	private String varOneNodePort;
 	private Configuration config;
 	private MetricsProperties metricsProperties;
 	VarOneConfiguration varOneConf;
 	
-	public SparkMonitorFacade() {
+	public SparkMonitorFacade() throws IOException {
 		this.varOneConf = new VarOneConfiguration();
+		this.varOneNodePort = this.varOneConf.getVarOneNodePort();
 		this.config = varOneConf.loadHadoopConfiguration();
 		this.metricsProperties = varOneConf.loadMetricsConfiguration();
 	}
@@ -66,7 +68,7 @@ public class SparkMonitorFacade {
 			List<String> periodSparkAppId = yarnService.getSparkApplicationsByPeriod(startAndEndTime[0], startAndEndTime[1]);
 			
 			EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
-			MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost); 
+			MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost, this.varOneNodePort); 
 			
 			List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
 			
@@ -112,7 +114,7 @@ public class SparkMonitorFacade {
 				List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
 				
 				EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
-				MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost); 
+				MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost, this.varOneNodePort); 
 				
 				SparkEventLogBean inProgressLog = eventLogReader.getInProgressLog(applicationId);
 				List<NodeBean> nodeMetrics = metricsReader.getAllNodeMetrics(applicationId, metrics);
@@ -139,7 +141,7 @@ public class SparkMonitorFacade {
 		TimePeriodHandler timePeriodHandler = new TimePeriodHandler(this.metricsProperties);
 		Map<String, NodeBean> nodeMetricsByAppId = new LinkedHashMap<String, NodeBean>();
 		
-		MetricsReader metricsReader = new MetricsRpcReaderImpl(); 
+		MetricsReader metricsReader = new MetricsRpcReaderImpl(this.varOneNodePort); 
 		try {
 			long[] startAndEndTime = timePeriodHandler.transferToLongPeriod(periodExpression);
 			List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
@@ -230,7 +232,7 @@ public class SparkMonitorFacade {
 	}
 
 	public VarOneConfigVO getVarOneConfig() throws Exception {
-		String port = this.varOneConf.getVarOneNodePort();
+		String port = this.varOneNodePort;
 		VarOneConfigVO result = new VarOneConfigVO();
 		result.setPort(port);
 		return result;
