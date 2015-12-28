@@ -1,17 +1,32 @@
 import React from 'react';
 import Const from '../../utils/consts';
+import MenuStore from '../../stores/menu-store';
+import MenuAction from '../../actions/menu-action';
+import connectToStores from 'alt/utils/connectToStores';
 
+
+@connectToStores
 export default class VarOneConfigModal extends React.Component{
 
   static propTypes = {
-    // onModalSubmit: React.PropTypes.func
+    port: React.PropTypes.string
   }
 
-  constructor(props) {
-		super(props);
+  static getStores(props) {
+    return [MenuStore];
   }
 
-  handleSubmitBtnClick(e){
+  static getPropsFromStores(props) {
+    return MenuStore.getState();
+  }
+
+  componentWillMount() {
+    MenuAction.fetchVarOneConfig();
+  }
+
+
+
+  handleSubmitBtnClick(e) {
     // var selectMetrics = [];
     //
     // for(let metric in this.refs){
@@ -36,7 +51,7 @@ export default class VarOneConfigModal extends React.Component{
             </div>
             <div className="modal-body">
               <div className="container-fluid">
-                
+                varOne-node port: <input ref="port" type="text" value={this.props.port} />
               </div>
             </div>
             <div className="modal-footer">

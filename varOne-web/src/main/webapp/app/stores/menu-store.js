@@ -7,6 +7,7 @@ class MenuStore {
   constructor(){
     this.bindActions(MenuAction);
 		this.runningJobs = [];
+    this.port = null;
     this.leftSideMenu = [
       {name: Const.menu.cluster, icon: 'fa-cloud', collapse: false, children: []},
       {name: Const.menu.nodes, icon: 'fa-cube', collapse: false, children: []},
@@ -18,6 +19,10 @@ class MenuStore {
   onFetchRunningJob(result){
     this.runningJobs = result;
     this.leftSideMenu[2].children = result;//result;
+  }
+
+  onFetchVarOneConfig({ port }) {
+    this.port = port;
   }
 
 }

@@ -3,6 +3,7 @@
  */
 package com.varone.web.facade;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -31,6 +32,7 @@ import com.varone.web.vo.HistoryDetailStageVO;
 import com.varone.web.vo.HistoryVO;
 import com.varone.web.vo.JobVO;
 import com.varone.web.vo.StageVO;
+import com.varone.web.vo.VarOneConfigVO;
 import com.varone.web.yarn.service.YarnService;
 
 /**
@@ -41,9 +43,10 @@ public class SparkMonitorFacade {
 	
 	private Configuration config;
 	private MetricsProperties metricsProperties;
+	VarOneConfiguration varOneConf;
 	
 	public SparkMonitorFacade() {
-		VarOneConfiguration varOneConf = new VarOneConfiguration();
+		this.varOneConf = new VarOneConfiguration();
 		this.config = varOneConf.loadHadoopConfiguration();
 		this.metricsProperties = varOneConf.loadMetricsConfiguration();
 	}
@@ -223,5 +226,12 @@ public class SparkMonitorFacade {
 		SparkEventLogBean eventLog = eventLogReader.getJobStages(applicationId, jobId);
 		
 		return new UIDataAggregator().aggregateJobStages(applicationId, jobId, eventLog);
+	}
+
+	public VarOneConfigVO getVarOneConfig() throws Exception {
+		String port = this.varOneConf.getVarOneNodePort();
+		VarOneConfigVO result = new VarOneConfigVO();
+		result.setPort(port);
+		return result;
 	}
 }

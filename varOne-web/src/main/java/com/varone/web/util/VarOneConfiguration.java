@@ -4,7 +4,10 @@
 package com.varone.web.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.Properties;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -55,6 +58,11 @@ public class VarOneConfiguration {
 		return loadProperties;
 	}
 	
+	public String getVarOneNodePort() throws IOException {
+		Properties readVarOneProperties = this.readVarOneProperties();
+		return (String) readVarOneProperties.get("varOne.node.port");
+	}
+	
 	public boolean isOneSecondsPeriod(){
 		MetricsProperties metricsConfiguration = this.loadMetricsConfiguration();
 		return metricsConfiguration.getCsvPeriod().equals("1") 
@@ -66,5 +74,21 @@ public class VarOneConfiguration {
 		if(value == null){
 			throw new RuntimeException(varOneConfPath.getAbsolutePath() + "/*.xml not set " + key + " property");
 		}
+	}
+	
+	private Properties readVarOneProperties() throws IOException {
+		Properties properties = null;
+		File varOnePropties = new File(this.env.getVarOneConfPath(), VarOneEnv.VARONE_PROPTIES);
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(varOnePropties);
+			properties = new Properties();
+			properties.load(fis);
+		} catch (IOException e){
+			throw e;
+		} finally {
+			if(null != fis) fis.close();
+		}
+		return properties;
 	}
 }
