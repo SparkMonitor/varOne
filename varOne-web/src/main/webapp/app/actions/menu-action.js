@@ -9,13 +9,6 @@ class MenuAction {
     this.dispatch(result);
   }
 
-  async fetchVarOneConfig() {
-    let response = await request.get('/varOne-web/rest/varOne/conf')
-                              .set('Accept', 'application/json');
-    let result = JSON.parse(response.text);
-    this.dispatch(result);
-  }
-
 }
 
 export default alt.createActions(MenuAction);

@@ -1,7 +1,7 @@
 import React from 'react';
 import Const from '../../utils/consts';
-import MenuStore from '../../stores/menu-store';
-import MenuAction from '../../actions/menu-action';
+import VarOneStore from '../../stores/varOne-store';
+import VarOneAction from '../../actions/varOne-action';
 import connectToStores from 'alt/utils/connectToStores';
 
 
@@ -9,38 +9,32 @@ import connectToStores from 'alt/utils/connectToStores';
 export default class VarOneConfigModal extends React.Component{
 
   static propTypes = {
+    msg: React.PropTypes.string,
     port: React.PropTypes.string
   }
 
   static getStores(props) {
-    return [MenuStore];
+    return [VarOneStore];
   }
 
   static getPropsFromStores(props) {
-    return MenuStore.getState();
+    return VarOneStore.getState();
   }
 
   componentWillMount() {
-    MenuAction.fetchVarOneConfig();
+    VarOneAction.fetchVarOneConfig();
   }
 
-
+  handlePortChange(e) {
+    VarOneAction.changePort(e.target.value);
+  }
 
   handleSubmitBtnClick(e) {
-    // var selectMetrics = [];
-    //
-    // for(let metric in this.refs){
-    //   let checkbox = this.refs[metric].getDOMNode();
-    //   if(checkbox.checked){
-    //     selectMetrics.push(checkbox.value);
-    //   }
-    // }
-    //
-    // this.props.onModalSubmit(selectMetrics);
+    const port = this.refs.port.value;
+    VarOneAction.updateVarOneConf({ port });
   }
 
   render(){
-
     return(
       <div id="varOneConfigModal" className="modal fade" role="dialog">
         <div className="modal-dialog modal-lg">
@@ -50,12 +44,13 @@ export default class VarOneConfigModal extends React.Component{
               <h4 className="modal-title">varOne configuration</h4>
             </div>
             <div className="modal-body">
+              <h4 style={{color: 'red'}}>{ this.props.msg }</h4>
               <div className="container-fluid">
-                varOne-node port: <input ref="port" type="text" value={this.props.port} />
+                varOne-node port: <input ref="port" type="text" value={ this.props.port } onChange={e => this.handlePortChange(e)}></input>
               </div>
             </div>
             <div className="modal-footer">
-            <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={e => this.handleSubmitBtnClick(e)}>Save</button>
+              <button type="button" className="btn btn-primary" onClick={e => this.handleSubmitBtnClick(e)}>Save</button>
               <button type="button" className="btn btn-default" data-dismiss="modal" >Close</button>
             </div>
           </div>
