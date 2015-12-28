@@ -40,6 +40,8 @@ public class VarOneServletContextListener implements ServletContextListener {
 			throw new RuntimeException("Please set *.sink.csv.period=1 and *.sink.csv.unit=seconds in " + VarOneEnv.METRICSPROPERTIES_FILENAME);
 		}
 		
+		env.createVarOnePropFile();
+		
 	}
 
 	@Override
