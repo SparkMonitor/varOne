@@ -17,6 +17,7 @@ public class VarOneEnv {
 	public static String CONFIG = "conf";
 	
 	public static String VARONE_PROPTIES = "varOne.properties";
+	public static String VARONE_NODE_PORT = "varOne.node.port";
 	
 	public static String YARNSITEFILENAME = "yarn-site.xml";
 	public static String HDFSSITEFILENAME = "hdfs-site.xml";
