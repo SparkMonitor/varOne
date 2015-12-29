@@ -16,11 +16,11 @@ public class TomcatServer {
 	public static void main(String args[]) {
 		try{
 		   ProtectionDomain protectionDomain = TomcatServer.class.getProtectionDomain();
-		   URL warUrl = protectionDomain.getCodeSource().getLocation();
-		   String warFilePath = warUrl.getFile();
+		   URL jarUrl = protectionDomain.getCodeSource().getLocation();
+		   String jarFilePath = jarUrl.getFile();
 		
 		   
-		   TomcatJarFileLauncher launcher = new TomcatJarFileLauncher(warFilePath);
+		   TomcatJarFileLauncher launcher = new TomcatJarFileLauncher(jarFilePath);
 		   TomcatEnv tomcatEnv = new TomcatEnv();
 		   
 		   File tempdstJarPath = tomcatEnv.createVarOneTempJarPath();		   
@@ -32,14 +32,19 @@ public class TomcatServer {
 		   int port = Integer.parseInt(cmd.getOptionValue("p", "8080"));
 			
 		   Tomcat tomcat = new Tomcat();
-		   File warPath = tomcatEnv.createVarOneWarPath();
-			
+		   
+		   File warPath = tomcatEnv.getVarOneWarPath();
+		   if(warPath.exists()){
+				tomcatEnv.deleteVarOneWarPath();
+		   }
+		   tomcatEnv.createVarOneWarPath();
+		   
 		   tomcat.getHost().setAppBase(warPath.getAbsolutePath());   
 		   tomcat.setPort(port);
 		   tomcat.setBaseDir(warPath.getAbsolutePath());
 			   
 			   
-		   Context context = tomcat.addWebapp(tomcatEnv.WEBAPPROOTNAME, warFilePath);	
+		   Context context = tomcat.addWebapp(tomcatEnv.WEBAPPROOTNAME, jarFilePath);	
 		   File tempdstTomcatContextPath = tomcatEnv.createVarOneTempTomcatConfPath();
 		   launcher.copyContextFileToTemp(tempdstTomcatContextPath.getAbsolutePath());  
 		   context.setConfigFile(new File(tempdstTomcatContextPath, "context.xml").toURI().toURL());
@@ -51,7 +56,7 @@ public class TomcatServer {
 			   
 		   ClientConsole console = new ClientConsole();
 		   console.createTrayIcon();
-		   console.openBrowser("http://localhost:" + port + "/" + TomcatEnv.WEBAPPROOTNAME  + "/index333.html");
+		   console.openBrowser("http://localhost:" + port + "/" + TomcatEnv.WEBAPPROOTNAME  + "/index.html");
 			   
 		   tomcat.getServer().await();
 		}catch(Exception e){

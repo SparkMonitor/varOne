@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import com.varone.node.MetricsProperties;
 import com.varone.web.util.VarOneConfiguration;
 import com.varone.web.util.VarOneEnv;
 

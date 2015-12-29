@@ -2,6 +2,8 @@ package com.varone.exec;
 
 import java.io.File;
 
+import org.apache.commons.io.FileUtils;
+
 import com.varone.web.util.VarOneEnv;
 
 public class TomcatEnv {
@@ -19,6 +21,18 @@ public class TomcatEnv {
 		File warPath = getVarOneWarPath();
 		this.mkdir(warPath);
 		return warPath;
+	}
+	
+	public File deleteVarOneWarPath(){
+		try{
+			File warPath = getVarOneWarPath();
+			if(warPath.getAbsoluteFile().exists()){
+				FileUtils.deleteDirectory(warPath);
+			}
+			return warPath;
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}
 	}
 	
 	public File getVarOneTempJarPath(){

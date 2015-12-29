@@ -20,7 +20,10 @@ war {
     
     from new File(project(':varOne-exec').buildDir, 'classes/main/')
     from new File(project(':varOne-web').buildDir, 'classes/main/')
+    from new File(project(':varOne-node').buildDir, 'classes/main/')
     from new File(project(':varOne-exec').buildDir, 'resources/main/')
+    from new File(project(':varOne-web').buildDir, 'resources/main/index.html')
+
 
     into(new File('libs')){
         from new File(project(':varOne-exec').buildDir, 'lib')
@@ -28,4 +31,14 @@ war {
     into(new File('conf')){
         from new File(project(':varOne-exec').buildDir, 'resources/main/context.xml')
     }
+}
+
+exec {
+   executable "sh"
+   
+   String arg1 = new File(project(':varOne-web').rootDir, '/varOne-web/src/main/resources/runnpm.sh');
+
+   String arg2 = new File(project(':varOne-web').rootDir, '/varOne-web/src/main/webapp')
+   String command = arg1 + " " + arg2
+   args "-c", command
 }
