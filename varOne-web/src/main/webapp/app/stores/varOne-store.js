@@ -15,6 +15,7 @@ class VarOneStore {
   }
 
   onFetchVarOneConfig({ port }) {
+    this.msg = null;
     this.port = port;
   }
 

@@ -21,8 +21,13 @@ export default class VarOneConfigModal extends React.Component{
     return VarOneStore.getState();
   }
 
-  componentWillMount() {
-    VarOneAction.fetchVarOneConfig();
+  componentDidMount() {
+    $('#varOneConfigModal').on('shown.bs.modal', () => {
+      VarOneAction.fetchVarOneConfig();
+    });
+  }
+
+  componentWillUnmount(){
   }
 
   handlePortChange(e) {
@@ -44,7 +49,7 @@ export default class VarOneConfigModal extends React.Component{
               <h4 className="modal-title">varOne configuration</h4>
             </div>
             <div className="modal-body">
-              <h4 style={{color: 'red'}}>{ this.props.msg }</h4>
+              <h6 style={{color: 'red'}}>{ this.props.msg }</h6>
               <div className="container-fluid">
                 varOne-node port: <input ref="port" type="text" value={ this.props.port } onChange={e => this.handlePortChange(e)}></input>
               </div>
