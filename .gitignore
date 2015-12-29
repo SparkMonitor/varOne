@@ -13,3 +13,4 @@ varOne-web/src/main/webapp/npm-debug.log
 .classpath
 .settings
 bin
+varOne-web/src/main/webapp/dist

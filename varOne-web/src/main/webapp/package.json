@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/karma start --single-run",
-    "dev": "node --harmony ./webpack/webpack-dev-server.js"
+    "dev": "node --harmony ./webpack/webpack-dev-server.js",
+    "production": "NODE_ENV=production webpack --config ./webpack/production-config.js"
   },
   "author": "AllenFang",
   "license": "ISC",
@@ -25,7 +26,7 @@
     "babel-core": "^5.8.24",
     "babel-loader": "^5.3.2",
     "chai": "^3.3.0",
-    "css-loader": "^0.21.0",
+    "css-loader": "^0.18.0",
     "karma": "^0.13.10",
     "karma-chai": "^0.1.0",
     "karma-mocha": "^0.2.0",
