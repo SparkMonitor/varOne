@@ -20,6 +20,7 @@ war {
     
     from new File(project(':varOne-exec').buildDir, 'classes/main/')
     from new File(project(':varOne-web').buildDir, 'classes/main/')
+    from new File(project(':varOne-node').buildDir, 'classes/main/')
     from new File(project(':varOne-exec').buildDir, 'resources/main/')
 
     into(new File('libs')){

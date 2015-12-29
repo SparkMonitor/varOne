@@ -24,7 +24,8 @@ public class TomcatJarFileLauncher {
 			"libs/jersey-core-1.9.jar", 
 			"libs/jersey-server-1.9.jar",
 			"libs/asm-3.1.jar", 
-			"libs/commons-cli-1.2.jar"
+			"libs/commons-cli-1.2.jar",
+			"libs/commons-io-2.4.jar"
 	};
 	private final String[] tomcatContextFile = {"conf/context.xml"};
 	
