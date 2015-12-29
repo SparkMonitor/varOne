@@ -3,6 +3,10 @@ import request from 'superagent';
 
 class NodeAction {
 
+  constructor() {
+    this.generateActions('changeTimePeriod');
+  }
+
   async fetchNodes(){
     let response = await request.get('/varOne-web/rest/nodes')
                                 .set('Accept', 'application/json');
