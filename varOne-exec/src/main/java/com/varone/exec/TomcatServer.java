@@ -56,7 +56,7 @@ public class TomcatServer {
 			   
 		   ClientConsole console = new ClientConsole();
 		   console.createTrayIcon();
-		   console.openBrowser("http://localhost:" + port + "/" + TomcatEnv.WEBAPPROOTNAME  + "/index333.html");
+		   console.openBrowser("http://localhost:" + port + "/" + TomcatEnv.WEBAPPROOTNAME  + "/index.html");
 			   
 		   tomcat.getServer().await();
 		}catch(Exception e){

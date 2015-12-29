@@ -27,7 +27,6 @@ public class TomcatEnv {
 		try{
 			File warPath = getVarOneWarPath();
 			if(warPath.getAbsoluteFile().exists()){
-				System.out.println("DELETE2");
 				FileUtils.deleteDirectory(warPath);
 			}
 			return warPath;
