@@ -3,6 +3,7 @@
  */
 package com.varone.web.facade;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,9 +17,9 @@ import com.varone.web.aggregator.UIDataAggregator;
 import com.varone.web.aggregator.timeperiod.TimePeriodHandler;
 import com.varone.web.eventlog.bean.SparkEventLogBean;
 import com.varone.web.eventlog.bean.SparkEventLogBean.AppStart;
+import com.varone.web.form.VarOneConfigForm;
 import com.varone.web.metrics.bean.MetricBean;
 import com.varone.web.metrics.bean.NodeBean;
-import com.varone.web.metrics.bean.TimeValuePairBean;
 import com.varone.web.reader.eventlog.EventLogReader;
 import com.varone.web.reader.eventlog.impl.EventLogHdfsReaderImpl;
 import com.varone.web.reader.metrics.MetricsReader;
@@ -31,6 +32,8 @@ import com.varone.web.vo.HistoryDetailStageVO;
 import com.varone.web.vo.HistoryVO;
 import com.varone.web.vo.JobVO;
 import com.varone.web.vo.StageVO;
+import com.varone.web.vo.UpdateStatusVO;
+import com.varone.web.vo.VarOneConfigVO;
 import com.varone.web.yarn.service.YarnService;
 
 /**
@@ -39,11 +42,14 @@ import com.varone.web.yarn.service.YarnService;
  */
 public class SparkMonitorFacade {
 	
+	private String varOneNodePort;
 	private Configuration config;
 	private MetricsProperties metricsProperties;
+	VarOneConfiguration varOneConf;
 	
-	public SparkMonitorFacade() {
-		VarOneConfiguration varOneConf = new VarOneConfiguration();
+	public SparkMonitorFacade() throws IOException {
+		this.varOneConf = new VarOneConfiguration();
+		this.varOneNodePort = this.varOneConf.getVarOneNodePort();
 		this.config = varOneConf.loadHadoopConfiguration();
 		this.metricsProperties = varOneConf.loadMetricsConfiguration();
 	}
@@ -62,7 +68,7 @@ public class SparkMonitorFacade {
 			List<String> periodSparkAppId = yarnService.getSparkApplicationsByPeriod(startAndEndTime[0], startAndEndTime[1]);
 			
 			EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
-			MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost); 
+			MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost, this.varOneNodePort); 
 			
 			List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
 			
@@ -108,7 +114,7 @@ public class SparkMonitorFacade {
 				List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
 				
 				EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
-				MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost); 
+				MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost, this.varOneNodePort); 
 				
 				SparkEventLogBean inProgressLog = eventLogReader.getInProgressLog(applicationId);
 				List<NodeBean> nodeMetrics = metricsReader.getAllNodeMetrics(applicationId, metrics);
@@ -135,7 +141,7 @@ public class SparkMonitorFacade {
 		TimePeriodHandler timePeriodHandler = new TimePeriodHandler(this.metricsProperties);
 		Map<String, NodeBean> nodeMetricsByAppId = new LinkedHashMap<String, NodeBean>();
 		
-		MetricsReader metricsReader = new MetricsRpcReaderImpl(); 
+		MetricsReader metricsReader = new MetricsRpcReaderImpl(this.varOneNodePort); 
 		try {
 			long[] startAndEndTime = timePeriodHandler.transferToLongPeriod(periodExpression);
 			List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
@@ -223,5 +229,25 @@ public class SparkMonitorFacade {
 		SparkEventLogBean eventLog = eventLogReader.getJobStages(applicationId, jobId);
 		
 		return new UIDataAggregator().aggregateJobStages(applicationId, jobId, eventLog);
+	}
+
+	public VarOneConfigVO getVarOneConfig() throws Exception {
+		String port = this.varOneNodePort;
+		VarOneConfigVO result = new VarOneConfigVO();
+		result.setPort(port);
+		return result;
+	}
+
+	public UpdateStatusVO updateVarOneConfig(VarOneConfigForm conf) {
+		UpdateStatusVO result = new UpdateStatusVO();
+		try {
+			this.varOneConf.updateVarOneNodePort(conf.port);
+			result.setOk(true);
+			result.setError("");
+		} catch (IOException e) {
+			result.setOk(false);
+			result.setError(e.getMessage());
+		}
+		return result;
 	}
 }

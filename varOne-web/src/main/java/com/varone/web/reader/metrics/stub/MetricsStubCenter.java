@@ -17,14 +17,16 @@ import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMa
  */
 public class MetricsStubCenter {
 	private List<String> nodes;
+	private int port;
 	/**
 	 * 
 	 */
-	public MetricsStubCenter() {
-		// TODO Auto-generated constructor stub
+	public MetricsStubCenter(String port) {
+		this.port = Integer.valueOf(port);
 	}
 
-	public MetricsStubCenter(List<String> nodes) {
+	public MetricsStubCenter(List<String> nodes, String port) {
+		this.port = Integer.valueOf(port);
 		this.nodes = nodes;
 	}
 
@@ -36,7 +38,7 @@ public class MetricsStubCenter {
 		List<MetricsStub> stubs = new ArrayList<MetricsStub>(this.nodes.size());
 		
 		for(String host: this.nodes){
-			MetricsStub stub = new MetricsStub(host, 8888, applicationId, encodeMetricsType, rpcThreadListener);
+			MetricsStub stub = new MetricsStub(host, this.port, applicationId, encodeMetricsType, rpcThreadListener);
 			stubs.add(stub);
 			Thread t1 = new Thread(stub);
 			t1.start();
@@ -58,7 +60,7 @@ public class MetricsStubCenter {
 
 	public List<MetricsMapProto> getNodeMetrics(String node,
 			String applicationId, List<MetricsTypeProto> encodeMetricsType) throws InterruptedException{
-		MetricsStub stub = new MetricsStub(node, 8888, applicationId, encodeMetricsType);
+		MetricsStub stub = new MetricsStub(node, this.port, applicationId, encodeMetricsType);
 		Thread t1 = new Thread(stub);
 		t1.start();
 		t1.join();
