@@ -41,6 +41,10 @@ class NodeStore {
     this.period = period;
   }
 
+  onChangeTimePeriod(period) {
+    this.period = period;
+  }
+
 }
 
 export default alt.createStore(NodeStore);

@@ -61,7 +61,10 @@ class NodesContainer extends React.Component{
 
   handlePeriodSelect = period => {
     clearInterval(this.fetchInterval);
-    NodesAction.fetchNodeDashBoard(this.selectNode, this.selectMetrics, period);
+    if(this.selectNode !== null)
+      NodesAction.fetchNodeDashBoard(this.selectNode, this.selectMetrics, period);
+    else
+      NodesAction.changeTimePeriod(period);
   }
 
   clearInterval(){
