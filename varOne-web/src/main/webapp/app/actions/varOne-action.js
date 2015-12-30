@@ -18,6 +18,7 @@ class VarOneAction {
                               .send({ port })
                               .set('Accept', 'application/json');
     let result = JSON.parse(response.text);
+    result.port = port;
     this.dispatch(result);
   }
 

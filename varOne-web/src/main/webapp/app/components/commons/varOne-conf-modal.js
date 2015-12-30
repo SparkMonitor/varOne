@@ -10,7 +10,8 @@ export default class VarOneConfigModal extends React.Component{
 
   static propTypes = {
     msg: React.PropTypes.string,
-    port: React.PropTypes.string
+    port: React.PropTypes.string,
+    inputPort: React.PropTypes.string
   }
 
   static getStores(props) {
@@ -25,9 +26,6 @@ export default class VarOneConfigModal extends React.Component{
     $('#varOneConfigModal').on('shown.bs.modal', () => {
       VarOneAction.fetchVarOneConfig();
     });
-  }
-
-  componentWillUnmount(){
   }
 
   handlePortChange(e) {
@@ -51,7 +49,7 @@ export default class VarOneConfigModal extends React.Component{
             <div className="modal-body">
               <h6 style={{color: 'red'}}>{ this.props.msg }</h6>
               <div className="container-fluid">
-                varOne-node port: <input ref="port" type="text" value={ this.props.port } onChange={e => this.handlePortChange(e)}></input>
+                varOne-node port: <input ref="port" type="text" value={ this.props.inputPort } onChange={e => this.handlePortChange(e)}></input>
               </div>
             </div>
             <div className="modal-footer">

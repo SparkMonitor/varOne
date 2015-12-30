@@ -8,19 +8,23 @@ class VarOneStore {
     this.bindActions(VarOneAction);
     this.port = null;
     this.msg = null;
+    this.inputPort = null;
   }
 
   onChangePort(port) {
-    this.port = port;
+    this.inputPort = port;
   }
 
   onFetchVarOneConfig({ port }) {
     this.msg = null;
     this.port = port;
+    this.inputPort = port;
   }
 
-  onUpdateVarOneConf({ ok, error }) {
+  onUpdateVarOneConf({ ok, error, port }) {
     if(ok) {
+      this.port = port;
+      this.inputPort = port;
       this.msg = "Update varOne configuration succesful.";
     } else {
       this.msg = error;
