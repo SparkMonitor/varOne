@@ -5,6 +5,7 @@ import java.net.URL;
 import java.security.ProtectionDomain;
 
 import org.apache.catalina.Context;
+import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
@@ -25,8 +26,12 @@ public class TomcatServer {
 		   
 		   File tempdstJarPath = tomcatEnv.createVarOneTempJarPath();		   
 		   launcher.copyJarFileToTemp(tempdstJarPath.getAbsolutePath());
+		   
+		   File tempdstResourcePath = tomcatEnv.createVarOneTempJarPath();
+		   launcher.copyResourceFileToTemp(tempdstResourcePath.getAbsolutePath());
+
 		   launcher.dynamicLoadTomcatJar(tempdstJarPath);
-		
+		   launcher.dynamicLoadTomcatResource(tempdstResourcePath);
 
 		   CommandLine cmd = TomcatServer.parseCommand(args);
 		   int port = Integer.parseInt(cmd.getOptionValue("p", "8080"));
@@ -45,15 +50,21 @@ public class TomcatServer {
 			   
 			   
 		   Context context = tomcat.addWebapp(tomcatEnv.WEBAPPROOTNAME, jarFilePath);	
+		   
+		   
+		   
 		   File tempdstTomcatContextPath = tomcatEnv.createVarOneTempTomcatConfPath();
 		   launcher.copyContextFileToTemp(tempdstTomcatContextPath.getAbsolutePath());  
 		   context.setConfigFile(new File(tempdstTomcatContextPath, "context.xml").toURI().toURL());
-		      
-		     
+		  
+
+		  
 		   tomcat.start();
 		   String warLibPath = warPath.getAbsolutePath() + File.separator + tomcatEnv.WEBAPPROOTNAME + File.separator + "WEB-INF" + File.separator + "lib";
 		   launcher.dynamicLoadTomcatJar(new File(warLibPath));
-			   
+
+		   
+		   
 		   ClientConsole console = new ClientConsole();
 		   console.createTrayIcon();
 		   console.openBrowser("http://localhost:" + port + "/" + TomcatEnv.WEBAPPROOTNAME  + "/index.html");

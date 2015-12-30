@@ -27,6 +27,9 @@ public class TomcatJarFileLauncher {
 			"libs/commons-cli-1.2.jar",
 			"libs/commons-io-2.4.jar"
 	};
+	
+	private final String[] resourcePath = {"WEB-INF/classes/varOne.properties"};
+
 	private final String[] tomcatContextFile = {"conf/context.xml"};
 	
 	public TomcatJarFileLauncher(String warFilePath){
@@ -41,6 +44,44 @@ public class TomcatJarFileLauncher {
 	public String[] copyContextFileToTemp(String tempdstTomcatContextPath) throws IOException {
 		this.copyFileToTemp(tempdstTomcatContextPath, tomcatContextFile);
 		return this.tomcatContextFile;
+	}
+	
+	public String[] copyResourceFileToTemp(String tempdstResourcePath) throws IOException {
+		this.copyFileToTemp(tempdstResourcePath, resourcePath);
+		return this.resourcePath;
+	}
+	
+
+	
+	public void dynamicLoadTomcatResource(File tempResourcePath) throws Exception {
+        URLClassLoader classLoader
+               = (URLClassLoader) ClassLoader.getSystemClassLoader();
+        Class clazz= URLClassLoader.class;
+
+        // Use reflection
+        Method method= clazz.getDeclaredMethod("addURL", new Class[] { URL.class });
+        method.setAccessible(true);
+       // method.invoke(classLoader, new Object[] { url });
+       // File file = new File("/home/user1/varoneconf");
+        System.out.println("Resource Path:" + tempResourcePath.getAbsoluteFile().toString());
+        File file = new File(tempResourcePath.getAbsoluteFile().toString());
+        method.invoke(classLoader, new Object[] {file.toURI().toURL()});
+       
+	}
+	
+	public void dynamicLoadTomcatJar(File tempJarPath) throws Exception {
+        URLClassLoader classLoader
+               = (URLClassLoader) ClassLoader.getSystemClassLoader();
+        Class clazz= URLClassLoader.class;
+
+        // Use reflection
+        Method method= clazz.getDeclaredMethod("addURL", new Class[] { URL.class });
+        method.setAccessible(true);
+       // method.invoke(classLoader, new Object[] { url });
+        File []jarFileList = tempJarPath.listFiles();
+        for(File file : jarFileList){
+        	method.invoke(classLoader, new Object[] {file.toURI().toURL()});
+        }
 	}
 	
 	private void copyFileToTemp(String tempdstPath, String[] srcJars) throws IOException{
@@ -59,20 +100,4 @@ public class TomcatJarFileLauncher {
 		}
 	}
 	
-
-	public void dynamicLoadTomcatJar(File tempJarPath) throws Exception {
-        URLClassLoader classLoader
-               = (URLClassLoader) ClassLoader.getSystemClassLoader();
-        Class clazz= URLClassLoader.class;
-
-        // Use reflection
-        Method method= clazz.getDeclaredMethod("addURL", new Class[] { URL.class });
-        method.setAccessible(true);
-       // method.invoke(classLoader, new Object[] { url });
-        File []jarFileList = tempJarPath.listFiles();
-        for(File file : jarFileList){
-        	method.invoke(classLoader, new Object[] {file.toURI().toURL()});
-        }
-        
-	}
 }

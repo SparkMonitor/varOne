@@ -11,6 +11,7 @@ public class TomcatEnv {
 	public static String WAR = "war";
 	public static String TEMPJAR = "jar";
 	public static String TOMCATCONF = "tomcatconf";
+	public static String RESOURCE = "resource";
 	
 	public File getVarOneWarPath(){
 		File warPath = new File(this.getVarOneHomePath(), WAR);
@@ -44,6 +45,17 @@ public class TomcatEnv {
 		File jarPath = getVarOneTempJarPath();
 		this.mkdir(jarPath);
 		return jarPath;
+	}
+	
+	public File getVarOneTempResourcePath(){
+		File resourcePath = new File(this.getVarOneHomePath(), RESOURCE);
+		return resourcePath;
+	}
+	
+	public File createVarOneTempResourcePath(){
+		File resourcePath = getVarOneTempResourcePath();
+		this.mkdir(resourcePath);
+		return resourcePath;
 	}
 	
 	public File getVarOneTempTomcatConf(){
