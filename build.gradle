@@ -88,12 +88,21 @@ subprojects {
         //hadoopConf 'org.apache.hadoop:hadoop-client:2.3.0'
         hadoopConf('org.apache.hadoop:hadoop-mapreduce-client-jobclient:2.3.0'){
            exclude group: "javax.servlet", module: "servlet-api"
-        }
+           exclude group: "org.apache.hadoop", module: "hadoop-mapreduce-client-common"
+           exclude group: "org.apache.hadoop", module: "hadoop-mapreduce-client-shuffle"      
+ 
+         }
         hadoopConf('org.apache.hadoop:hadoop-client:2.3.0'){
            exclude group: "org.apache.hadoop", module: "hadoop-mapreduce-client-app"
            exclude group: "org.apache.hadoop", module: "hadoop-mapreduce-client-shuffle"
            exclude group: "org.apache.hadoop", module: "hadoop-mapreduce-client-core"
            exclude group: "org.apache.hadoop", module: "hadoop-mapreduce-client-jobclient"
+        }
+        hadoopConf('org.apache.hadoop:hadoop-mapreduce-client-common:2.3.0'){
+           exclude group: "org.apache.hadoop", module: "hadoop-yarn-common"
+        }
+        hadoopConf('org.apache.hadoop:hadoop-yarn-common:2.3.0'){
+           exclude group: "com.sun.jersey", module: "jersey-json"
         }
     }
 
