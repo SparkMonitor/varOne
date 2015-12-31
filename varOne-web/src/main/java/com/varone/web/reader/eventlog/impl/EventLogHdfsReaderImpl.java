@@ -18,6 +18,7 @@ import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.PathFilter;
+import org.apache.log4j.Logger;
 
 import com.varone.web.eventlog.bean.SparkEventLogBean;
 import com.varone.web.reader.eventlog.EventLogReader;
@@ -28,12 +29,15 @@ import com.varone.web.reader.eventlog.parser.SparkEventLogParser;
  *
  */
 public class EventLogHdfsReaderImpl implements EventLogReader {
+	private Logger logger = Logger.getLogger(EventLogHdfsReaderImpl.class.getName());
 	
 	private Configuration config;
 	private FileSystem fs;
 	private Path logDir;
 	
 	public EventLogHdfsReaderImpl(Configuration config) throws IOException{
+		logger.debug("EventLogHdfsReaderImpl constructor");
+		
 		this.config = config;
 		String logPathStr = this.config.get("spark.eventLog.dir");
 		this.fs = FileSystem.get(this.config);
@@ -48,6 +52,8 @@ public class EventLogHdfsReaderImpl implements EventLogReader {
 	@Override
 	public Map<String, SparkEventLogBean> getAllInProgressLog()
 			throws Exception {
+		logger.info("getAllInProgressLog method");
+		
 		Map<String, SparkEventLogBean> allEventLogs = new LinkedHashMap<String, SparkEventLogBean>();
 		
 		PathFilter filter = new PathFilter(){
@@ -79,6 +85,8 @@ public class EventLogHdfsReaderImpl implements EventLogReader {
 	@Override
 	public SparkEventLogBean getInProgressLog(final String applicationId)
 			throws Exception {
+		logger.info("getInProgressLog method, applicationId = " + applicationId);
+		
 		PathFilter filter = new PathFilter(){
 			@Override
 		    public boolean accept(Path path){
@@ -108,6 +116,7 @@ public class EventLogHdfsReaderImpl implements EventLogReader {
 	
 	public SparkEventLogBean getHistoryStageDetails(final String applicationId) 
 			throws Exception{
+		logger.info("getHistoryStageDetails method, applicationId = " + applicationId);
 		PathFilter filter = new PathFilter() {
 			@Override
 			public boolean accept(Path path) {
@@ -143,6 +152,7 @@ public class EventLogHdfsReaderImpl implements EventLogReader {
 
 	@Override
 	public List<SparkEventLogBean> getAllSparkAppLog() throws Exception {
+		logger.info("getAllSparkAppLog method");
 		List<SparkEventLogBean> result = new ArrayList<SparkEventLogBean>();
 		
 		PathFilter filter = new PathFilter(){
@@ -180,6 +190,7 @@ public class EventLogHdfsReaderImpl implements EventLogReader {
 	@Override
 	public SparkEventLogBean getApplicationJobs(final String applicationId)
 			throws Exception {
+		logger.info("getApplicationJobs method, applicationId = " + applicationId);
 		PathFilter filter = new PathFilter(){
 			@Override
 		    public boolean accept(Path path){
@@ -212,6 +223,8 @@ public class EventLogHdfsReaderImpl implements EventLogReader {
 	@Override
 	public SparkEventLogBean getJobStages(final String applicationId, String jobId)
 			throws Exception {
+		logger.info("getJobStages method, applicationId = " + applicationId + " jobId = " + jobId);
+		
 		PathFilter filter = new PathFilter(){
 			@Override
 		    public boolean accept(Path path){
