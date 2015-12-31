@@ -23,6 +23,7 @@ public class TomcatJarFileLauncher {
 			"libs/tomcat-servlet-api-7.0.57.jar",
 			"libs/tomcat-api-7.0.57.jar",
 			"libs/tomcat-embed-core-7.0.57.jar",
+			"libs/tomcat-embed-jasper-7.0.57.jar",
 			"libs/tomcat-jsp-api-7.0.57.jar",
 			"libs/jersey-core-1.9.jar", 
 			"libs/jersey-server-1.9.jar",

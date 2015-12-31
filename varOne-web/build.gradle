@@ -4,16 +4,7 @@ dependencies {
     compile project(":varOne-node")
     compile 'org.slf4j:slf4j-log4j12:1.6.3'
     compile 'com.google.code.gson:gson:2.3'
-    compile('com.sun.jersey:jersey-json:1.9'){
-        exclude group: "com.sun.xml.bind", module: "jaxb-impl"
-    }
-
-    compile 'com.sun.jersey:jersey-server:1.9'
-
-    compile 'org.apache.tomcat:tomcat-catalina:7.0.57'
-    compile 'org.apache.tomcat:tomcat-jasper:7.0.57'
-    compile 'org.apache.tomcat:tomcat-jasper-el:7.0.57'
-    compile 'org.apache.tomcat:tomcat-jsp-api:7.0.57'
+  
 }
 
 war {
