@@ -27,7 +27,7 @@ public class TomcatServer {
 		   File tempdstJarPath = tomcatEnv.createVarOneTempJarPath();		   
 		   launcher.copyJarFileToTemp(tempdstJarPath.getAbsolutePath());
 		   
-		   File tempdstResourcePath = tomcatEnv.createVarOneTempJarPath();
+		   File tempdstResourcePath = tomcatEnv.createVarOneTempResourcePath();
 		   launcher.copyResourceFileToTemp(tempdstResourcePath.getAbsolutePath());
 
 		   launcher.dynamicLoadTomcatJar(tempdstJarPath);
