@@ -4,7 +4,6 @@
 package com.varone.web.resource;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -12,6 +11,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+
+import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.varone.web.facade.SparkMonitorFacade;
@@ -24,10 +25,15 @@ import com.varone.web.vo.DefaultTotalNodeVO;
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/cluster")
 public class ClusterResource {
+	private Logger logger = Logger.getLogger(ClusterResource.class.getName());
+	
 	@GET
 	@Path("/")
 	public String fetchClusterDashBoard(@QueryParam("metrics") String metrics, 
 			@QueryParam("period") String period) throws Exception{
+		logger.info("start fetchClusterDashBoard method ...");
+		logger.debug("metrics = " + metrics + " period = " + period);
+		
 		SparkMonitorFacade facade = new SparkMonitorFacade();
 		List<String> metricsAsList = new ArrayList<String>();
 		if(metrics != null){
@@ -40,6 +46,12 @@ public class ClusterResource {
 		
 		DefaultTotalNodeVO result = facade.getDefaultClusterDashBoard(metricsAsList, period);
 		Gson gson = new Gson();
-		return gson.toJson(result);
+		String toJson = gson.toJson(result);
+		
+		logger.debug("metricsAsList size = " + metricsAsList.size() + " period = " + period);
+		logger.debug(" toJson = " + toJson);
+		logger.info("finish fetchClusterDashBoard method ...");
+
+		return toJson;
 	}
 }
