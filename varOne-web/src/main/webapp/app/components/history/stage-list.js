@@ -44,13 +44,13 @@ class StageList extends React.Component {
         data={this.props.stages}
         striped={true}
         keyField="id">
-        <TableHeaderColumn dataField="id" width="5%">Stage ID</TableHeaderColumn>
+        <TableHeaderColumn dataField="id" width="75">Stage ID</TableHeaderColumn>
         <TableHeaderColumn dataField="description" dataFormat={this.stageNameFormatter}>Description</TableHeaderColumn>
-        <TableHeaderColumn dataField="submitTime" width="10%" dataFormat={this.timeUnitFormatter}>Submitted</TableHeaderColumn>
-        <TableHeaderColumn dataField="duration" width="10%" dataFormat={this.timeUnitFormatter}>Duration</TableHeaderColumn>
+        <TableHeaderColumn dataField="submitTime" dataFormat={this.timeUnitFormatter}>Submitted</TableHeaderColumn>
+        <TableHeaderColumn dataField="duration" dataFormat={this.timeUnitFormatter}>Duration</TableHeaderColumn>
         <TableHeaderColumn dataField="tasksSuccessVSTotal" dataFormat={this.taskFormatter}>Tasks: Succeeded/Total</TableHeaderColumn>
-        <TableHeaderColumn dataField="readAmount" width="9%">Input</TableHeaderColumn>
-        <TableHeaderColumn dataField="writeAmount" width="9%">Ouput</TableHeaderColumn>
+        <TableHeaderColumn dataField="readAmount">Input</TableHeaderColumn>
+        <TableHeaderColumn dataField="writeAmount">Ouput</TableHeaderColumn>
       </BootstrapTable>
     );
   }

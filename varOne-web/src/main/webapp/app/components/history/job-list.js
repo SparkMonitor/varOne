@@ -45,7 +45,7 @@ class JobList extends React.Component {
   timeUnitFormatter = (cell, row) => {
 	 return millis_format(cell);
   }
-  
+
   render(){
 
     return(
@@ -53,10 +53,10 @@ class JobList extends React.Component {
         data={this.props.jobs}
         striped={true}
         keyField="id">
-        <TableHeaderColumn dataField="id" width="5%">Job ID</TableHeaderColumn>
+        <TableHeaderColumn dataField="id" width="60">Job ID</TableHeaderColumn>
         <TableHeaderColumn dataField="description" dataFormat={this.jobNameFormatter}>Description</TableHeaderColumn>
-        <TableHeaderColumn dataField="submitTime" width="10%" dataFormat={this.dateUnitFormatter}>Submitted</TableHeaderColumn>
-        <TableHeaderColumn dataField="duration" width="10%" dataFormat={this.timeUnitFormatter}>Duration</TableHeaderColumn>
+        <TableHeaderColumn dataField="submitTime" dataFormat={this.dateUnitFormatter}>Submitted</TableHeaderColumn>
+        <TableHeaderColumn dataField="duration" dataFormat={this.timeUnitFormatter}>Duration</TableHeaderColumn>
         <TableHeaderColumn dataField="stagesSuccessVSTotal" dataFormat={this.stageFormatter}>Stages: Succeeded/Total</TableHeaderColumn>
         <TableHeaderColumn dataField="tasksSuccessVSTotal" dataFormat={this.taskFormatter}>Tasks (for all stages): Succeeded/Total</TableHeaderColumn>
       </BootstrapTable>
