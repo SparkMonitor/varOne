@@ -43,6 +43,11 @@ export default {
       loaders: [
         { test: /\.js$/, loaders: ['react-hot', 'babel'], exclude: /node_modules/},/*,
         { test: /\.scss$/, loader: "style-loader!css-loader!sass-loader?includePaths[]="+BS_ASSETS }*/
+        {
+          test: /\.(jpe?g|png|gif|svg|woff|woff2|eot|ttf)(\?v=[0-9].[0-9].[0-9])?$/,
+          loader: 'file?name=[sha512:hash:base64:7].[ext]',
+          exclude: /node_modules\/(?!font-awesome)/
+        },
         {test: /\.less$/, loader: 'style-loader!css-loader!less-loader'},
         {test: /\.css$/, loader: 'style-loader!css-loader'}
       ]

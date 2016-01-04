@@ -19,9 +19,20 @@ export default function (stats) {
       .map(chunk => `${publicPath}${chunk}`);
   }
 
-  let scripts = getTrunk("main", /js/);
+  const scripts = getTrunk("main", /js/);
+  const style = getChunks('app', /css/);
 
-  const content = {scripts};
+  const imagesRegex = /\.(jpe?g|png|gif|svg)$/;
+  const images = json.modules
+    .filter(module => imagesRegex.test(module.name))
+    .map(image => {
+      return {
+        original: image.name,
+        compiled: `${publicPath}${image.assets[0]}`
+      };
+    });
+
+  const content = { script, style, images };
   fs.writeFileSync(filepath, JSON.stringify(content));
   debug('dev')('`webpack-stats.json` updated');
 }
