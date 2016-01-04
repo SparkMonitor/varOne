@@ -4,9 +4,9 @@ import java.io.File;
 
 import org.apache.commons.io.FileUtils;
 
-import com.varone.web.util.VarOneEnv;
-
 public class TomcatEnv {
+	
+	public static String VARONE_HOME_NAME = ".varone";
 	public static String WEBAPPROOTNAME = "varOne-web";
 	public static String WAR = "war";
 	public static String TEMPJAR = "jar";
@@ -70,8 +70,13 @@ public class TomcatEnv {
 	}
 	
 	private String getVarOneHomePath(){
-		VarOneEnv varOneEnv = new VarOneEnv();
-		return varOneEnv.getVarOneHomePath().getAbsolutePath();
+		return this.getVarOneHomePath(System.getProperty("user.home"), VARONE_HOME_NAME).toString();
+	}
+	
+	private File getVarOneHomePath(String homeDir, String homeName){
+		File homePath = new File(new File(homeDir), homeName);
+		this.mkdir(homePath);
+		return homePath;
 	}
 	
 	private void mkdir(File folderPath){

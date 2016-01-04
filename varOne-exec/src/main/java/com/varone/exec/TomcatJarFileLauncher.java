@@ -8,6 +8,9 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -20,6 +23,7 @@ public class TomcatJarFileLauncher {
 			"libs/tomcat-servlet-api-7.0.57.jar",
 			"libs/tomcat-api-7.0.57.jar",
 			"libs/tomcat-embed-core-7.0.57.jar",
+			"libs/tomcat-embed-jasper-7.0.57.jar",
 			"libs/tomcat-jsp-api-7.0.57.jar",
 			"libs/jersey-core-1.9.jar", 
 			"libs/jersey-server-1.9.jar",
@@ -28,7 +32,7 @@ public class TomcatJarFileLauncher {
 			"libs/commons-io-2.4.jar"
 	};
 	
-	private final String[] resourcePath = {"WEB-INF/classes/varOne.properties"};
+	private final String resourcePath = "WEB-INF/classes";
 
 	private final String[] tomcatContextFile = {"conf/context.xml"};
 	
@@ -46,9 +50,20 @@ public class TomcatJarFileLauncher {
 		return this.tomcatContextFile;
 	}
 	
-	public String[] copyResourceFileToTemp(String tempdstResourcePath) throws IOException {
-		this.copyFileToTemp(tempdstResourcePath, resourcePath);
-		return this.resourcePath;
+	public Object[] copyResourceFileToTemp(String tempdstResourcePath) throws IOException {
+		List<String> resourceFilePath = new ArrayList<String>();
+		JarFile jarFile = new JarFile(this.warFilePath);
+		Enumeration<JarEntry> jarEntryList = jarFile.entries();
+		while(jarEntryList.hasMoreElements()){
+			JarEntry jarEntry = jarEntryList.nextElement();
+			String fileName = jarEntry.getName();
+			if(!jarEntry.isDirectory() && fileName.contains(resourcePath) && !fileName.endsWith(".class")){
+				resourceFilePath.add(fileName);
+			}
+		}
+		Object []resourceFileArray = resourceFilePath.toArray();
+		this.copyFileToTemp(tempdstResourcePath, resourceFileArray);
+		return resourceFileArray;
 	}
 	
 
@@ -84,13 +99,13 @@ public class TomcatJarFileLauncher {
         }
 	}
 	
-	private void copyFileToTemp(String tempdstPath, String[] srcJars) throws IOException{
+	private void copyFileToTemp(String tempdstPath, Object[] srcJars) throws IOException{
 		JarFile jarFile = new JarFile(this.warFilePath);
-		for(String tomcatJar : srcJars){
-			JarEntry jarEntry = jarFile.getJarEntry(tomcatJar);
+		for(Object tomcatJar : srcJars){
+			JarEntry jarEntry = jarFile.getJarEntry(tomcatJar.toString());
 			InputStream inStream = jarFile.getInputStream(jarEntry);
 				
-			OutputStream outStream = new FileOutputStream(new File(tempdstPath, new File(tomcatJar).getName()));
+			OutputStream outStream = new FileOutputStream(new File(tempdstPath, new File(tomcatJar.toString()).getName()));
 			byte[] buffer = new byte[8192];
 			int readLength;
 			while((readLength = inStream.read(buffer)) > 0){

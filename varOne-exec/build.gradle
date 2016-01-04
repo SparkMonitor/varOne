@@ -3,7 +3,16 @@ dependencies {
     compile 'org.apache.tomcat.embed:tomcat-embed-core:7.0.57'
     compile 'org.apache.tomcat.embed:tomcat-embed-logging-juli:7.0.57'
     compile 'org.apache.tomcat.embed:tomcat-embed-jasper:7.0.57'
-    compile project(":varOne-web")
+    compile 'org.apache.tomcat:tomcat-catalina:7.0.57'
+    compile('com.sun.jersey:jersey-json:1.9'){
+        exclude group: "com.sun.xml.bind", module: "jaxb-impl"
+    }
+    compile 'com.sun.jersey:jersey-server:1.9'
+    compile 'org.apache.tomcat:tomcat-jasper:7.0.57'
+    compile 'org.apache.tomcat:tomcat-jasper-el:7.0.57'
+    compile 'org.apache.tomcat:tomcat-jsp-api:7.0.57'
+    compile 'commons-io:commons-io:2.4'
+    compile 'commons-cli:commons-cli:1.2'
 }
 jar {
     manifest {
