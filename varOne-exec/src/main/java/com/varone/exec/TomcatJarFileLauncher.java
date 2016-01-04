@@ -79,7 +79,6 @@ public class TomcatJarFileLauncher {
         method.setAccessible(true);
        // method.invoke(classLoader, new Object[] { url });
        // File file = new File("/home/user1/varoneconf");
-        System.out.println("Resource Path:" + tempResourcePath.getAbsoluteFile().toString());
         File file = new File(tempResourcePath.getAbsoluteFile().toString());
         method.invoke(classLoader, new Object[] {file.toURI().toURL()});
        

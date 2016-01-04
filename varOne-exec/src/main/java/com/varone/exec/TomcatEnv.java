@@ -36,6 +36,18 @@ public class TomcatEnv {
 		}
 	}
 	
+	public File deleteVarOneResourcePath() {
+		try{
+			File resourcePath = getVarOneTempResourcePath();
+			if(resourcePath.getAbsoluteFile().exists()){
+				FileUtils.deleteDirectory(resourcePath);
+			}
+			return resourcePath;
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}
+	}
+	
 	public File getVarOneTempJarPath(){
 		File jarPath = new File(this.getVarOneHomePath(), TEMPJAR);
 		return jarPath;
