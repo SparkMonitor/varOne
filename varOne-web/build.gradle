@@ -7,14 +7,24 @@ dependencies {
     compile('com.sun.jersey:jersey-json:1.9'){
         exclude group: "com.sun.xml.bind", module: "jaxb-impl"
     }
-  
+
 }
 
 war {
+    exec {
+       executable "sh"
+
+       String arg1 = new File(project(':varOne-web').rootDir, '/varOne-web/src/main/resources/runnpm.sh');
+
+       String arg2 = new File(project(':varOne-web').rootDir, '/varOne-web/src/main/webapp')
+       String command = arg1 + " " + arg2
+       args "-c", command
+    }
+
     manifest {
         attributes 'Main-Class': 'com.varone.exec.TomcatServer'
     }
-    
+
     from new File(project(':varOne-exec').buildDir, 'classes/main/')
     from new File(project(':varOne-web').buildDir, 'classes/main/')
     from new File(project(':varOne-node').buildDir, 'classes/main/')
@@ -29,17 +39,18 @@ war {
         from new File(project(':varOne-exec').buildDir, 'resources/main/context.xml')
     }
 
+    println "hello world"
+
     exclude('**/node_modules')
     exclude('**/webpack')
-    exclude('**/app')
-}
+    exclude('**/app');
+    exclude('**/build')
+    exclude('.babelrc')
+    exclude('.bootstraprc')
+    exclude('karma.conf.js')
+    exclude('package.json')
 
-exec {
-   executable "sh"
-   
-   String arg1 = new File(project(':varOne-web').rootDir, '/varOne-web/src/main/resources/runnpm.sh');
+    from('src/main/webapp/dist')
 
-   String arg2 = new File(project(':varOne-web').rootDir, '/varOne-web/src/main/webapp')
-   String command = arg1 + " " + arg2
-   args "-c", command
+    exclude('dist')
 }
