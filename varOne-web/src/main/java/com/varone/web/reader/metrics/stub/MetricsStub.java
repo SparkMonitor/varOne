@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.log4j.Logger;
 
 import com.varone.hadoop.rpc.metrics.MetricsServiceRequest;
 import com.varone.hadoop.rpc.metrics.MetricsServiceResponse;
@@ -20,6 +21,7 @@ import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
  *
  */
 public class MetricsStub implements Runnable{
+	private Logger logger = Logger.getLogger(MetricsStub.class.getName());
 	
 	private String address;
 	private int port;
@@ -31,6 +33,10 @@ public class MetricsStub implements Runnable{
 	public MetricsStub(String address, int port, 
 			String applicationId, List<MetricsTypeProto> metricsType, 
 			RpcThreadListener rpcThreadListener) {
+		logger.debug("MetricsStub constructor, address=" + address + " port=" + port 
+		          + " applicationId=" + applicationId + " metricsTypeSize=" + metricsType.size() 
+		          + " rpcThreadLister is complete=" + rpcThreadListener.isAllComplete());
+		
 		this.port = port;
 		this.address = address;
 		this.metricsType = metricsType;
@@ -41,6 +47,9 @@ public class MetricsStub implements Runnable{
 	
 	public MetricsStub(String address, int port, 
 			String applicationId, List<MetricsTypeProto> metricsType) {
+		logger.debug("MetricsStub constructor, address=" + address + " port=" + port 
+				          + " applicationId=" + applicationId + " metricsTypeSize=" + metricsType.size());
+		
 		this.port = port;
 		this.address = address;
 		this.metricsType = metricsType;
@@ -55,6 +64,7 @@ public class MetricsStub implements Runnable{
 
 	@Override
 	public void run() {
+		logger.info("run method");
 		Configuration config = new Configuration();
 		MetricsServicePBClientImpl client;
 		try {
@@ -65,16 +75,20 @@ public class MetricsStub implements Runnable{
 			
 			this.response = client.getMetrics(request);
 		} catch (IOException e) {
+			logger.error(e);
 			e.printStackTrace();
 		} catch (Exception e) {
+			logger.error(e);
 			e.printStackTrace();
 		} finally {
+			logger.info("finally run method");
 			if(this.listener != null)
 				this.listener.decreaseRpcThreadCount();
 		}
 	}
 	
 	public String hostName(){
+		logger.info("MetricsStub hostName Method, hostName=" + this.address);
 		return this.address;
 	}
 }

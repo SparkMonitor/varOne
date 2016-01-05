@@ -28,6 +28,7 @@ public class TomcatJarFileLauncher {
 			"libs/jersey-core-1.9.jar", 
 			"libs/jersey-server-1.9.jar",
 			"libs/asm-3.1.jar", 
+			"libs/log4j-1.2.17.jar",
 			"libs/commons-cli-1.2.jar",
 			"libs/commons-io-2.4.jar"
 	};
@@ -78,7 +79,6 @@ public class TomcatJarFileLauncher {
         method.setAccessible(true);
        // method.invoke(classLoader, new Object[] { url });
        // File file = new File("/home/user1/varoneconf");
-        System.out.println("Resource Path:" + tempResourcePath.getAbsoluteFile().toString());
         File file = new File(tempResourcePath.getAbsoluteFile().toString());
         method.invoke(classLoader, new Object[] {file.toURI().toURL()});
        

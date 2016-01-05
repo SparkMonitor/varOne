@@ -4,7 +4,6 @@
 package com.varone.web.resource;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +14,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+
+import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.varone.web.facade.SparkMonitorFacade;
@@ -27,19 +28,26 @@ import com.varone.web.vo.DefaultApplicationVO;
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/job")
 public class JobResource {
+	private Logger logger = Logger.getLogger(JobResource.class.getName());
 	@GET
 	@Path("/")
 	public String fetchRunngingJobs(@Context HttpServletRequest request) throws Exception{
+		logger.info("start fetchRunningJobs method ...");
 		SparkMonitorFacade facade = new SparkMonitorFacade();
 		List<String> runningJobs = facade.getRunningJobs();
 		Gson gson = new Gson();
-		return gson.toJson(runningJobs);
+		String toJson = gson.toJson(runningJobs);
+		logger.debug("toJson = " + toJson);
+		logger.info("finish fetchRunningJobs method ...");
+		return toJson;
 	}
 	
 	@GET
 	@Path("/{applicationId}")
 	public String fetchJob(@PathParam("applicationId") String applicationId, 
 			@QueryParam("metrics") String metrics, @QueryParam("period") String period) throws Exception{
+		logger.info("start fetchJob method ...");
+		logger.debug("applicationId = " + applicationId + " metrics = " + metrics + " period = " + period);
 		SparkMonitorFacade facade = new SparkMonitorFacade();
 		List<String> metricsAsList = new ArrayList<String>();
 		if(metrics != null){
@@ -52,6 +60,9 @@ public class JobResource {
 		}
 		DefaultApplicationVO result = facade.getJobDashBoard(applicationId, metricsAsList, period);
 		Gson gson = new Gson();
-		return gson.toJson(result);
+		String toJson =  gson.toJson(result);
+		logger.debug("toJson = " + toJson);
+		logger.info("finish fetchJob method ...");
+		return toJson;
 	}
 }

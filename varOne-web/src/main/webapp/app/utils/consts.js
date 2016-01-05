@@ -47,9 +47,9 @@ export default {
     {name: 'HDFS file read ops', value: 'EXEC_FS_HDFS_READ_OPS'},
 
     {name: 'Local file write bytes', value: 'EXEC_FS_LOCAL_WRITE_BYTES'},
-    {name: 'Local file write bytes', value: 'EXEC_FS_LOCAL_WRITE_OPS'},
+    {name: 'Local file write ops', value: 'EXEC_FS_LOCAL_WRITE_OPS'},
     {name: 'HDFS file write bytes', value: 'EXEC_FS_HDFS_WRITE_BYTES'},
-    {name: 'HDFS file write bytes', value: 'EXEC_FS_HDFS_WRITE_OPS'},
+    {name: 'HDFS file write ops', value: 'EXEC_FS_HDFS_WRITE_OPS'},
 
     {name: 'Thread pool active tasks', value: 'EXEC_THREADPOOL_ACTIVETASK'},
     {name: 'Thread pool complete tasks', value: 'EXEC_THREADPOOL_COMPLETETASK'},

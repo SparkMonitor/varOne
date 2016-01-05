@@ -4,6 +4,9 @@ dependencies {
     compile project(":varOne-node")
     compile 'org.slf4j:slf4j-log4j12:1.6.3'
     compile 'com.google.code.gson:gson:2.3'
+    compile('com.sun.jersey:jersey-json:1.9'){
+        exclude group: "com.sun.xml.bind", module: "jaxb-impl"
+    }
   
 }
 
@@ -25,6 +28,10 @@ war {
     into(new File('conf')){
         from new File(project(':varOne-exec').buildDir, 'resources/main/context.xml')
     }
+
+    exclude('**/node_modules')
+    exclude('**/webpack')
+    exclude('**/app')
 }
 
 exec {

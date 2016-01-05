@@ -10,6 +10,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author allen
  *
@@ -17,6 +19,7 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/test")
 public class TestRest {
+	private Logger logger = Logger.getLogger(TestRest.class.getName());
 
 	/**
 	 * 
@@ -28,6 +31,7 @@ public class TestRest {
 	@GET
 	@Path("/")
 	public String test(@Context HttpServletRequest request){
+		logger.info("Hello Allen");
 		return "{\"name\":\"Allen\"}";
 	}
 	

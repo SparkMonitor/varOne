@@ -26,16 +26,27 @@ public class TomcatServer {
 		   
 		   File tempdstJarPath = tomcatEnv.createVarOneTempJarPath();		   
 		   launcher.copyJarFileToTemp(tempdstJarPath.getAbsolutePath());
-		   
-		   File tempdstResourcePath = tomcatEnv.createVarOneTempResourcePath();
-		   launcher.copyResourceFileToTemp(tempdstResourcePath.getAbsolutePath());
-
+		  
+		  
 		   launcher.dynamicLoadTomcatJar(tempdstJarPath);
-		   launcher.dynamicLoadTomcatResource(tempdstResourcePath);
-
+		   
+		   File tempdstResourcePath = tomcatEnv.getVarOneTempResourcePath();
+		   if(tempdstResourcePath.exists()){
+			   tomcatEnv.deleteVarOneResourcePath();
+		   }
+		   tomcatEnv.createVarOneTempResourcePath();
+		   
+		   launcher.copyResourceFileToTemp(tempdstResourcePath.getAbsolutePath());
 		   CommandLine cmd = TomcatServer.parseCommand(args);
 		   int port = Integer.parseInt(cmd.getOptionValue("p", "8080"));
-			
+		   String log4jProperties = cmd.getOptionValue("l"); 
+		   if(log4jProperties != null){
+		   	  launcher.dynamicLoadTomcatResource(new File(log4jProperties));
+		   }
+		   launcher.dynamicLoadTomcatResource(tempdstResourcePath);
+
+		
+		   
 		   Tomcat tomcat = new Tomcat();
 		   
 		   File warPath = tomcatEnv.getVarOneWarPath();
@@ -80,7 +91,8 @@ public class TomcatServer {
 		try{
 		   formatter = new HelpFormatter();
 		   options = new Options();
-		   options.addOption("p", "port", true, "enter port number");
+		   options.addOption("p", "port", true, "enter web port number");
+		   options.addOption("l", "log4j", true, "log4j.properties folder path");
 		   PosixParser parser = new PosixParser();
 		   return parser.parse(options, args);
 		}catch(Exception e){

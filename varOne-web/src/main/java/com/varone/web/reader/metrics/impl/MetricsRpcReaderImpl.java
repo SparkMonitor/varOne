@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
+
 import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto;
 import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsResponseProto.MetricsMapProto.TupleProto;
 import com.varone.hadoop.rpc.protos.MetricsProtos.MetricsTypeProto;
@@ -23,13 +25,17 @@ import com.varone.web.reader.metrics.stub.MetricsStubCenter;
  *
  */
 public class MetricsRpcReaderImpl implements MetricsReader {
+	private Logger logger = Logger.getLogger(MetricsRpcReaderImpl.class.getName());
+	
 	private MetricsStubCenter stubCenter;
 
 	public MetricsRpcReaderImpl(String port) {
+		logger.debug("MetricsRpcReaderImpl constructor, port = " + port);
 		this.stubCenter = new MetricsStubCenter(port);
 	}
 	
 	public MetricsRpcReaderImpl(List<String> nodes, String port) {
+		logger.debug("MetricsRpcReaderImpl constructor, nodes size = " + nodes.size() + " port = " + port);
 		this.stubCenter = new MetricsStubCenter(nodes, port);
 	}
 
@@ -39,6 +45,9 @@ public class MetricsRpcReaderImpl implements MetricsReader {
 	@Override
 	public List<NodeBean> getAllNodeMetrics(String applicationId,
 			List<String> metricsType) throws Exception {
+		logger.info("getAllNodeMetrics method, applicationId = " + applicationId + 
+				    " metricsType = " + metricsType.size());
+		
 		MetricsDataTransfer metricsTransfer = new MetricsDataTransfer();
 		List<MetricsTypeProto> encodeMetricsType = metricsTransfer.encodeMetricsType(metricsType);
 		
@@ -73,6 +82,9 @@ public class MetricsRpcReaderImpl implements MetricsReader {
 	@Override
 	public NodeBean getNodeMetrics(String node, 
 			String applicationId, List<String> metricsType) throws Exception {
+		logger.info("getNodeMetrics method, node = " + node + " applicationId = " + applicationId + 
+				    " metricsType size = " + metricsType.size());
+		
 		MetricsDataTransfer metricsTransfer = new MetricsDataTransfer();
 		List<MetricsTypeProto> encodeMetricsType = metricsTransfer.encodeMetricsType(metricsType);
 		
