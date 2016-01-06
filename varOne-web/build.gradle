@@ -38,7 +38,9 @@ war {
     into(new File('conf')){
         from new File(project(':varOne-exec').buildDir, 'resources/main/context.xml')
     }
-
+    into(new File('conf')){
+        from new File(project(':varOne-exec').buildDir, 'resources/main/server.xml')
+    }
     exclude('**/node_modules')
     exclude('**/webpack')
     exclude('**/app');

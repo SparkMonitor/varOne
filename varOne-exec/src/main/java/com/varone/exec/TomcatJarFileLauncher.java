@@ -35,7 +35,7 @@ public class TomcatJarFileLauncher {
 	
 	private final String resourcePath = "WEB-INF/classes";
 
-	private final String[] tomcatContextFile = {"conf/context.xml"};
+	private final String[] tomcatContextFile = {"conf/context.xml", "conf/server.xml"};
 	
 	public TomcatJarFileLauncher(String warFilePath){
 		this.warFilePath = warFilePath;
