@@ -26,7 +26,7 @@ executor.source.jvm.class=org.apache.spark.metrics.source.JvmSource</br>
 
 ### a. Download
 
-Click [here](http://sparkmonitor.github.io/varOne/varOne.zip) to download ```varOne-0.1.0-beta```
+Click [here](http://sparkmonitor.github.io/varOne/varOne-0.1.0-beta.zip) to download ```varOne-0.1.0-beta```
 
 ### b. Start varOne daemond
 Deploy the ```varOned-{version}.jar``` to each node in your cluster and start it by following command:
