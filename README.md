@@ -44,7 +44,7 @@ Before start varOne server, make sure the following configuration files exist in
 
 Start up the varOne RESTful server by following command:
 ```bash
-$ java -jar varOne-web-{version}.jar -p {PORT} -l {LOG_DIR}
+$ java -jar varOne-web-{version}.war -p {PORT} -l {LOG_DIR}
 ```
 > **Notes:**   
 >     
@@ -113,6 +113,6 @@ Run the following command for package varOne as production
 $ cd varOne
 $ gradle clean build shadowJar 
 ```
-After it, 
+After it,   
 The <code>varOne-web-{version}.war</code> generated in varOne-web/build/libs   
 The <code>varOned-{version}.jar</code> generated in varOne-node/build/libs
