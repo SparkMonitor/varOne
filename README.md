@@ -25,6 +25,7 @@ driver.source.jvm.class=org.apache.spark.metrics.source.JvmSource</br>
 executor.source.jvm.class=org.apache.spark.metrics.source.JvmSource</br>
 </div>
 
+> ** Notes **
 > ```metrics.properties``` exists in **$SPARK_HOME/conf**.
 
 
@@ -34,9 +35,9 @@ Deploy the ```varOned-{version}.jar``` to each node in your cluster and start it
 ```bash
 $ java -jar varOned-{version}.jar -d {SPARK_CONF_PATH} -p {PORT}
 ```
-
-> *SPARK_CONF_PATH*(required) is the path of **$SPARK_HOME/conf** and make sure ```metrics.properties``` exists in that folder.
-> *PORT*(required) is the port number for varOne daemond.
+> ** Notes **
+> **SPARK_CONF_PATH(required)** is the path of **$SPARK_HOME/conf** and make sure ```metrics.properties``` exists in that folder.
+> **PORT(required)** is the port number for varOne daemond.
 
 ### c. Start varOne server
 Before start varOne server, make sure the following configuration files exist in **$HOME/.varOne/conf**
@@ -49,6 +50,7 @@ Start up the varOne RESTful server by following command:
 ```bash
 $ java -jar varOne-web-{version}.jar -p {PORT} -l {LOG_DIR}
 ```
+> ** Notes **
 > *PORT*(optional) is the port number for varOne web server, default is 8080.
 > *LOG_DIR*(optional) is the directory which placed your custom log4j.properties.
 
