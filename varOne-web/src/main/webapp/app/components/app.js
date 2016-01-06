@@ -11,9 +11,8 @@ import connectToStores from 'alt/utils/connectToStores';
 class App extends React.Component {
 
   static propTypes = {
-    msg: React.PropTypes.string,
     port: React.PropTypes.string,
-    inputPort: React.PropTypes.string
+    fromUserClick: React.PropTypes.bool
   }
 
   static getStores(props) {
@@ -43,7 +42,9 @@ class App extends React.Component {
         </div>
       );
     } else {
-      $('#varOneConfigModal').modal('hide');
+      if(!this.props.fromUserClick) {
+        $('#varOneConfigModal').modal('hide');
+      }
       content = <Home />;
     }
 

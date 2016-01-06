@@ -4,6 +4,7 @@ class VarOneAction {
 
   constructor() {
     this.generateActions('changePort');
+    this.generateActions('changeStatus');
   }
 
   async fetchVarOneConfig() {

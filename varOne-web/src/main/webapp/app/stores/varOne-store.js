@@ -9,6 +9,7 @@ class VarOneStore {
     this.port = null;
     this.msg = null;
     this.inputPort = null;
+    this.fromUserClick = false;
   }
 
   onChangePort(port) {
@@ -29,6 +30,10 @@ class VarOneStore {
     } else {
       this.msg = error;
     }
+  }
+
+  onChangeStatus() {
+    this.fromUserClick = true;
   }
 
 }
