@@ -13,7 +13,7 @@
         </servlet-class>
 		<init-param>
 		     <param-name>com.sun.jersey.config.property.packages</param-name>
-		     <param-value>com.haredb.sparkmonitor.resource</param-value>
+		     <param-value>com.varone.web.resource</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
@@ -27,4 +27,8 @@
 	<session-config>
 		<session-timeout>-1</session-timeout>
 	</session-config>
+	
+	<listener>
+		<listener-class>com.varone.web.listener.VarOneServletContextListener</listener-class>
+	</listener>
 </web-app>

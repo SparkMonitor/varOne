@@ -1,4 +1,7 @@
+require('../../../node_modules/metismenu/dist/metisMenu.min.css');
+
 import React from 'react';
+import metisMenu from 'metismenu';
 
 export default class Menu extends React.Component {
 

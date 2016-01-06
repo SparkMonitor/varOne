@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+
+  <property>
+     <name>fs.defaultFS</name>
+     <value>hdfs://server-a1:9000</value>
+  </property>
+
+  <property>
+      <name>hadoop.tmp.dir</name>
+      <value>/dfs/1/tmp</value>
+  </property>
+
+
+
+<!-- for nfs setting -->
+  
+
+<property>
+  <name>hadoop.proxyuser.nfsserver.groups</name>
+  <value>*</value>
+  <description>
+         The 'nfsserver' user is allowed to proxy all members of the 'nfs-users1' and 
+         'nfs-users2' groups. Set this to '*' to allow nfsserver user to proxy any group.
+  </description>
+</property>
+
+<property>
+  <name>hadoop.proxyuser.nfsserver.hosts</name>
+  <value>*</value>
+  <description>
+         This is the host where the nfs gateway is running. Set this to '*' to allow
+         requests from any hosts to be proxied.
+  </description>
+</property>
+
+</configuration>

@@ -7,40 +7,49 @@ class JobStore {
   constructor(){
     this.bindActions(JobAction);
 		this.data = null;
+    this.period = Const.shared.timeperiod[0];
   }
 
-  onFetchJobDashBoard(result){
+  onFetchJobDashBoard({ result, period }){
     let data = {};
     data.metrics = {};
 
     result.metricProps.forEach(metric => {
+      let isCollectX = false;
       data.metrics[metric.property] = {};
       data.metrics[metric.property].id = metric.property;
       data.metrics[metric.property].title = metric.title;
       data.metrics[metric.property].value = [];
+      data.metrics[metric.property].x = ['x'];
+      data.metrics[metric.property].format = metric.format;
       let host2Metrics = result.propToMetrics[metric.property];
       for(let host in host2Metrics){
-        data.metrics[metric.property].value.push({
-          x: host,
-          y: host2Metrics[host]
-        });
+        let metricsValues = [host];
+        for(let i=0;i<host2Metrics[host].length;i++){
+          if(!isCollectX){
+            data.metrics[metric.property].x.push(
+              parseInt(host2Metrics[host][i].time)
+            );
+          }
+          metricsValues.push(host2Metrics[host][i].value);
+        }
+        isCollectX = true;
+        data.metrics[metric.property].value.push(metricsValues);
       }
     });
 
     var taskDounts = [];
     for(let host in result.taskStartedNumByNode){
-      taskDounts.push({
-        label: host,
-        value: result.taskStartedNumByNode[host]
-      });
+      taskDounts.push([
+        host,result.taskStartedNumByNode[host]
+      ]);
     }
 
     var executorDounts = [];
     for(let host in result.executorNumByNode){
-      executorDounts.push({
-        label: host,
-        value: result.executorNumByNode[host]
-      });
+      executorDounts.push([
+        host,result.executorNumByNode[host]
+      ]);
     }
 
     var displaySummaryInfo = [{
@@ -71,6 +80,7 @@ class JobStore {
     data.taskStartedNumByNode = taskDounts;
     data.executorNumByNode    = executorDounts;
     this.data = data;
+    this.period = period;
   }
 
 }

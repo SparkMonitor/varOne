@@ -1,0 +1,253 @@
+/**
+ * 
+ */
+package com.varone.web.facade;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.hadoop.conf.Configuration;
+
+import com.varone.node.MetricsProperties;
+import com.varone.node.MetricsType;
+import com.varone.web.aggregator.UIDataAggregator;
+import com.varone.web.aggregator.timeperiod.TimePeriodHandler;
+import com.varone.web.eventlog.bean.SparkEventLogBean;
+import com.varone.web.eventlog.bean.SparkEventLogBean.AppStart;
+import com.varone.web.form.VarOneConfigForm;
+import com.varone.web.metrics.bean.MetricBean;
+import com.varone.web.metrics.bean.NodeBean;
+import com.varone.web.reader.eventlog.EventLogReader;
+import com.varone.web.reader.eventlog.impl.EventLogHdfsReaderImpl;
+import com.varone.web.reader.metrics.MetricsReader;
+import com.varone.web.reader.metrics.impl.MetricsRpcReaderImpl;
+import com.varone.web.util.VarOneConfiguration;
+import com.varone.web.vo.DefaultApplicationVO;
+import com.varone.web.vo.DefaultNodeVO;
+import com.varone.web.vo.DefaultTotalNodeVO;
+import com.varone.web.vo.HistoryDetailStageVO;
+import com.varone.web.vo.HistoryVO;
+import com.varone.web.vo.JobVO;
+import com.varone.web.vo.StageVO;
+import com.varone.web.vo.UpdateStatusVO;
+import com.varone.web.vo.VarOneConfigVO;
+import com.varone.web.yarn.service.YarnService;
+
+/**
+ * @author allen
+ *
+ */
+public class SparkMonitorFacade {
+	
+	private String varOneNodePort;
+	private Configuration config;
+	private MetricsProperties metricsProperties;
+	VarOneConfiguration varOneConf;
+	
+	public SparkMonitorFacade() throws IOException {
+		this.varOneConf = new VarOneConfiguration();
+		this.varOneNodePort = this.varOneConf.getVarOneNodePort();
+		this.config = varOneConf.loadHadoopConfiguration();
+		this.metricsProperties = varOneConf.loadMetricsConfiguration();
+	}
+	
+	public DefaultTotalNodeVO getDefaultClusterDashBoard(List<String> metrics, String periodExpression) throws Exception{
+		DefaultTotalNodeVO result = null;
+		TimePeriodHandler timePeriodHandler = new TimePeriodHandler(this.metricsProperties);
+		YarnService yarnService = new YarnService(this.config);
+				
+		Map<String, List<NodeBean>> nodeMetricsByAppId = new LinkedHashMap<String, List<NodeBean>>();
+		
+		try {
+			long[] startAndEndTime = timePeriodHandler.transferToLongPeriod(periodExpression);
+			List<String> allNodeHost = yarnService.getAllNodeHost();
+			int runningAppNum = yarnService.getRunningSparkApplications().size();
+			List<String> periodSparkAppId = yarnService.getSparkApplicationsByPeriod(startAndEndTime[0], startAndEndTime[1]);
+			
+			EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
+			MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost, this.varOneNodePort); 
+			
+			List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
+			
+			for(String applicationId: periodSparkAppId){				
+				List<NodeBean> allNodeMetrics = metricsReader.getAllNodeMetrics(applicationId, metrics);
+				for(NodeBean nodeBean: allNodeMetrics){
+					for(MetricBean metricBean: nodeBean.getMetrics()){
+						metricBean.setValues(timePeriodHandler.ingestPeriodData(
+								metricBean.getValues(), plotPointInPeriod));
+					}
+				}
+				nodeMetricsByAppId.put(applicationId, allNodeMetrics);
+			}
+			
+			Map<String, SparkEventLogBean> inProgressEventLogByAppId = eventLogReader.getAllInProgressLog();
+			
+			result = new UIDataAggregator().aggregateClusterDashBoard(metrics, runningAppNum, periodSparkAppId, allNodeHost, 
+							nodeMetricsByAppId, inProgressEventLogByAppId, plotPointInPeriod);
+			
+		} finally{
+			yarnService.close();
+		}
+		
+		return result;
+	}
+	
+	
+	public DefaultApplicationVO getJobDashBoard(String applicationId, 
+			List<String> metrics, String periodExpression) throws Exception{
+		DefaultApplicationVO result = null;
+		YarnService yarnService = new YarnService(this.config);
+		TimePeriodHandler timePeriodHandler = new TimePeriodHandler(this.metricsProperties);
+		
+		if(!metrics.contains(MetricsType.EXEC_THREADPOOL_COMPLETETASK))
+			metrics.add(MetricsType.EXEC_THREADPOOL_COMPLETETASK.name());
+		
+		try{
+			List<String> allNodeHost = yarnService.getAllNodeHost();
+			
+			if(yarnService.isStartRunningSparkApplication(applicationId)){
+				
+				long[] startAndEndTime = timePeriodHandler.transferToLongPeriod(periodExpression);
+				List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
+				
+				EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
+				MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost, this.varOneNodePort); 
+				
+				SparkEventLogBean inProgressLog = eventLogReader.getInProgressLog(applicationId);
+				List<NodeBean> nodeMetrics = metricsReader.getAllNodeMetrics(applicationId, metrics);
+				for(NodeBean nodeBean: nodeMetrics){
+					for(MetricBean metricBean: nodeBean.getMetrics()){
+						metricBean.setValues(timePeriodHandler.ingestPeriodData(
+								metricBean.getValues(), plotPointInPeriod));
+					}
+				}
+				
+				result = new UIDataAggregator().aggregateJobDashBoard(metrics, allNodeHost, 
+						inProgressLog, nodeMetrics, plotPointInPeriod);
+			}
+		} finally{
+			yarnService.close();
+		}
+		return result;
+	}
+	
+	public DefaultNodeVO getNodeDashBoard(String node, 
+			List<String> metrics, String periodExpression) throws Exception {
+		DefaultNodeVO result = null;
+		YarnService yarnService = new YarnService(this.config);
+		TimePeriodHandler timePeriodHandler = new TimePeriodHandler(this.metricsProperties);
+		Map<String, NodeBean> nodeMetricsByAppId = new LinkedHashMap<String, NodeBean>();
+		
+		MetricsReader metricsReader = new MetricsRpcReaderImpl(this.varOneNodePort); 
+		try {
+			long[] startAndEndTime = timePeriodHandler.transferToLongPeriod(periodExpression);
+			List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
+			
+			List<String> periodSparkAppId = yarnService.getSparkApplicationsByPeriod(startAndEndTime[0], startAndEndTime[1]);
+			
+			for(String applicationId: periodSparkAppId){
+				NodeBean nodeBean = metricsReader.getNodeMetrics(node, applicationId, metrics);
+				for(MetricBean metricBean: nodeBean.getMetrics()){
+					metricBean.setValues(timePeriodHandler.ingestPeriodData(
+							metricBean.getValues(), plotPointInPeriod));
+				}
+				nodeMetricsByAppId.put(applicationId, nodeBean);
+			}
+						
+			result = new UIDataAggregator().aggregateNodeDashBoard(metrics, node, nodeMetricsByAppId, plotPointInPeriod);
+			
+		} finally{
+			yarnService.close();
+		}
+		return result;
+	}
+	
+	public HistoryDetailStageVO getHistoryDetailStageTask(String applicationId, int stageId){
+		try{
+			EventLogHdfsReaderImpl hdfsReader = new EventLogHdfsReaderImpl(config);
+			SparkEventLogBean sparkEventLog = hdfsReader.getHistoryStageDetails(applicationId);
+	
+			UIDataAggregator aggregator = new UIDataAggregator();
+			return aggregator.aggregateHistoryDetialStage(sparkEventLog, stageId);
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
+	
+	public List<String> getRunningJobs() throws Exception {
+		YarnService yarnService = new YarnService(this.config);
+		return yarnService.getRunningSparkApplications();
+	}
+
+	public List<String> getNodeLists() throws Exception{
+		List<String> nodes = new ArrayList<String>();
+		YarnService yarnService = new YarnService(this.config);
+		try{
+			nodes = yarnService.getAllNodeHost();
+		} finally {
+			yarnService.close();
+		}
+		
+		return nodes;
+	}
+
+	public List<HistoryVO> getAllSparkApplication() throws Exception {
+		List<HistoryVO> histories = new ArrayList<HistoryVO>();
+		EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
+		List<SparkEventLogBean> allSparkAppLog = eventLogReader.getAllSparkAppLog();
+		
+		for(SparkEventLogBean eventLog: allSparkAppLog){
+			AppStart appStart = eventLog.getAppStart();
+			HistoryVO history = new HistoryVO();
+			history.setId(appStart.getId());
+			history.setName(appStart.getName());
+			history.setStartTime(appStart.getTimestamp()+"");
+			if(eventLog.getAppEnd() != null){
+				history.setEndTime(eventLog.getAppEnd().getTimestamp()+"");
+			}
+			history.setUser(appStart.getUser());
+			histories.add(history);
+		}
+		
+		return histories;
+	}
+
+	public List<JobVO> getSparkApplicationJobs(String applicationId) throws Exception {
+		EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
+		SparkEventLogBean eventLog = eventLogReader.getApplicationJobs(applicationId);
+		
+		return new UIDataAggregator().aggregateApplicationJobs(applicationId, eventLog);
+	}
+
+	public List<StageVO> getSparkJobStages(String applicationId, String jobId) throws Exception {
+		EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
+		SparkEventLogBean eventLog = eventLogReader.getJobStages(applicationId, jobId);
+		
+		return new UIDataAggregator().aggregateJobStages(applicationId, jobId, eventLog);
+	}
+
+	public VarOneConfigVO getVarOneConfig() throws Exception {
+		String port = this.varOneNodePort;
+		VarOneConfigVO result = new VarOneConfigVO();
+		result.setPort(port);
+		return result;
+	}
+
+	public UpdateStatusVO updateVarOneConfig(VarOneConfigForm conf) {
+		UpdateStatusVO result = new UpdateStatusVO();
+		try {
+			this.varOneConf.updateVarOneNodePort(conf.port);
+			result.setOk(true);
+			result.setError("");
+		} catch (IOException e) {
+			result.setOk(false);
+			result.setError(e.getMessage());
+		}
+		return result;
+	}
+}

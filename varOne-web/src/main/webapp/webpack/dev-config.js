@@ -28,6 +28,7 @@ export default {
     entry:[
       `webpack-dev-server/client?http://localhost:${WEBPACK_DEV_SERVER_PORT}`,
       'webpack/hot/only-dev-server',
+      'bootstrap-loader',
       './app/main.js'
     ],
 
@@ -41,9 +42,15 @@ export default {
 
     module: {
       loaders: [
-        { test: /\.js$/, loaders: ['react-hot', 'babel'], exclude: /node_modules/},/*,
-        { test: /\.scss$/, loader: "style-loader!css-loader!sass-loader?includePaths[]="+BS_ASSETS }*/
-        {test: /\.less$/, loader: 'style-loader!css-loader!less-loader'},
+        { test: /\.js$/, loaders: ['react-hot', 'babel'], exclude: /node_modules/},
+        { test: /\.scss$/, loaders: [ 'style', 'css', 'sass' ] },
+        { test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000' },
+        // { test: /bootstrap-sass\/assets\/javascripts\//, loader: 'imports?jQuery=jquery' },
+        {
+          test: /\.(jpe?g|png|gif|svg|woff|woff2|eot|ttf)(\?v=[0-9].[0-9].[0-9])?$/,
+          loader: 'file?name=[sha512:hash:base64:7].[ext]',
+          exclude: /node_modules\/(?!font-awesome)/
+        },
         {test: /\.css$/, loader: 'style-loader!css-loader'}
       ]
     },

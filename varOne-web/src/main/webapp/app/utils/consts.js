@@ -1,4 +1,9 @@
 export default {
+
+  shared: {
+    timeperiod: ['30m', '1h', '2h', '6h']
+  },
+
   node:{
     summary: {
       NODE_QTY: "Node Qty",
@@ -21,7 +26,8 @@ export default {
     tab: {
       HISTORY_TAB: 'history',
       JOB_TAB: 'job',
-      STAGE_TAB: 'stage'
+      STAGE_TAB: 'stage',
+      STAGE_DETAILS_TAB: 'stage details'
     }
   },
 
@@ -41,9 +47,9 @@ export default {
     {name: 'HDFS file read ops', value: 'EXEC_FS_HDFS_READ_OPS'},
 
     {name: 'Local file write bytes', value: 'EXEC_FS_LOCAL_WRITE_BYTES'},
-    {name: 'Local file write bytes', value: 'EXEC_FS_LOCAL_WRITE_OPS'},
+    {name: 'Local file write ops', value: 'EXEC_FS_LOCAL_WRITE_OPS'},
     {name: 'HDFS file write bytes', value: 'EXEC_FS_HDFS_WRITE_BYTES'},
-    {name: 'HDFS file write bytes', value: 'EXEC_FS_HDFS_WRITE_OPS'},
+    {name: 'HDFS file write ops', value: 'EXEC_FS_HDFS_WRITE_OPS'},
 
     {name: 'Thread pool active tasks', value: 'EXEC_THREADPOOL_ACTIVETASK'},
     {name: 'Thread pool complete tasks', value: 'EXEC_THREADPOOL_COMPLETETASK'},

@@ -41,7 +41,7 @@ class NodesContainer extends React.Component{
     this.clearInterval();
     this.fetchInterval = setInterval(()=>{
       if(this.selectNode !== null)
-        NodesAction.fetchNodeDashBoard(this.selectNode, this.selectMetrics);
+        NodesAction.fetchNodeDashBoard(this.selectNode, this.selectMetrics, this.props.period);
     }, 6000);
   }
 
@@ -49,14 +49,22 @@ class NodesContainer extends React.Component{
     this.selectNode = node;
     this.clearInterval();
     if(this.selectNode !== null)
-      NodesAction.fetchNodeDashBoard(node, this.selectMetrics);
+      NodesAction.fetchNodeDashBoard(node, this.selectMetrics, this.props.period);
   }
 
   handleModalSubmit(selectMetrics){
     this.selectMetrics = selectMetrics;
     this.clearInterval();
     if(this.selectNode !== null)
-      NodesAction.fetchNodeDashBoard(this.selectNode, selectMetrics);
+      NodesAction.fetchNodeDashBoard(this.selectNode, selectMetrics, this.props.period);
+  }
+
+  handlePeriodSelect = period => {
+    clearInterval(this.fetchInterval);
+    if(this.selectNode !== null)
+      NodesAction.fetchNodeDashBoard(this.selectNode, this.selectMetrics, period);
+    else
+      NodesAction.changeTimePeriod(period);
   }
 
   clearInterval(){
@@ -80,7 +88,11 @@ class NodesContainer extends React.Component{
     var content = this.renderNodeContent();
     return (
       <div id="page-wrapper">
-        <NodeHeader nodes={this.props.nodes} onNodeSelect={this.handleNodeSelect}/>
+        <NodeHeader
+          nodes={this.props.nodes}
+          period={this.props.period}
+          onNodeSelect={this.handleNodeSelect}
+          onPeriodSelect={this.handlePeriodSelect}/>
         <MetricsSettingModal modalTarget="Cluster" onModalSubmit={this.handleModalSubmit}/>
         <div>
           {content}

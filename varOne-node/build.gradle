@@ -1,49 +1,23 @@
-//jar.archiveName = "haredb_spark_monitor_node.jar"
-
 def project_rpc = project(":varOne-rpc")
 
 dependencies {
 	compile project_rpc
 
 }
-/*
-jar {
-	//jar filename = [baseName]-[version]-[classifier].[extension]
-	baseName = "haredb_" + project.name
-	version= project.version
-	//classifier = "jar"
-    extension = "jar"
-
-    manifest {
-        attributes 'Main-Class': 'com.haredb.sparkmonitor.node.SPMNode'
-    }
-
-
-	from configurations.compile.collect {
-        it.isDirectory() ? it : zipTree(it).matching{exclude{it.name == 'META-INF'}}
-    }
-
-
-}
-*/
 
 shadowJar {
     //jar filename = [baseName]-[version]-[classifier].[extension]
-    baseName = "haredb_" + project.name
+    baseName = "varOned"
     version= project.version
     classifier = "" //default:all
     extension = "jar"
 
     mergeServiceFiles()
-/*
-    manifest {
-        attributes 'Main-Class': 'com.haredb.sparkmonitor.node.SPMNode'
-    }*/
 }
 
 
 jar {
     manifest {
-        attributes 'Main-Class': 'com.haredb.sparkmonitor.node.SPMNode'
+        attributes 'Main-Class': 'com.varone.node.SPMNode'
     }
 }

@@ -28,9 +28,7 @@ export default class JobContainer extends React.Component{
   }
 
   componentWillMount(){
-    // this.fetchInterval = setInterval(()=>{
-        JobAction.fetchJobDashBoard(this.props.appId, this.selectMetrics);
-    // }, 5000);
+      JobAction.fetchJobDashBoard(this.props.appId, this.selectMetrics, this.props.period);
   }
 
   componentWillUnmount(){
@@ -40,21 +38,29 @@ export default class JobContainer extends React.Component{
   componentDidUpdate(){
     clearInterval(this.fetchInterval);
     this.fetchInterval = setInterval(()=>{
-        JobAction.fetchJobDashBoard(this.props.appId, this.selectMetrics);
+        JobAction.fetchJobDashBoard(this.props.appId, this.selectMetrics, this.props.period);
     }, 6000);
   }
 
   handleModalSubmit(selectMetrics){
     this.selectMetrics = selectMetrics;
     clearInterval(this.fetchInterval);
-    JobAction.fetchJobDashBoard(this.props.appId, selectMetrics);
+    JobAction.fetchJobDashBoard(this.props.appId, selectMetrics, this.props.period);
+  }
+
+  handlePeriodSelect = period => {
+    clearInterval(this.fetchInterval);
+    JobAction.fetchJobDashBoard(this.props.appId, this.selectMetrics, period);
   }
 
   render(){
     if(null !== this.props.data){
       return(
         <div id="page-wrapper">
-          <JobHeader appId={this.props.appId}/>
+          <JobHeader
+            appId={this.props.appId}
+            period={this.props.period}
+            onPeriodSelect={this.handlePeriodSelect}/>
           <MetricsSettingModal modalTarget="Job" onModalSubmit={this.handleModalSubmit.bind(this)}/>
           <div>
             <JobSummary

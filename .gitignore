@@ -5,7 +5,13 @@
 varOne-web/build/
 varOne-node/build/
 varOne-rpc/build/
+varOne-exec/build/
 node_modules
 *.jar
 *.war
 varOne-web/src/main/webapp/npm-debug.log
+.classpath
+.settings
+bin
+varOne-web/src/main/webapp/dist
+varOne.log
