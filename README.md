@@ -7,11 +7,7 @@ This is an [Apache Spark](http://spark.apache.org/) monitor tools, named **```va
 **```varOne```** provide a web UI for you to watch the metrics of Spark applications and make you monitor your spark application more efficiency and easy. In fact, varOne ingest the the spark **event logs** and **metrics** data then summarize these data as rich charts. In addition, varOne give some useful metric charts for you to monitor. If you don't want to use this web UI, you can use the [RESTful APIs](/docs/api.md) provided by varOne and custom one by yourself.
 
 
-
-
-
-Usage
--------------
+# **Usage**
 
 ## Prerequests
 - JDK 7 and later
@@ -65,8 +61,7 @@ java.lang.RuntimeException: Please confirm these files core-site.xml,hdfs-site.x
 If lanuch to varOne web at first time successfully, varOne will ask you to input the port of varOne daemonds which you started before.
 
 
-Development
--------------
+# **Development**
 
 ## Prerequests
 - JDK 7 and later
