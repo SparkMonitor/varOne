@@ -2,14 +2,14 @@
 ===================
 <img src='http://sparkmonitor.github.io/varOne/images/demo1.png' />
 
-This is an [Apache Spark](http://spark.apache.org/) monitor tools, named **```varOne```**.
+This is an [Apache Spark](http://spark.apache.org/) monitoring tool, named **```varOne```**.
 
-**```varOne```** provide a web UI for you to watch the metrics of Spark applications and make you monitor your spark application more efficiency and easy. In fact, varOne ingest the the spark **event logs** and **metrics** data then summarize these data as rich charts. In addition, varOne give some useful metric charts for you to monitor. If you don't want to use this web UI, you can use the [RESTful APIs](/docs/api.md) provided by varOne and custom one by yourself.
+**```varOne```** provides a web UI for you to monitor the metrics of Spark applications more efficiently and easily. varOne ingests the spark **event logs** and **metric** data to summarizes them as rich charts. If you don't want to use this web UI, you can use the [RESTful APIs](/docs/api.md) provided by varOne and custom one by yourself.
 
 
 # **Usage**
 
-## Prerequests
+## Prerequisites
 - JDK 7 and later
 - metrics.properties should enable CsvSink for all instances, you can follow the config in the below:
 <div>
@@ -39,7 +39,7 @@ $ java -jar varOned-{version}.jar -d {SPARK_CONF_PATH} -p {PORT}
 > - **PORT(required)**: is the port number for varOne daemond.
 
 ### c. Start varOne server
-Before start varOne server, make sure the following configuration files exist in **$HOME/.varOne/conf**
+Before starting the varOne server, make sure the following configuration files exist in **$HOME/.varOne/conf**
 * yarn-site.xml
 * core-site.xml
 * hdfs-site.xml
@@ -55,26 +55,26 @@ $ java -jar varOne-web-{version}.war -p {PORT} -l {LOG_DIR}
 > - **LOG_DIR(optional)**: is the directory which placed your custom log4j.properties.
 
 
-After running, will open the browser automatically and redirect to http://localhost:8080/varOne-web/index.html
+After running, the browser will automatically open and redirect to http://localhost:8080/varOne-web/index.html
 
-If you get the following error when startup, please make sure the following configuration files exist in **$HOME/.varOne/conf**
+If you get the following error during startup, please make sure the following configuration files exist in **$HOME/.varOne/conf**
 ```java
 java.lang.RuntimeException: Please confirm these files core-site.xml,hdfs-site.xml,yarn-site.xml,metrics.properties exist in the /home/user1/.varone/conf
 ```
-If lanuch to varOne web at first time successfully, varOne will ask you to input the port of varOne daemonds which you started before.
+If first launch is successful, varOne will ask you to input the port of varOne daemonds which you started before.
 
 
 # **Development**
 
-## Prerequests
+## Prerequisites
 - JDK 7 and later
 - Node.js v4.0.0 and later
 - Gradle(for building Java project)
 
 ## Brief Introduction 
-varOne use Java to implement the backend service(include RPC, RESTful ..etc) and take React.js as our frontend soultion.   
+varOne uses Java to implement the backend service(include RPC, RESTful, etc) and React.js as our frontend solution.   
 
-The varOne architecture is in the below picture: 
+The varOne architecture is pictured below: 
 <img src='http://sparkmonitor.github.io/varOne/images/varOne_arch.png'/>
 
 ## Start development
@@ -94,28 +94,28 @@ If you import varOne to your IDE, you will see there are four java base project 
 * **varOne-rpc**  (It's varOne rpc protocol implementation between web and daemond)
 * **varOne-web**  (It's varOne web server)
 
-However, finish these initialization without error, you can run varOne on your local   
+Once, these initializations are finished without error; you can run varOne on your locally   
 
-varOne use <code>webpack</code> build up a development server for react hot loading, so if you want to run varOne web on local, please follow below steps:
+varOne uses <code>webpack</code> build up a development server for react hot loading, so if you want to run varOne web on local, please follow below steps:
 * Start web server in IDE(Deploy varOne-web to tomcat and start up)
 * Go to varOne-web/src/main/webapp, and run ```npm run dev```(It will start a webpack dev server on port 3001)
 * Open browser, go to http://localhost:8080/varOne-web/index.html
 
 > **Notes:**   
-> Like previous said, before you run varOne web on your local, 
-> please make sure the varOne daemonds has been startup on your cluster and 
-> make sure your local directory **$HOME/.varOne/conf** exists following files
+> Before you run varOne web on your local, 
+> please make sure the varOne daemonds has been started up on your cluster and 
+> make sure your local directory **$HOME/.varOne/conf** contains the following files
 > - yarn-site.xml
 > - core-site.xml
 > - hdfs-site.xml
 > - metrics.properties
 
 ## Production
-Run the following command for package varOne as production
+Run the following command for varOne in production
 ```bash
 $ cd varOne
 $ gradle clean build shadowJar 
 ```
-After it,   
-The <code>varOne-web-{version}.war</code> generated in varOne-web/build/libs   
-The <code>varOned-{version}.jar</code> generated in varOne-node/build/libs
+After,   
+The <code>varOne-web-{version}.war</code> will be generated in varOne-web/build/libs   
+The <code>varOned-{version}.jar</code> will be generated in varOne-node/build/libs
