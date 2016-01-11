@@ -1,5 +1,7 @@
 **varOne**
 ===================
+
+[![Join the chat at https://gitter.im/SparkMonitor/varOne](https://badges.gitter.im/SparkMonitor/varOne.svg)](https://gitter.im/SparkMonitor/varOne?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 <img src='http://sparkmonitor.github.io/varOne/images/demo1.png' />
 
 This is an [Apache Spark](http://spark.apache.org/) monitoring tool, named **```varOne```**.
