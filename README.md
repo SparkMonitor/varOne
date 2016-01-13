@@ -3,9 +3,9 @@
 
 [![Join the chat at https://gitter.im/SparkMonitor/varOne](https://badges.gitter.im/SparkMonitor/varOne.svg)](https://gitter.im/SparkMonitor/varOne?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 <img src='http://sparkmonitor.github.io/varOne/images/demo1.png' />
-ssssss
+
 This is an [Apache Spark](http://spark.apache.org/) monitoring tool, named **```varOne```**.
-rfrrrrerer
+
 **```varOne```** provides a web UI for you to monitor the metrics of Spark applications more efficiently and easily. varOne ingests the spark **event logs** and **metric** data to summarizes them as rich charts. If you don't want to use this web UI, you can use the [RESTful APIs](/docs/api.md) provided by varOne and custom one by yourself.
 
 
@@ -73,10 +73,10 @@ If first launch is successful, varOne will ask you to input the port of varOne d
 - Node.js v4.0.0 and later
 - Gradle(for building Java project)
 
-## Brief Introduction 
+## Brief Introduction
 varOne uses Java to implement the backend service(include RPC, RESTful, etc) and React.js as our frontend solution.   
 
-The varOne architecture is pictured below: 
+The varOne architecture is pictured below:
 <img src='http://sparkmonitor.github.io/varOne/images/varOne_arch.png'/>
 
 ## Start development
@@ -104,8 +104,8 @@ varOne uses <code>webpack</code> build up a development server for react hot loa
 * Open browser, go to http://localhost:8080/varOne-web/index.html
 
 > **Notes:**   
-> Before you run varOne web on your local, 
-> please make sure the varOne daemonds has been started up on your cluster and 
+> Before you run varOne web on your local,
+> please make sure the varOne daemonds has been started up on your cluster and
 > make sure your local directory **$HOME/.varOne/conf** contains the following files
 > - yarn-site.xml
 > - core-site.xml
@@ -116,7 +116,7 @@ varOne uses <code>webpack</code> build up a development server for react hot loa
 Run the following command for varOne in production
 ```bash
 $ cd varOne
-$ gradle clean build shadowJar 
+$ gradle clean build shadowJar
 ```
 After,   
 The <code>varOne-web-{version}.war</code> will be generated in varOne-web/build/libs   
