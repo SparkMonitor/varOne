@@ -45,7 +45,7 @@ export default {
         { test: /\.js$/, loaders: ['react-hot', 'babel'], exclude: /node_modules/},
         { test: /\.scss$/, loaders: [ 'style', 'css', 'sass' ] },
         { test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000' },
-        // { test: /bootstrap-sass\/assets\/javascripts\//, loader: 'imports?jQuery=jquery' },
+        { test: /bootstrap-sass\/assets\/javascripts\//, loader: 'imports?jQuery=jquery' },
         {
           test: /\.(jpe?g|png|gif|svg|woff|woff2|eot|ttf)(\?v=[0-9].[0-9].[0-9])?$/,
           loader: 'file?name=[sha512:hash:base64:7].[ext]',
@@ -58,6 +58,12 @@ export default {
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoErrorsPlugin(),
+      new webpack.ProvidePlugin({
+          $: 'jquery',
+          jQuery: 'jquery',
+          'window.jQuery': 'jquery',
+          'root.jQuery': 'jquery'
+      }),
       new webpack.DefinePlugin({
         'process.env': {
           BROWSER: JSON.stringify(true),
