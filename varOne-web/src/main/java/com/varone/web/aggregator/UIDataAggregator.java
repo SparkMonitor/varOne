@@ -114,17 +114,20 @@ public class UIDataAggregator {
 		
 		for(Entry<String, SparkEventLogBean> entry: inProgressEventLogByAppId.entrySet()){
 			SparkEventLogBean eventLog = entry.getValue();
-			taskNum += (eventLog.getTaskStart().size() - eventLog.getTaskEnd().size());
-			executorNum += eventLog.getExecutorAdd().size();
-			
-			for(TaskStart taskStart: eventLog.getTaskStart()){
-				int n = taskStartedNumByNode.get(taskStart.getInfo().getHost());
-				taskStartedNumByNode.put(taskStart.getInfo().getHost(), ++n);
-			}
-			
-			for(ExecutorAdded executorAdd: eventLog.getExecutorAdd()){
-				int n = executorNumByNode.get(executorAdd.getInfo().getHost());
-				executorNumByNode.put(executorAdd.getInfo().getHost(), ++n);
+			if(null != eventLog.getAppStart() && 
+					periodSparkAppId.contains(eventLog.getAppStart().getId())){ 
+				taskNum += (eventLog.getTaskStart().size() - eventLog.getTaskEnd().size());
+				executorNum += eventLog.getExecutorAdd().size();
+				
+				for(TaskStart taskStart: eventLog.getTaskStart()){
+					int n = taskStartedNumByNode.get(taskStart.getInfo().getHost());
+					taskStartedNumByNode.put(taskStart.getInfo().getHost(), ++n);
+				}
+				
+				for(ExecutorAdded executorAdd: eventLog.getExecutorAdd()){
+					int n = executorNumByNode.get(executorAdd.getInfo().getHost());
+					executorNumByNode.put(executorAdd.getInfo().getHost(), ++n);
+				}
 			}
 		}
 		
