@@ -50,6 +50,7 @@ public class SparkEventLogParser {
 		this.eventLogs = new SparkEventLogBean();
 		//default event log, EXECUTOR_ADD & TASK_START & TASK_END
 		this.eventNames = new ArrayList<String>();
+		this.eventNames.add(APP_START);
 		this.eventNames.add(EXECUTOR_ADD);
 		this.eventNames.add(TASK_START);
 		this.eventNames.add(TASK_END);
