@@ -6,7 +6,7 @@
   "scripts": {
     "test": "./node_modules/.bin/karma start --single-run",
     "dev": "node --harmony ./webpack/webpack-dev-server.js",
-    "production": "NODE_ENV=production webpack --config ./webpack/production-config.js",
+    "production": "NODE_ENV=production babel-node ./node_modules/.bin/webpack --config ./webpack/production-config.js",
     "lint": "eslint app webpack --ext .jsx,.js"
   },
   "author": "AllenFang",
