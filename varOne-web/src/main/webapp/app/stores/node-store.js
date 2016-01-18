@@ -4,32 +4,32 @@ import NodeAction from '../actions/node-action';
 
 class NodeStore {
 
-  constructor(){
+  constructor() {
     this.bindActions(NodeAction);
-		this.nodes = [];
+    this.nodes = [];
     this.data = null;
     this.period = Const.shared.timeperiod[0];
   }
 
-  onFetchNodes(result){
+  onFetchNodes(result) {
     this.nodes = result;
   }
 
-  onFetchNodeDashBoard({ node, result, period }){
-    var data = {};
+  onFetchNodeDashBoard({ node, result, period }) {
+    const data = {};
     data.metrics = [];
 
     result.metricProps.forEach(metric => {
-      let o = {};
+      const o = {};
       o.id = metric.property;
       o.title = metric.title;
       o.format = metric.format;
-      o.x = ['x'];
-      let values =  result.propToMetrics[metric.property];
-      let metricsValues = [node];
-      for(let i=0;i<values.length;i++){
+      o.x = [ 'x' ];
+      const values = result.propToMetrics[metric.property];
+      const metricsValues = [ node ];
+      for (let i = 0; i < values.length; i++) {
         o.x.push(
-          parseInt(values[i].time)
+          parseInt(values[i].time, 10)
         );
         metricsValues.push(values[i].value);
       }
@@ -44,7 +44,6 @@ class NodeStore {
   onChangeTimePeriod(period) {
     this.period = period;
   }
-
 }
 
 export default alt.createStore(NodeStore);
