@@ -1,10 +1,9 @@
 import alt from '../alt';
-import Const from '../utils/consts';
 import VarOneAction from '../actions/varOne-action';
 
 class VarOneStore {
 
-  constructor(){
+  constructor() {
     this.bindActions(VarOneAction);
     this.port = null;
     this.msg = null;
@@ -23,10 +22,10 @@ class VarOneStore {
   }
 
   onUpdateVarOneConf({ ok, error, port }) {
-    if(ok) {
+    if (ok) {
       this.port = port;
       this.inputPort = port;
-      this.msg = "Update varOne configuration succesful.";
+      this.msg = 'Update varOne configuration succesful.';
     } else {
       this.msg = error;
     }
@@ -35,7 +34,6 @@ class VarOneStore {
   onChangeStatus() {
     this.fromUserClick = true;
   }
-
 }
 
 export default alt.createStore(VarOneStore);

@@ -1,8 +1,7 @@
-import Router, {HistoryLocation} from 'react-router';
+import Router, { HistoryLocation } from 'react-router';
 import routes from '../routes';
 
-let config = {routes};
+const config = { routes };
 config.location = HistoryLocation;
 
-let router = Router.create(config);
-export default router;
+export default Router.create(config);

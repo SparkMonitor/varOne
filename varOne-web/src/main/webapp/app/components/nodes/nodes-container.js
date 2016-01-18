@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import NodesAction from '../../actions/node-action';
 import NodeStore from '../../stores/node-store';
 import MetricsSettingModal from '../commons/metrics-setting-modal';
@@ -7,21 +7,23 @@ import NodeMetrics from './nodes-metrics';
 import connectToStores from 'alt/utils/connectToStores';
 
 @connectToStores
-class NodesContainer extends React.Component{
+class NodesContainer extends React.Component {
 
   fetchInterval = null
 
   static propTypes = {
-    // data: React.PropTypes.object
+    data: PropTypes.object,
+    period: PropTypes.string,
+    nodes: PropTypes.array
   }
-  static getStores(props) {
-    return [NodeStore];
+  static getStores() {
+    return [ NodeStore ];
   }
-  static getPropsFromStores(props) {
+  static getPropsFromStores() {
     return NodeStore.getState();
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.selectMetrics = [];
     this.selectNode = null;
@@ -29,54 +31,60 @@ class NodesContainer extends React.Component{
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
   }
 
-  componentWillMount(){
+  componentWillMount() {
     NodesAction.fetchNodes();
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.clearInterval();
   }
 
-  componentDidUpdate(){
+  componentDidUpdate() {
     this.clearInterval();
-    this.fetchInterval = setInterval(()=>{
-      if(this.selectNode !== null)
-        NodesAction.fetchNodeDashBoard(this.selectNode, this.selectMetrics, this.props.period);
+    this.fetchInterval = setInterval(() => {
+      if (this.selectNode !== null) {
+        NodesAction.fetchNodeDashBoard(
+          this.selectNode, this.selectMetrics, this.props.period);
+      }
     }, 6000);
   }
 
-  handleNodeSelect(node){
+  handleNodeSelect(node) {
     this.selectNode = node;
     this.clearInterval();
-    if(this.selectNode !== null)
+    if (this.selectNode !== null) {
       NodesAction.fetchNodeDashBoard(node, this.selectMetrics, this.props.period);
+    }
   }
 
-  handleModalSubmit(selectMetrics){
+  handleModalSubmit(selectMetrics) {
     this.selectMetrics = selectMetrics;
     this.clearInterval();
-    if(this.selectNode !== null)
+    if (this.selectNode !== null) {
       NodesAction.fetchNodeDashBoard(this.selectNode, selectMetrics, this.props.period);
+    }
   }
 
   handlePeriodSelect = period => {
     clearInterval(this.fetchInterval);
-    if(this.selectNode !== null)
+    if (this.selectNode !== null) {
       NodesAction.fetchNodeDashBoard(this.selectNode, this.selectMetrics, period);
-    else
+    } else {
       NodesAction.changeTimePeriod(period);
+    }
   }
 
-  clearInterval(){
-    if(null !== this.fetchInterval)
+  clearInterval() {
+    if (this.fetchInterval !== null) {
       clearInterval(this.fetchInterval);
+    }
   }
 
-  renderNodeContent(){
-    if(this.props.data != null){
+  renderNodeContent() {
+    if (this.props.data !== null) {
       return (
         <div>
-          <NodeMetrics metrics={this.props.data.metrics}/>
+          <NodeMetrics metrics={ this.props.data.metrics }/>
         </div>
       );
     } else {
@@ -84,23 +92,22 @@ class NodesContainer extends React.Component{
     }
   }
 
-  render(){
-    var content = this.renderNodeContent();
+  render() {
     return (
-      <div id="page-wrapper">
+      <div id='page-wrapper'>
         <NodeHeader
-          nodes={this.props.nodes}
-          period={this.props.period}
-          onNodeSelect={this.handleNodeSelect}
-          onPeriodSelect={this.handlePeriodSelect}/>
-        <MetricsSettingModal modalTarget="Cluster" onModalSubmit={this.handleModalSubmit}/>
+          nodes={ this.props.nodes }
+          period={ this.props.period }
+          onNodeSelect={ this.handleNodeSelect }
+          onPeriodSelect={ this.handlePeriodSelect }/>
+        <MetricsSettingModal
+          modalTarget='Cluster'
+          onModalSubmit={ this.handleModalSubmit }/>
         <div>
-          {content}
+          { this.renderNodeContent() }
         </div>
       </div>
     );
   }
 }
-
-
 export default NodesContainer;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Brand from './brand';
 import Header from './header';
 import LeftSide from './left-side';
@@ -6,22 +6,24 @@ import LeftSide from './left-side';
 import VarOneConfigModal from '../commons/varOne-conf-modal';
 
 class Nav extends React.Component {
-
   static propTypes = {
-    jobItemClickCB: React.PropTypes.func,
-    dimensionItemClickCB: React.PropTypes.func
+    jobItemClickCB: PropTypes.func,
+    dimensionItemClickCB: PropTypes.func
   }
 
-  render(){
-    return(
+  render() {
+    return (
       <div>
-        <nav className="navbar navbar-default navbar-static-top" role="navigation" style={{marginBottom: 0}}>
+        <nav
+          className='navbar navbar-default navbar-static-top'
+          role='navigation'
+          style={ { marginBottom: 0 } }>
             <Brand/>
             <div>
               <Header/>
               <LeftSide
-                  jobItemClickCB={this.props.jobItemClickCB}
-                  dimensionItemClickCB={this.props.dimensionItemClickCB}/>
+                jobItemClickCB={ this.props.jobItemClickCB }
+                dimensionItemClickCB={ this.props.dimensionItemClickCB }/>
             </div>
         </nav>
         <VarOneConfigModal />

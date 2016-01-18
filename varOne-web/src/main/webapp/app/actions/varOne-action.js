@@ -8,17 +8,17 @@ class VarOneAction {
   }
 
   async fetchVarOneConfig() {
-    let response = await request.get('/varOne-web/rest/varOne/conf')
+    const response = await request.get('/varOne-web/rest/varOne/conf')
                               .set('Accept', 'application/json');
-    let result = JSON.parse(response.text);
+    const result = JSON.parse(response.text);
     this.dispatch(result);
   }
 
   async updateVarOneConf({ port }) {
-    let response = await request.post('/varOne-web/rest/varOne/conf')
+    const response = await request.post('/varOne-web/rest/varOne/conf')
                               .send({ port })
                               .set('Accept', 'application/json');
-    let result = JSON.parse(response.text);
+    const result = JSON.parse(response.text);
     result.port = port;
     this.dispatch(result);
   }

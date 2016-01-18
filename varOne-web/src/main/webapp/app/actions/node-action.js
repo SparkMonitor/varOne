@@ -7,20 +7,20 @@ class NodeAction {
     this.generateActions('changeTimePeriod');
   }
 
-  async fetchNodes(){
-    let response = await request.get('/varOne-web/rest/nodes')
+  async fetchNodes() {
+    const response = await request.get('/varOne-web/rest/nodes')
                                 .set('Accept', 'application/json');
-    let result = JSON.parse(response.text);
+    const result = JSON.parse(response.text);
     this.dispatch(result);
   }
 
-  async fetchNodeDashBoard(node, selectMetrics, period){
-    if(selectMetrics && selectMetrics.length == 0) selectMetrics = undefined;
-    else selectMetrics = selectMetrics.join(",");
-    let response = await request.get('/varOne-web/rest/nodes/'+node)
-                                .query({metrics: selectMetrics, period: period})
+  async fetchNodeDashBoard(node, selectMetrics, period) {
+    if (selectMetrics && selectMetrics.length === 0) selectMetrics = undefined;
+    else selectMetrics = selectMetrics.join(',');
+    const response = await request.get(`/varOne-web/rest/nodes/${node}`)
+                                .query({ metrics: selectMetrics, period })
                                 .set('Accept', 'application/json');
-    let result = JSON.parse(response.text);
+    const result = JSON.parse(response.text);
     this.dispatch({ node, result, period });
   }
 

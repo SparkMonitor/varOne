@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Const from '../../utils/consts';
 import HistoryHeader from './history-header';
 import HistoryList from './history-list';
@@ -14,102 +14,109 @@ import connectToStores from 'alt/utils/connectToStores';
 class HistoryContainer extends React.Component {
 
   static propTypes = {
-    histories: React.PropTypes.array,
-    job: React.PropTypes.array,
-    stages: React.PropTypes.array,
-    stageDetails: React.PropTypes.array,
-    stageAggregator: React.PropTypes.array,
-    metricCompletedTasks: React.PropTypes.array,
-    completeTaskSize: React.PropTypes.number,
-    breadcrumb: React.PropTypes.array,
-    tab: React.PropTypes.string,
-    selectApplicationId: React.PropTypes.string,
-    jobId: React.PropTypes.number
+    histories: PropTypes.array,
+    job: PropTypes.array,
+    stages: PropTypes.array,
+    stageDetails: PropTypes.array,
+    stageAggregator: PropTypes.array,
+    metricCompletedTasks: PropTypes.array,
+    completeTaskSize: PropTypes.number,
+    breadcrumb: PropTypes.array,
+    tab: PropTypes.string,
+    selectApplicationId: PropTypes.string,
+    jobId: PropTypes.number,
+    jobs: PropTypes.array
   }
-  static getStores(props) {
-    return [HistoryStore];
+
+  static getStores() {
+    return [ HistoryStore ];
   }
-  static getPropsFromStores(props) {
+
+  static getPropsFromStores() {
     return HistoryStore.getState();
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.init = false;
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.tab === this.props.tab &&
-      this.props.tab !== Const.history.tab.HISTORY_TAB){
+    if (nextProps.tab === this.props.tab &&
+      this.props.tab !== Const.history.tab.HISTORY_TAB) {
       HistoryAction.switchToHistoryTab();
     }
   }
 
-  componentWillMount(){
+  componentWillMount() {
     HistoryAction.fetchApplications();
   }
 
-  handleCrumbSelect = (tab) => {
-    if(tab === Const.history.tab.HISTORY_TAB){
+  handleCrumbSelect = tab => {
+    if (tab === Const.history.tab.HISTORY_TAB) {
       HistoryAction.fetchApplications();
-    } else if(tab === Const.history.tab.JOB_TAB){
+    } else if (tab === Const.history.tab.JOB_TAB) {
       HistoryAction.switchToJobTab();
-    } else if(tab === Const.history.tab.STAGE_TAB){
+    } else if (tab === Const.history.tab.STAGE_TAB) {
       HistoryAction.switchToStageTab();
     }
-    
   }
 
-  handleHistorySelect = (id) => {
+  handleHistorySelect = id => {
     HistoryAction.fetchJobs(id);
   }
 
-  handleJobSelect = (jobId) => {
+  handleJobSelect = jobId => {
     HistoryAction.fetchStages(this.props.selectApplicationId, jobId);
   }
 
-  handleStageSelect = (stageId) => {
-	HistoryAction.fetchStageDetails(this.props.selectApplicationId, stageId);
+  handleStageSelect = stageId => {
+    HistoryAction.fetchStageDetails(this.props.selectApplicationId, stageId);
   }
 
   renderContent = () => {
-    if(this.props.tab === Const.history.tab.HISTORY_TAB){
-      return <HistoryList
-                histories={this.props.histories}
-                onHistorySelect={this.handleHistorySelect}/>
-    } else if(this.props.tab === Const.history.tab.JOB_TAB){
-      return <JobsList
-                jobs={this.props.jobs}
-                onJobSelect={this.handleJobSelect}/>;
-    } else if(this.props.tab === Const.history.tab.STAGE_TAB){
-      return <StageList
-                stages={this.props.stages}
-                onStageSelect={this.handleStageSelect}/>;
-    } else if(this.props.tab === Const.history.tab.STAGE_DETAILS_TAB){
-      return <StageDetailsList 
-      			completeTaskSize={this.props.completeTaskSize}
-      			metricCompletedTasks={this.props.metricCompletedTasks}
-                stageDetails={this.props.stageDetails}
-                stageAggregator={this.props.stageAggregator}/>;
-    	
+    const { tab } = this.props;
+    if (tab === Const.history.tab.HISTORY_TAB) {
+      return (
+        <HistoryList
+          histories={ this.props.histories }
+          onHistorySelect={ this.handleHistorySelect }/>
+      );
+    } else if (tab === Const.history.tab.JOB_TAB) {
+      return (
+        <JobsList
+          jobs={ this.props.jobs }
+          onJobSelect={ this.handleJobSelect }/>
+      );
+    } else if (tab === Const.history.tab.STAGE_TAB) {
+      return (
+        <StageList
+          stages={ this.props.stages }
+          onStageSelect={ this.handleStageSelect }/>
+      );
+    } else if (tab === Const.history.tab.STAGE_DETAILS_TAB) {
+      return (
+        <StageDetailsList
+          completeTaskSize={ this.props.completeTaskSize }
+          metricCompletedTasks={ this.props.metricCompletedTasks }
+          stageDetails={ this.props.stageDetails }
+          stageAggregator={ this.props.stageAggregator }/>
+      );
     } else {
-    	
       return null;
     }
   }
 
-  render(){
-    var content = this.renderContent();
+  render() {
     return (
-      <div id="page-wrapper">
+      <div id='page-wrapper'>
         <HistoryHeader>
           <BreadCrumb
-            onCrumbSelect={this.handleCrumbSelect}
-            content={this.props.breadcrumb}
-            active={this.props.tab}/>
+            onCrumbSelect={ this.handleCrumbSelect }
+            content={ this.props.breadcrumb }
+            active={ this.props.tab }/>
         </HistoryHeader>
         <div>
-          {content}
+          { this.renderContent() }
         </div>
       </div>
     );

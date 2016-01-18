@@ -6,25 +6,26 @@ import connectToStores from 'alt/utils/connectToStores';
 @connectToStores
 class Header extends React.Component {
 
-  static getStores(props) {
-    return [VarOneStore];
+  static getStores() {
+    return [ VarOneStore ];
   }
 
-  static getPropsFromStores(props) {
+  static getPropsFromStores() {
     return VarOneStore.getState();
   }
 
-  handleModalClick = e => {
-    VarOneAction.changeStatus();
-  }
+  handleModalClick = () => VarOneAction.changeStatus();
 
-  render(){
-    return(
-      <ul className="nav navbar-top-links navbar-right">
-        <li className="dropdown">
-            <a className="dropdown-toggle varOne-setting">
-                <i className="fa fa-2x fa-cog fa-spin" data-toggle="modal" onClick={this.handleModalClick} data-target="#varOneConfigModal"></i>
-            </a>
+  render() {
+    return (
+      <ul className='nav navbar-top-links navbar-right'>
+        <li className='dropdown'>
+          <a className='dropdown-toggle varOne-setting'>
+            <i className='fa fa-2x fa-cog fa-spin'
+              data-toggle='modal'
+              data-target='#varOneConfigModal'
+              onClick={ this.handleModalClick }></i>
+          </a>
         </li>
       </ul>
     );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Menu from './menu';
 import MenuItem from './menu-item';
 import MenuStore from '../../stores/menu-store';
@@ -12,52 +12,53 @@ class LeftSide extends React.Component {
   fetchInterval = null
 
   static propTypes = {
-    runningJobs: React.PropTypes.string,
-    jobItemClickCB: React.PropTypes.func,
-    dimensionItemClickCB: React.PropTypes.func
+    runningJobs: PropTypes.string,
+    jobItemClickCB: PropTypes.func,
+    dimensionItemClickCB: PropTypes.func,
+    leftSideMenu: PropTypes.array
   }
-  static getStores(props) {
-    return [MenuStore];
+  static getStores() {
+    return [ MenuStore ];
   }
-  static getPropsFromStores(props) {
+  static getPropsFromStores() {
     return MenuStore.getState();
   }
 
-  componentWillMount(){
-    this.fetchInterval = setInterval(()=>{
-        MenuAction.fetchRunningJob();
+  componentWillMount() {
+    this.fetchInterval = setInterval(() => {
+      MenuAction.fetchRunningJob();
     }, 2000);
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     clearInterval(this.fetchInterval);
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
   }
 
-  render(){
-
-    let menuItems = this.props.leftSideMenu.map((item) => {
+  render() {
+    const menuItems = this.props.leftSideMenu.map(item => {
       return (
-        <MenuItem text={item.name}
-                  icon={item.icon}
-                  collapse={item.collapse}
-                  children={item.children}
-                  jobItemClickCB={this.props.jobItemClickCB}
-                  dimensionItemClickCB={this.props.dimensionItemClickCB}/>
+        <MenuItem
+          text={ item.name }
+          icon={ item.icon }
+          collapse={ item.collapse }
+          children={ item.children }
+          jobItemClickCB={ this.props.jobItemClickCB }
+          dimensionItemClickCB={ this.props.dimensionItemClickCB }/>
       );
     });
 
-    return(
-        <div className="navbar-default sidebar" role="navigation">
-            <div className="sidebar-nav navbar-collapse">
-                <Menu>
-                  {menuItems}
-                </Menu>
-            </div>
+    return (
+      <div className='navbar-default sidebar' role='navigation'>
+        <div className='sidebar-nav navbar-collapse'>
+          <Menu>
+            { menuItems }
+          </Menu>
         </div>
+      </div>
     );
   }
 }

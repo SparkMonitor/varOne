@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import ClusterSummary from './cluster-summary';
 import ClusterMetrics from './cluster-metrics';
 import ClusterHeader from './cluster-header';
@@ -13,36 +13,38 @@ class ClusterContainer extends React.Component {
   fetchInterval = null
 
   static propTypes = {
-    data: React.PropTypes.object
+    data: PropTypes.object,
+    period: PropTypes.string,
+    nodeClickCB: PropTypes.func
   }
-  static getStores(props) {
-    return [ClusterStore];
+  static getStores() {
+    return [ ClusterStore ];
   }
-  static getPropsFromStores(props) {
+  static getPropsFromStores() {
     return ClusterStore.getState();
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.selectMetrics = [];
   }
 
-  componentWillMount(){
+  componentWillMount() {
     ClusterAction.fetchTotalNodeDashBoard(this.selectMetrics, this.props.period);
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     clearInterval(this.fetchInterval);
   }
 
-  componentDidUpdate(){
+  componentDidUpdate() {
     clearInterval(this.fetchInterval);
-    this.fetchInterval = setInterval(()=>{
-        ClusterAction.fetchTotalNodeDashBoard(this.selectMetrics, this.props.period);
+    this.fetchInterval = setInterval(() => {
+      ClusterAction.fetchTotalNodeDashBoard(this.selectMetrics, this.props.period);
     }, 6000);
   }
 
-  handleModalSubmit(selectMetrics){
+  handleModalSubmit = selectMetrics => {
     this.selectMetrics = selectMetrics;
     clearInterval(this.fetchInterval);
     ClusterAction.fetchTotalNodeDashBoard(selectMetrics, this.props.period);
@@ -53,22 +55,24 @@ class ClusterContainer extends React.Component {
     ClusterAction.fetchTotalNodeDashBoard(this.selectMetrics, period);
   }
 
-  render(){
-    if(null !== this.props.data){
-      return(
-        <div id="page-wrapper">
+  render() {
+    if (this.props.data !== null) {
+      return (
+        <div id='page-wrapper'>
           <ClusterHeader
-            period={this.props.period}
-            onPeriodSelect={this.handlePeriodSelect}/>
-          <MetricsSettingModal modalTarget="Cluster" onModalSubmit={this.handleModalSubmit.bind(this)}/>
+            period={ this.props.period }
+            onPeriodSelect={ this.handlePeriodSelect }/>
+          <MetricsSettingModal
+            modalTarget='Cluster'
+            onModalSubmit={ this.handleModalSubmit }/>
           <div>
             <ClusterSummary
-              onNodeClick={this.props.nodeClickCB}
-              summaryInfos={this.props.data.displaySummaryInfo}/>
+              onNodeClick={ this.props.nodeClickCB }
+              summaryInfos={ this.props.data.displaySummaryInfo }/>
             <ClusterMetrics
-              taskStartedNumByNode={this.props.data.taskStartedNumByNode}
-              executorNumByNode={this.props.data.executorNumByNode}
-              metrics={this.props.data.metrics} />
+              taskStartedNumByNode={ this.props.data.taskStartedNumByNode }
+              executorNumByNode={ this.props.data.executorNumByNode }
+              metrics={ this.props.data.metrics } />
           </div>
         </div>
       );
