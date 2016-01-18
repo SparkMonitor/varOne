@@ -1,3 +1,5 @@
+/* global $:true */
+
 import React from 'react';
 import Home from './home';
 
@@ -15,11 +17,11 @@ class App extends React.Component {
     fromUserClick: React.PropTypes.bool
   }
 
-  static getStores(props) {
-    return [VarOneStore];
+  static getStores() {
+    return [ VarOneStore ];
   }
 
-  static getPropsFromStores(props) {
+  static getPropsFromStores() {
     return VarOneStore.getState();
   }
 
@@ -28,21 +30,21 @@ class App extends React.Component {
   }
 
   componentDidUpdate() {
-    if(this.isPortDefined()) {
+    if (this.isPortDefined()) {
       $('#varOneConfigModal').modal('show');
     }
   }
 
-  render(){
-    var content = null;
-    if(this.isPortDefined()) {
+  render() {
+    let content = null;
+    if (this.isPortDefined()) {
       content = (
         <div>
           <VarOneConfigModal />
         </div>
       );
     } else {
-      if(!this.props.fromUserClick) {
+      if (!this.props.fromUserClick) {
         $('#varOneConfigModal').modal('hide');
       }
       content = <Home />;
@@ -50,13 +52,13 @@ class App extends React.Component {
 
     return (
       <div>
-        {content}
+        { content }
       </div>
     );
   }
 
   isPortDefined() {
-    return !this.props.port || this.props.port === "";
+    return !this.props.port || this.props.port === '';
   }
 }
 
