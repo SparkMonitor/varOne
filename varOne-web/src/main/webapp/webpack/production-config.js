@@ -12,6 +12,9 @@ export default {
     filename: 'app.js'
   },
   module: {
+    preLoaders: [
+      { test: /\.js$/, exclude: /node_modules/, loader: 'eslint' }
+    ],
     loaders: [
       { test: /\.js$/, loaders: [ 'babel' ], exclude: /node_modules/ },
       { test: /\.scss$/, loaders: [ 'style', 'css', 'sass' ] },
