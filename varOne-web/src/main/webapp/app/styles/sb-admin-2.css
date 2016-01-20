@@ -10,7 +10,7 @@ body {
 
 #wrapper {
     width: 100%;
-    background-color: #1a2226;
+    /*background-color: #1a2226;*/
 }
 
 #wrapper .navbar {
@@ -47,10 +47,17 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2989d8', end
 @media(min-width:768px) {
     #page-wrapper {
         position: inherit;
-        margin: 0 0 0 250px;
+        /*margin: 0 0 0 250px;*/
         padding: 0 30px;
         border-left: 1px solid #e7e7e7;
     }
+}
+
+.navbar-brand {
+  font-size: 27px;
+  font-style: italic;
+  font-weight: bolder;
+  padding: 20px 15px;
 }
 
 .navbar-top-links {
@@ -65,8 +72,23 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2989d8', end
     margin-right: 15px;
 }
 
+.nav-link a {
+  color: white;
+}
+
 .navbar-top-links li a {
-    min-height: 50px;
+    min-height: 62px;
+    padding-top: 17.5px;
+    font-size: 18px;
+}
+
+.navbar-top-links .open > a,
+.navbar-top-links .open > a:hover,
+.navbar-top-links .open > a:focus,
+.navbar-top-links > li > a:hover,
+.navbar-top-links > li > a:focus {
+  background-color: #9365E4;
+  text-decoration: none;
 }
 
 .navbar-top-links .dropdown-menu li {

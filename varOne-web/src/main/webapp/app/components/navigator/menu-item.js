@@ -1,12 +1,4 @@
 import React, { PropTypes } from 'react';
-import classSet from 'classnames';
-
-const renderCollapseArrow = () => {
-  return (
-    <span className='fa arrow'></span>
-  );
-};
-
 
 export default class MenuItem extends React.Component {
   static propTypes = {
@@ -24,18 +16,23 @@ export default class MenuItem extends React.Component {
   }
 
   renderSubMenu() {
-    const li = this.props.children.map((item) => {
+    if (this.props.collapse) {
       return (
-        <li onClick={ e => this.handleSubMenuItemClick(e, item) }>
-          <a href='#' style={ { color: 'white' } }>{ item }</a>
-        </li>
+        <ul id='running-jobs' className='dropdown-menu'>
+          {
+            this.props.children.map((item) => {
+              return (
+                <li onClick={ e => this.handleSubMenuItemClick(e, item) }>
+                  <a href='#'>{ item }</a>
+                </li>
+              );
+            })
+          }
+        </ul>
       );
-    });
-    return (
-      <ul id='running-jobs' className='nav nav-second-level'>
-        { li }
-      </ul>
-    );
+    } else {
+      return null;
+    }
   }
 
   handleMenuItemClick = () => {
@@ -44,16 +41,26 @@ export default class MenuItem extends React.Component {
     }
   }
 
-  render() {
-    const iconClass = classSet('fa', 'fa-fw', this.props.icon);
-    const collapseArrow = this.props.collapse ? renderCollapseArrow() : null;
-    const subMenu = this.props.collapse ? this.renderSubMenu(this.props.children) : null;
-    return (
-      <li onClick={ this.handleMenuItemClick }>
-        <a href='#' style={ { color: 'white' } }>
-          <i className={ iconClass }></i> { this.props.text }{ collapseArrow }
+  renderDisplayText() {
+    if (this.props.collapse) {
+      return (
+        <a className='dropdown-toggle'
+          data-toggle='dropdown' href='#' role='button'
+          aria-haspopup='true' aria-expanded='false'>
+          { this.props.text } <span className='caret'></span>
         </a>
-        { subMenu }
+      );
+    } else {
+      return <a href='#'>{ this.props.text }</a>;
+    }
+  }
+
+  render() {
+    const text = this.renderDisplayText();
+    const subMenu = this.renderSubMenu();
+    return (
+      <li onClick={ this.handleMenuItemClick } role='presentation' className='nav-link'>
+        { text }{ subMenu }
       </li>
     );
   }
