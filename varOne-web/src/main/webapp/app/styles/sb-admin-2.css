@@ -35,13 +35,19 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2989d8', end
 #page-wrapper {
     padding: 0 15px;
     min-height: 94.5vh;
-    background-color: #ecf0f5;  /*#fff*/
+    background-color: white;
     /*height: 100vh;*/
 }
 
 .varOne-setting {
   background-color: transparent;
   color: white;
+}
+
+.page-header {
+  border-bottom: 0px;
+  padding-bottom: 4px;
+  margin: 30px 0 20px;
 }
 
 @media(min-width:768px) {
@@ -54,7 +60,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2989d8', end
 }
 
 .navbar-brand {
-  font-size: 27px;
+  font-size: 32px;
   font-style: italic;
   font-weight: bolder;
   padding: 20px 15px;
@@ -350,6 +356,10 @@ table.dataTable thead .sorting:after {
 
 .huge {
     font-size: 40px;
+}
+
+.medium {
+  font-size: 20px;
 }
 
 .panel-green {
