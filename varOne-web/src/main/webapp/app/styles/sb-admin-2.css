@@ -60,7 +60,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2989d8', end
 }
 
 .navbar-brand {
-  font-size: 32px;
+  font-size: 26px;
   font-style: italic;
   font-weight: bolder;
   padding: 20px 15px;
@@ -83,7 +83,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2989d8', end
 }
 
 .navbar-top-links li a {
-    min-height: 62px;
+    min-height: 63px;
     padding-top: 17.5px;
     font-size: 18px;
 }
