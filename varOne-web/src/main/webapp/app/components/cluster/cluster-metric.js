@@ -20,7 +20,7 @@ export default class ClusterMetric extends React.Component {
 
   render() {
     return (
-      <div className='panel panel-default'>
+      <div className='panel panel-info'>
         <div className='panel-heading'>
           <i className='fa fa-bar-chart-o fa-fw'></i>{ this.props.metric.title }
           <div className='pull-right'></div>

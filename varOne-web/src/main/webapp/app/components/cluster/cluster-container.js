@@ -68,10 +68,10 @@ class ClusterContainer extends React.Component {
           <div>
             <ClusterSummary
               onNodeClick={ this.props.nodeClickCB }
-              summaryInfos={ this.props.data.displaySummaryInfo }/>
-            <ClusterMetrics
+              summaryInfos={ this.props.data.displaySummaryInfo }
               taskStartedNumByNode={ this.props.data.taskStartedNumByNode }
-              executorNumByNode={ this.props.data.executorNumByNode }
+              executorNumByNode={ this.props.data.executorNumByNode }/>
+            <ClusterMetrics
               metrics={ this.props.data.metrics } />
           </div>
         </div>
