@@ -3,6 +3,7 @@ import Brand from './brand';
 import Header from './header';
 
 import VarOneConfigModal from '../commons/varOne-conf-modal';
+import VarOneLogModal from '../commons/varOne-log-modal';
 
 class Nav extends React.Component {
   static propTypes = {
@@ -25,6 +26,7 @@ class Nav extends React.Component {
             </div>
         </nav>
         <VarOneConfigModal />
+        <VarOneLogModal />
       </div>
     );
   }

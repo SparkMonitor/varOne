@@ -35,7 +35,7 @@ class Header extends React.Component {
   }
 
   handleModalClick = () => VarOneAction.changeStatus();
-
+  handleLogModalClick = () => VarOneAction.showLogStatus();
   render() {
     const menuItems = this.props.leftSideMenu.map(item => {
       return (
@@ -55,6 +55,14 @@ class Header extends React.Component {
           { menuItems }
         </Menu>
         <ul className='nav navbar-top-links navbar-right'>
+          <li className='dropdown'>
+            <a className='dropdown-toggle varOne-setting'>
+              <i className='fa fa-2x fa-cog fa fa-eye'
+                data-toggle='modal'
+                data-target='#varOneLogModal'
+                onClick={ this.handleLogModalClick }></i>
+            </a>
+          </li>
           <li className='dropdown'>
             <a className='dropdown-toggle varOne-setting'>
               <i className='fa fa-2x fa-cog fa-spin'
