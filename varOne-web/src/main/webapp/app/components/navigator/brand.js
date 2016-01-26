@@ -12,7 +12,7 @@ class Brand extends React.Component {
               <span className='icon-bar'></span>
           </button>
           <a className='navbar-brand'
-            href='index.html' style={ { color: 'white' } }>Spark Monitor</a>
+            href='index.html' style={ { color: 'white' } }>varOne</a>
       </div>
     );
   }

@@ -65,10 +65,10 @@ export default class JobContainer extends React.Component {
           <MetricsSettingModal modalTarget='Job' onModalSubmit={ this.handleModalSubmit }/>
           <div>
             <JobSummary
-              summaryInfos={ this.props.data.displaySummaryInfo }/>
-            <JobMetrics
+              summaryInfos={ this.props.data.displaySummaryInfo }
               taskStartedNumByNode={ this.props.data.taskStartedNumByNode }
-              executorNumByNode={ this.props.data.executorNumByNode }
+              executorNumByNode={ this.props.data.executorNumByNode }/>
+            <JobMetrics
               metrics={ this.props.data.metrics }/>
           </div>
         </div>
