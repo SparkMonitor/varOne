@@ -1,9 +1,10 @@
 import alt from '../alt';
+import VarOneAction from '../actions/varOne-action';
 import request from 'superagent';
 
 class ClusterAction {
 	constructor() {
-  this.generateActions('fetchTotalNodeDashBoardSuccessful', 'fetchTotalNodeDashBoardFail');
+  this.generateActions('fetchTotalNodeDashBoardSuccessful');
 	}
 
   async fetchTotalNodeDashBoard(selectMetrics, period) {
@@ -14,12 +15,9 @@ class ClusterAction {
                                     .query({ metrics: selectMetrics, period })
                                     .set('Accept', 'application/json');
       const result = JSON.parse(response.text);
-      console.log(result);
-//      this.dispatch({ result, period });
       this.actions.fetchTotalNodeDashBoardSuccessful({ result, period });
     } catch (e) {
-//      alert(e.response.text);
-      this.actions.fetchTotalNodeDashBoardFail(e.response.text);
+      VarOneAction.showFailMessage(e.response.text);
     }
   }
 

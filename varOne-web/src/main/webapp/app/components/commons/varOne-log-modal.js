@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import VarOneStore from '../../stores/varOne-store';
-import VarOneAction from '../../actions/varOne-action';
 import connectToStores from 'alt/utils/connectToStores';
 
 
@@ -10,7 +9,8 @@ export default class VarOneLogModal extends React.Component {
   static propTypes = {
     msg: PropTypes.string,
     port: PropTypes.string,
-    inputPort: PropTypes.string
+    inputPort: PropTypes.string,
+    failMessage: PropTypes.string
   }
 
   static getStores() {
@@ -21,16 +21,8 @@ export default class VarOneLogModal extends React.Component {
     return VarOneStore.getState();
   }
 
-  handlePortChange = e => {
-    VarOneAction.changePort(e.target.value);
-  }
-
-  handleSubmitBtnClick = () => {
-    const port = this.refs.port.value;
-    VarOneAction.updateVarOneConf({ port });
-  }
-
   render() {
+    const failResultMessage = this.props.failMessage;
     return (
       <div id='varOneLogModal' className='modal fade'>
         <div className='modal-dialog modal-lg'>
@@ -40,7 +32,7 @@ export default class VarOneLogModal extends React.Component {
               <h4 className='modal-title'>varOne Log Message</h4>
             </div>
             <div className='modal-body'>
-              <textarea rows='10' cols='90'>
+              <textarea ref='textFailMessage' rows='10' cols='90' value={ failResultMessage }>
               </textarea>
             </div>
             <div className='modal-footer'>

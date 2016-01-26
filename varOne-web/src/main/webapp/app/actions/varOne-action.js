@@ -6,6 +6,7 @@ class VarOneAction {
     this.generateActions('changePort');
     this.generateActions('changeStatus');
     this.generateActions('showLogStatus');
+    this.generateActions('showFailMessage');
   }
 
   async fetchVarOneConfig() {
@@ -31,6 +32,7 @@ class VarOneAction {
       alert(e.response.text);
     }
   }
+
 
 }
 
