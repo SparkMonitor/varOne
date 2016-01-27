@@ -1,4 +1,5 @@
 import alt from '../alt';
+import VarOneAction from '../actions/varOne-action';
 import request from 'superagent';
 
 class JobAction {
@@ -12,7 +13,7 @@ class JobAction {
       const result = JSON.parse(response.text);
       this.dispatch({ result, period });
     } catch (e) {
-      alert(e.response.text);
+      VarOneAction.showFailMessage(e.response.text);
     }
   }
 }

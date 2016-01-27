@@ -1,4 +1,5 @@
 import alt from '../alt';
+import VarOneAction from '../actions/varOne-action';
 import request from 'superagent';
 
 class HistoryAction {
@@ -16,7 +17,7 @@ class HistoryAction {
       const result = JSON.parse(response.text);
       this.dispatch(result);
     } catch (e) {
-      alert(e.response.text);
+      VarOneAction.showFailMessage(e.response.text);
     }
   }
 
@@ -28,7 +29,7 @@ class HistoryAction {
       const result = { jobs, applicationId };
       this.dispatch(result);
     } catch (e) {
-      alert(e.response.text);
+      VarOneAction.showFailMessage(e.response.text);
     }
   }
 
@@ -40,7 +41,7 @@ class HistoryAction {
       const result = { stages, jobId };
       this.dispatch(result);
     } catch (e) {
-      alert(e.response.text);
+      VarOneAction.showFailMessage(e.response.text);
     }
   }
 
@@ -52,7 +53,7 @@ class HistoryAction {
       const result = { stageDetails };
       this.dispatch(result);
     } catch (e) {
-      alert(e.response.text);
+      VarOneAction.showFailMessage(e.response.text);
     }
   }
 }

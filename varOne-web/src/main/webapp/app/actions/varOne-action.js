@@ -16,7 +16,7 @@ class VarOneAction {
       const result = JSON.parse(response.text);
       this.dispatch(result);
     } catch (e) {
-      alert(e.response.text);
+      this.showFailMessage(e.response.text);
     }
   }
 
@@ -29,7 +29,7 @@ class VarOneAction {
       result.port = port;
       this.dispatch(result);
     } catch (e) {
-      alert(e.response.text);
+      this.showFailMessage(e.response.text);
     }
   }
 

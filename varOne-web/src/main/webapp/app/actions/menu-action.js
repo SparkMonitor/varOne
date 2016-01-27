@@ -1,4 +1,5 @@
 import alt from '../alt';
+import VarOneAction from '../actions/varOne-action';
 import request from 'superagent';
 class MenuAction {
 
@@ -9,7 +10,7 @@ class MenuAction {
       const result = JSON.parse(response.text);
       this.dispatch(result);
     } catch (e) {
-      alert(e.response.text);
+      VarOneAction.showFailMessage(e.response.text);
     }
   }
 

@@ -1,4 +1,5 @@
 import alt from '../alt';
+import VarOneAction from '../actions/varOne-action';
 import request from 'superagent';
 
 class NodeAction {
@@ -14,7 +15,7 @@ class NodeAction {
       const result = JSON.parse(response.text);
       this.dispatch(result);
     } catch (e) {
-      alert(e.response.text);
+      VarOneAction.showFailMessage(e.response.text);
     }
   }
 
@@ -28,7 +29,7 @@ class NodeAction {
       const result = JSON.parse(response.text);
       this.dispatch({ node, result, period });
     } catch (e) {
-      alert(e.response.text);
+      VarOneAction.showFailMessage(e.response.text);
     }
   }
 
