@@ -20,7 +20,7 @@ export default function(config) {
   config.set({
     browsers: ['Chrome'],
     browserNoActivityTimeout: 30000,
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['mocha', 'chai', 'sinon-chai'],
     files: ['tests.webpack.js'],
     preprocessors: { 'tests.webpack.js': ['webpack'] },
     reporters: reporters,
