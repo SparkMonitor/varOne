@@ -38,9 +38,9 @@ class Header extends React.Component {
   handleModalClick = () => VarOneAction.changeStatus();
   handleLogModalClick = () => VarOneAction.showLogStatus();
   render() {
-    let errorMessageicon = 'fa fa-2x fa-cog fa fa-eye';
+    let errorMessageicon = 'fa fa-2x fa-cog fa fa-bell';
     if (this.props.errorFlag === true) {
-      errorMessageicon = 'fa fa-2x fa-remove';
+      errorMessageicon = 'fa fa-2x fa-warning';
     }
     const menuItems = this.props.leftSideMenu.map(item => {
       return (
