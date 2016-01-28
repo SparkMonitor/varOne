@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
 import fauxJax from 'faux-jax';
 
-import ClusterStore from '../../app/stores/cluster-store';
-import ClusterContainer from '../../app/components/cluster/cluster-container';
+import ClusterStore from '../../../../app/stores/cluster-store';
+import ClusterContainer from '../../../../app/components/cluster/cluster-container';
 
 chai.should();
 
