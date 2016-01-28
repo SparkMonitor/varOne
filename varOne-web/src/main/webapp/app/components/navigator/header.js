@@ -38,9 +38,9 @@ class Header extends React.Component {
   handleLogModalClick = () => VarOneAction.showLogStatus();
 
   render() {
-    let errorMessageicon = 'fa fa-2x fa-cog fa fa-bell';
+    let errorMessageicon = 'fa fa-bell';
     if (this.props.errorFlag === true) {
-      errorMessageicon = 'fa fa-2x fa-warning';
+      errorMessageicon = 'fa fa-warning';
     }
     const menuItems = this.props.leftSideMenu.map(item => {
       return (
@@ -70,7 +70,7 @@ class Header extends React.Component {
           </li>
           { /** <li className='dropdown'>
             <a className='dropdown-toggle varOne-setting'>
-              <i className='fa fa-2x fa-cog fa-spin'
+              <i className='fa fa-cog'
                 data-toggle='modal'
                 data-target='#varOneConfigModal'
                 onClick={ this.handleModalClick }></i>
