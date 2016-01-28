@@ -1,5 +1,6 @@
 import alt from '../alt';
 import VarOneAction from '../actions/varOne-action';
+import MenuAction from '../actions/menu-action';
 import request from 'superagent';
 
 class HistoryAction {
@@ -18,6 +19,7 @@ class HistoryAction {
       this.dispatch(result);
     } catch (e) {
       VarOneAction.showFailMessage(e.response.text);
+      MenuAction.changErrorMessageIcon(true);
     }
   }
 
@@ -30,6 +32,7 @@ class HistoryAction {
       this.dispatch(result);
     } catch (e) {
       VarOneAction.showFailMessage(e.response.text);
+      MenuAction.changErrorMessageIcon(true);
     }
   }
 
@@ -42,6 +45,7 @@ class HistoryAction {
       this.dispatch(result);
     } catch (e) {
       VarOneAction.showFailMessage(e.response.text);
+      MenuAction.changErrorMessageIcon(true);
     }
   }
 
@@ -54,6 +58,7 @@ class HistoryAction {
       this.dispatch(result);
     } catch (e) {
       VarOneAction.showFailMessage(e.response.text);
+      MenuAction.changErrorMessageIcon(true);
     }
   }
 }

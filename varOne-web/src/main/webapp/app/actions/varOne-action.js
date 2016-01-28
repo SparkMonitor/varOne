@@ -1,4 +1,5 @@
 import alt from '../alt';
+import MenuAction from '../actions/menu-action';
 import request from 'superagent';
 class VarOneAction {
 
@@ -17,6 +18,7 @@ class VarOneAction {
       this.dispatch(result);
     } catch (e) {
       this.showFailMessage(e.response.text);
+      MenuAction.changErrorMessageIcon(true);
     }
   }
 
@@ -30,6 +32,7 @@ class VarOneAction {
       this.dispatch(result);
     } catch (e) {
       this.showFailMessage(e.response.text);
+      MenuAction.changErrorMessageIcon(true);
     }
   }
 

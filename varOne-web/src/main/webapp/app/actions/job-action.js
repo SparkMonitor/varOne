@@ -1,5 +1,6 @@
 import alt from '../alt';
 import VarOneAction from '../actions/varOne-action';
+import MenuAction from '../actions/menu-action';
 import request from 'superagent';
 
 class JobAction {
@@ -14,6 +15,7 @@ class JobAction {
       this.dispatch({ result, period });
     } catch (e) {
       VarOneAction.showFailMessage(e.response.text);
+      MenuAction.changErrorMessageIcon(true);
     }
   }
 }
