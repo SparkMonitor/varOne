@@ -13,7 +13,8 @@ class Header extends React.Component {
     runningJobs: PropTypes.string,
     leftSideMenu: PropTypes.array,
     jobItemClickCB: PropTypes.func,
-    dimensionItemClickCB: PropTypes.func
+    dimensionItemClickCB: PropTypes.func,
+    errorFlag: PropTypes.boolean
   }
 
   static getStores() {
@@ -35,8 +36,12 @@ class Header extends React.Component {
   }
 
   handleModalClick = () => VarOneAction.changeStatus();
-
+  handleLogModalClick = () => VarOneAction.showLogStatus();
   render() {
+    let errorMessageicon = 'fa fa-2x fa-cog fa fa-bell';
+    if (this.props.errorFlag === true) {
+      errorMessageicon = 'fa fa-2x fa-warning';
+    }
     const menuItems = this.props.leftSideMenu.map(item => {
       return (
         <MenuItem
@@ -55,6 +60,14 @@ class Header extends React.Component {
           { menuItems }
         </Menu>
         <ul className='nav navbar-top-links navbar-right'>
+          <li className='dropdown'>
+            <a className='dropdown-toggle varOne-setting'>
+              <i className={ errorMessageicon }
+                data-toggle='modal'
+                data-target='#varOneLogModal'
+                onClick={ this.handleLogModalClick }></i>
+            </a>
+          </li>
           <li className='dropdown'>
             <a className='dropdown-toggle varOne-setting'>
               <i className='fa fa-2x fa-cog fa-spin'

@@ -7,6 +7,7 @@ class MenuStore {
   constructor() {
     this.bindActions(MenuAction);
     this.runningJobs = [];
+    this.errorFlag = false;
     this.leftSideMenu = [
       { name: Const.menu.cluster, icon: 'fa-cloud', collapse: false, children: [] },
       { name: Const.menu.nodes, icon: 'fa-cube', collapse: false, children: [] },
@@ -14,7 +15,9 @@ class MenuStore {
       { name: Const.menu.history, icon: 'fa-history', collapse: false, children: [] }
     ];
   }
-
+  onChangErrorMessageIcon(errorFlag) {
+    this.errorFlag = errorFlag;
+  }
   onFetchRunningJob(result) {
     this.runningJobs = result;
     this.leftSideMenu[2].children = result;

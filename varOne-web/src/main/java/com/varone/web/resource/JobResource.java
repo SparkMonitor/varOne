@@ -18,6 +18,8 @@ import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
+import com.varone.web.exception.VarOneException;
+import com.varone.web.exception.VarOneExceptionParser;
 import com.varone.web.facade.SparkMonitorFacade;
 import com.varone.web.vo.DefaultApplicationVO;
 
@@ -31,38 +33,48 @@ public class JobResource {
 	private Logger logger = Logger.getLogger(JobResource.class.getName());
 	@GET
 	@Path("/")
-	public String fetchRunngingJobs(@Context HttpServletRequest request) throws Exception{
+	public String fetchRunngingJobs(@Context HttpServletRequest request){
 		logger.info("start fetchRunningJobs method ...");
-		SparkMonitorFacade facade = new SparkMonitorFacade();
-		List<String> runningJobs = facade.getRunningJobs();
-		Gson gson = new Gson();
-		String toJson = gson.toJson(runningJobs);
-		logger.debug("toJson = " + toJson);
-		logger.info("finish fetchRunningJobs method ...");
-		return toJson;
+		try{
+			SparkMonitorFacade facade = new SparkMonitorFacade();
+			List<String> runningJobs = facade.getRunningJobs();
+			Gson gson = new Gson();
+			String toJson = gson.toJson(runningJobs);
+			logger.debug("toJson = " + toJson);
+			logger.info("finish fetchRunningJobs method ...");
+			return toJson;
+		}catch(Exception e){
+			VarOneExceptionParser parser = new VarOneExceptionParser();
+			throw new VarOneException(parser.parse(e));
+		}
 	}
 	
 	@GET
 	@Path("/{applicationId}")
 	public String fetchJob(@PathParam("applicationId") String applicationId, 
-			@QueryParam("metrics") String metrics, @QueryParam("period") String period) throws Exception{
+			@QueryParam("metrics") String metrics, @QueryParam("period") String period){
 		logger.info("start fetchJob method ...");
 		logger.debug("applicationId = " + applicationId + " metrics = " + metrics + " period = " + period);
-		SparkMonitorFacade facade = new SparkMonitorFacade();
-		List<String> metricsAsList = new ArrayList<String>();
-		if(metrics != null){
-			String[] metricsArr = metrics.split(",");
-			for(String metric: metricsArr){
-				if(!metric.trim().equals(""))
-					metricsAsList.add(metric);
+		try{
+			SparkMonitorFacade facade = new SparkMonitorFacade();
+			List<String> metricsAsList = new ArrayList<String>();
+			if(metrics != null){
+				String[] metricsArr = metrics.split(",");
+				for(String metric: metricsArr){
+					if(!metric.trim().equals(""))
+						metricsAsList.add(metric);
+				}
+	//			metricsAsList = Arrays.asList(metrics.split(","));
 			}
-//			metricsAsList = Arrays.asList(metrics.split(","));
+			DefaultApplicationVO result = facade.getJobDashBoard(applicationId, metricsAsList, period);
+			Gson gson = new Gson();
+			String toJson =  gson.toJson(result);
+			logger.debug("toJson = " + toJson);
+			logger.info("finish fetchJob method ...");
+			return toJson;
+		}catch(Exception e){
+			VarOneExceptionParser parser = new VarOneExceptionParser();
+			throw new VarOneException(parser.parse(e));
 		}
-		DefaultApplicationVO result = facade.getJobDashBoard(applicationId, metricsAsList, period);
-		Gson gson = new Gson();
-		String toJson =  gson.toJson(result);
-		logger.debug("toJson = " + toJson);
-		logger.info("finish fetchJob method ...");
-		return toJson;
 	}
 }

@@ -9,8 +9,7 @@ class ClusterStore {
     this.data = null;
     this.period = Const.shared.timeperiod[0];
   }
-
-  onFetchTotalNodeDashBoard({ result, period }) {
+  onFetchTotalNodeDashBoardSuccessful({ result, period }) {
     const data = {};
     data.metrics = {};
 
