@@ -4,9 +4,9 @@ import MenuAction from '../actions/menu-action';
 import request from 'superagent';
 
 class ClusterAction {
-	constructor() {
-  this.generateActions('fetchTotalNodeDashBoardSuccessful');
-	}
+  constructor() {
+    this.generateActions('fetchTotalNodeDashBoardSuccessful');
+  }
 
   async fetchTotalNodeDashBoard(selectMetrics, period) {
     try {
@@ -22,7 +22,6 @@ class ClusterAction {
       MenuAction.changErrorMessageIcon(true);
     }
   }
-
 }
 
 export default alt.createActions(ClusterAction);
