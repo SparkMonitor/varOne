@@ -39,7 +39,7 @@ class VarOneStore {
     this.showLogClick = true;
   }
   onShowFailMessage(failMessage) {
-    this.failMessage = failMessage;
+    this.failMessage = this.failMessage + failMessage;
   }
 }
 
