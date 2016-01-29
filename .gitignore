@@ -24,3 +24,4 @@ conf/*.xml
 conf/*.sh
 varOne*.tgz
 coverage
+report
