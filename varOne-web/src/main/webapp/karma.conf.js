@@ -11,9 +11,9 @@ if (process.env.CIRCLECI) {
 } else {
   coverage = {
     type: 'html',
-    dir: 'coverage/'
+    dir: 'report/coverage/'
   };
-  reporters = ['progress', 'coverage'];
+  reporters = ['progress', 'html', 'coverage'];
 }
 
 export default function(config) {
@@ -22,7 +22,14 @@ export default function(config) {
     browserNoActivityTimeout: 30000,
     frameworks: ['mocha', 'chai', 'sinon-chai'],
     files: ['tests.webpack.js'],
-    preprocessors: { 'tests.webpack.js': ['webpack'] },
+    preprocessors: {
+      'tests.webpack.js': ['webpack', 'coverage']
+    },
+    htmlReporter: {
+      outputFile: 'report/spec/spec.html',
+      pageTitle: 'Unit Tests',
+      subPageTitle: 'varOne project testing spec'
+    },
     reporters: reporters,
     coverageReporter: coverage,
     webpack: {
