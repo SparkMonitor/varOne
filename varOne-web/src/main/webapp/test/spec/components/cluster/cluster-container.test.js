@@ -9,7 +9,7 @@ import ClusterContainer from '../../../../app/components/cluster/cluster-contain
 
 chai.should();
 
-describe('Cluster container', () => {
+describe('Cluster Container', () => {
   let node;
   let instance;
 
