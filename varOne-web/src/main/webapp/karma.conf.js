@@ -37,7 +37,8 @@ export default function(config) {
         'bootstrap-loader',
         './app/main.js'
       ],
-      devtool: 'inline',
+      debug: true,
+      devtool: 'eval-source-map',
       module: {
         preLoaders: [
           { test: /\.js$/, exclude: /node_modules/, loader: 'eslint' }
