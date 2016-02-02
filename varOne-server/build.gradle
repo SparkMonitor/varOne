@@ -1,0 +1,50 @@
+import java.nio.file.*;
+dependencies {
+	compile project(":varOne-web")
+    compile('org.apache.cxf:cxf-rt-frontend-jaxrs:2.7.7'){
+    	exclude group: "javax.ws.rs", module: "javax.ws.rs-api"
+    }
+    compile 'org.apache.cxf:cxf-rt-transports-http:2.7.7'
+    compile('org.apache.cxf:cxf-rt-transports-http-jetty:2.7.7'){
+    	exclude group: "org.eclipse.jetty", module: "jetty-server"
+    	exclude group: "org.eclipse.jetty", module: "jetty-security"
+    	exclude group: "org.slf4j", module: "slf4j-api"
+    }
+    compile('org.apache.cxf:cxf-api:1.9'){
+        exclude group: "org.eclipse.jetty", module: "*"
+    }
+    compile 'org.eclipse.jetty.aggregate:jetty-all-server:8.1.14.v20131031'
+    compile 'com.sun.jersey:jersey-server:1.19'
+    compile 'javax.ws.rs:javax.ws.rs-api:2.0-m10'
+    compile 'org.slf4j:slf4j-api:1.6.6'
+}
+jar {
+    manifest {
+       attributes 'Main-Class': 'com.varone.server.VarOneServer'
+    }
+
+}
+
+task copyToLib(){
+    doLast{
+        configurations.compile.copy().allDependencies.each { dep ->
+             String directory = "$buildDir/lib"
+             if(!new File(directory).exists()){
+                  new File(directory).mkdirs()
+             }
+             configurations.compile.each { File path ->
+                  String dstJarFilePath = directory + "/" + path.name
+		  		if(!new File(dstJarFilePath).exists()){
+					Files.copy(path.toPath(), FileSystems.getDefault().getPath(dstJarFilePath))
+                }
+             }
+        }
+    }
+}
+jar.dependsOn('copyToLib')
+println(sourceSets.main.runtimeClasspath)
+task execVarOneServer(dependsOn: 'classes', type: JavaExec) {
+	main = mainClass
+	classpath = sourceSets.main.runtimeClasspath
+	args ''
+}
