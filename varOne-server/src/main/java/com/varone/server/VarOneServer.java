@@ -94,7 +94,7 @@ public class VarOneServer extends Application {
 	      }
 	      System.exit(0);
 	    }
-
+	    
 	    jettyWebServer.join();
 	}
 	
@@ -159,19 +159,6 @@ public class VarOneServer extends Application {
 	@Override
 	public Set<Object> getSingletons() {
 	    Set<Object> singletons = new HashSet<>();
-
-//	    /** Rest-api root endpoint */
-//	    ZeppelinRestApi root = new ZeppelinRestApi();
-//	    singletons.add(root);
-//
-//	    NotebookRestApi notebookApi = new NotebookRestApi(notebook, notebookWsServer, notebookIndex);
-//	    singletons.add(notebookApi);
-//
-//	    InterpreterRestApi interpreterApi = new InterpreterRestApi(replFactory);
-//	    singletons.add(interpreterApi);
-//
-//	    SecurityRestApi securityApi = new SecurityRestApi();
-//	    singletons.add(securityApi);
 	    
 	    ClusterResource clusterResource = new ClusterResource();
 	    singletons.add(clusterResource);
