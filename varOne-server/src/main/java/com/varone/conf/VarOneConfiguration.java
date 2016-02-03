@@ -51,6 +51,16 @@ public class VarOneConfiguration extends XMLConfiguration {
 	    load(url);
 	}
 	
+	public void verifyEnv() {
+		if (System.getenv("HADOOP_CONF_DIR") == null) {
+			throw new RuntimeException("Please export HADOOP_CONF_DIR as environment variable");
+		}
+		
+		if (System.getenv("SPARK_HOME") == null) {
+			throw new RuntimeException("Please export SPARK_HOME as environment variable");
+		}
+	}
+	
 	public static VarOneConfiguration create() {
 		if (conf != null) {
 			return conf;
@@ -255,4 +265,5 @@ public class VarOneConfiguration extends XMLConfiguration {
 	public int getServerPort() {
 		return getInt(ConfVars.VARONE_SERVER_PORT);
 	}
+
 }

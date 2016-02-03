@@ -52,6 +52,8 @@ public class VarOneServer extends Application {
 	public static void main(String[] args) throws InterruptedException {
 		VarOneConfiguration conf = VarOneConfiguration.create();
 		conf.setProperty("args", args);
+		conf.verifyEnv();
+		
 		
 		// REST api
 	    final ServletContextHandler resourcesContext = setupResourcesContextHandler(conf);
