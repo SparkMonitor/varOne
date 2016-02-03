@@ -20,3 +20,5 @@ varOne-exec/bin/
 varOne-server/bin/
 varOne-web/src/main/webapp/dist
 varOne.log
+conf/*.xml
+conf/*.sh
