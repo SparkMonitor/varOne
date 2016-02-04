@@ -33,7 +33,6 @@ import com.varone.web.vo.HistoryDetailStageVO;
 import com.varone.web.vo.HistoryVO;
 import com.varone.web.vo.JobVO;
 import com.varone.web.vo.StageVO;
-import com.varone.web.vo.VarOneConfigVO;
 import com.varone.web.yarn.service.YarnService;
 
 /**
