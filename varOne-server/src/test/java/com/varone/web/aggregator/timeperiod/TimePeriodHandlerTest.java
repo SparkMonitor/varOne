@@ -9,9 +9,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.varone.conf.VarOneConfiguration;
 import com.varone.node.MetricsProperties;
 import com.varone.web.metrics.bean.TimeValuePairBean;
-import com.varone.web.util.VarOneConfiguration;
+import com.varone.web.util.VarOneEnv;
 
 /**
  * @author allen
@@ -23,8 +24,9 @@ public class TimePeriodHandlerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		VarOneConfiguration varOneConf = new VarOneConfiguration();
-		MetricsProperties metricsConfiguration = varOneConf.loadMetricsConfiguration();
+		VarOneConfiguration conf = VarOneConfiguration.create();
+		VarOneEnv env = new VarOneEnv(conf);
+		MetricsProperties metricsConfiguration = env.loadMetricsConfiguration();
 		this.timePeriodHandler = new TimePeriodHandler(metricsConfiguration);
 	}
 

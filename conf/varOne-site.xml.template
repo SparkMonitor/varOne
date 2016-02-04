@@ -12,7 +12,13 @@
   <property>
     <name>varOne.server.port</name>
     <value>8080</value>
-    <description>Server port</description>
+    <description>Server port, default is 8080</description>
+  </property>
+
+  <property>
+    <name>varOne.node.port</name>
+    <value>8181</value>
+    <description>Port of varOne nodes(daemond), default is 8181</description>
   </property>
 
   <property>

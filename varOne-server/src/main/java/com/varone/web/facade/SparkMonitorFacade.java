@@ -11,6 +11,8 @@ import java.util.Map;
 
 import org.apache.hadoop.conf.Configuration;
 
+import com.varone.conf.ConfVars;
+import com.varone.conf.VarOneConfiguration;
 import com.varone.node.MetricsProperties;
 import com.varone.node.MetricsType;
 import com.varone.web.aggregator.UIDataAggregator;
@@ -24,7 +26,7 @@ import com.varone.web.reader.eventlog.EventLogReader;
 import com.varone.web.reader.eventlog.impl.EventLogHdfsReaderImpl;
 import com.varone.web.reader.metrics.MetricsReader;
 import com.varone.web.reader.metrics.impl.MetricsRpcReaderImpl;
-import com.varone.web.util.VarOneConfiguration;
+import com.varone.web.util.VarOneEnv;
 import com.varone.web.vo.DefaultApplicationVO;
 import com.varone.web.vo.DefaultNodeVO;
 import com.varone.web.vo.DefaultTotalNodeVO;
@@ -43,15 +45,16 @@ import com.varone.web.yarn.service.YarnService;
 public class SparkMonitorFacade {
 	
 	private String varOneNodePort;
+	private VarOneEnv env;
 	private Configuration config;
 	private MetricsProperties metricsProperties;
-	VarOneConfiguration varOneConf;
 	
 	public SparkMonitorFacade() throws IOException {
-		this.varOneConf = new VarOneConfiguration();
-		this.varOneNodePort = this.varOneConf.getVarOneNodePort();
-		this.config = varOneConf.loadHadoopConfiguration();
-		this.metricsProperties = varOneConf.loadMetricsConfiguration();
+		VarOneConfiguration conf = VarOneConfiguration.create();
+		this.env = new VarOneEnv(conf);
+		this.config = env.loadHadoopConfiguration();
+		this.varOneNodePort = conf.getString(ConfVars.VARONE_NODE_PORT);
+		this.metricsProperties = env.loadMetricsConfiguration();
 	}
 	
 	public DefaultTotalNodeVO getDefaultClusterDashBoard(List<String> metrics, String periodExpression) throws Exception{
@@ -67,7 +70,7 @@ public class SparkMonitorFacade {
 			int runningAppNum = yarnService.getRunningSparkApplications().size();
 			List<String> periodSparkAppId = yarnService.getSparkApplicationsByPeriod(startAndEndTime[0], startAndEndTime[1]);
 			
-			EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
+			EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config, this.env.getEventLogDir());
 			MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost, this.varOneNodePort); 
 			
 			List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
@@ -113,7 +116,7 @@ public class SparkMonitorFacade {
 				long[] startAndEndTime = timePeriodHandler.transferToLongPeriod(periodExpression);
 				List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
 				
-				EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
+				EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config, this.env.getEventLogDir());
 				MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost, this.varOneNodePort); 
 				
 				SparkEventLogBean inProgressLog = eventLogReader.getInProgressLog(applicationId);
@@ -167,7 +170,7 @@ public class SparkMonitorFacade {
 	
 	public HistoryDetailStageVO getHistoryDetailStageTask(String applicationId, int stageId){
 		try{
-			EventLogHdfsReaderImpl hdfsReader = new EventLogHdfsReaderImpl(config);
+			EventLogHdfsReaderImpl hdfsReader = new EventLogHdfsReaderImpl(config, this.env.getEventLogDir());
 			SparkEventLogBean sparkEventLog = hdfsReader.getHistoryStageDetails(applicationId);
 	
 			UIDataAggregator aggregator = new UIDataAggregator();
@@ -198,7 +201,7 @@ public class SparkMonitorFacade {
 
 	public List<HistoryVO> getAllSparkApplication() throws Exception {
 		List<HistoryVO> histories = new ArrayList<HistoryVO>();
-		EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
+		EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config, this.env.getEventLogDir());
 		List<SparkEventLogBean> allSparkAppLog = eventLogReader.getAllSparkAppLog();
 		
 		for(SparkEventLogBean eventLog: allSparkAppLog){
@@ -218,14 +221,14 @@ public class SparkMonitorFacade {
 	}
 
 	public List<JobVO> getSparkApplicationJobs(String applicationId) throws Exception {
-		EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
+		EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config, this.env.getEventLogDir());
 		SparkEventLogBean eventLog = eventLogReader.getApplicationJobs(applicationId);
 		
 		return new UIDataAggregator().aggregateApplicationJobs(applicationId, eventLog);
 	}
 
 	public List<StageVO> getSparkJobStages(String applicationId, String jobId) throws Exception {
-		EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config);
+		EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config, this.env.getEventLogDir());
 		SparkEventLogBean eventLog = eventLogReader.getJobStages(applicationId, jobId);
 		
 		return new UIDataAggregator().aggregateJobStages(applicationId, jobId, eventLog);
@@ -239,15 +242,16 @@ public class SparkMonitorFacade {
 	}
 
 	public UpdateStatusVO updateVarOneConfig(VarOneConfigForm conf) {
-		UpdateStatusVO result = new UpdateStatusVO();
-		try {
-			this.varOneConf.updateVarOneNodePort(conf.port);
-			result.setOk(true);
-			result.setError("");
-		} catch (IOException e) {
-			result.setOk(false);
-			result.setError(e.getMessage());
-		}
-		return result;
+//		UpdateStatusVO result = new UpdateStatusVO();
+//		try {
+//			this.varOneConf.updateVarOneNodePort(conf.port);
+//			result.setOk(true);
+//			result.setError("");
+//		} catch (IOException e) {
+//			result.setOk(false);
+//			result.setError(e.getMessage());
+//		}
+//		return result;
+		return null;
 	}
 }

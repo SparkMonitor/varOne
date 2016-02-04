@@ -52,13 +52,21 @@ public class VarOneConfiguration extends XMLConfiguration {
 	}
 	
 	public void verifyEnv() {
-		if (System.getenv("HADOOP_CONF_DIR") == null) {
+		if (this.getHadoopConfDir() == null) {
 			throw new RuntimeException("Please export HADOOP_CONF_DIR as environment variable");
 		}
 		
-		if (System.getenv("SPARK_HOME") == null) {
+		if (this.getSparkHome() == null) {
 			throw new RuntimeException("Please export SPARK_HOME as environment variable");
 		}
+	}
+	
+	public String getHadoopConfDir() {
+		return System.getenv("HADOOP_CONF_DIR");
+	}
+	
+	public String getSparkHome() {
+		return System.getenv("SPARK_HOME");
 	}
 	
 	public static VarOneConfiguration create() {

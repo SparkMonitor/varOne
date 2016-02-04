@@ -35,11 +35,8 @@ public class EventLogHdfsReaderImpl implements EventLogReader {
 	private FileSystem fs;
 	private Path logDir;
 	
-	public EventLogHdfsReaderImpl(Configuration config) throws IOException{
-		logger.debug("EventLogHdfsReaderImpl constructor");
-		
+	public EventLogHdfsReaderImpl(Configuration config, String logPathStr) throws IOException {		
 		this.config = config;
-		String logPathStr = this.config.get("spark.eventLog.dir");
 		this.fs = FileSystem.get(this.config);
 		this.logDir = new Path(logPathStr);
 		if(!this.fs.isDirectory(this.logDir)) 

@@ -3,6 +3,8 @@
  */
 package com.varone.conf;
 
+import java.io.File;
+
 /**
  * @author allen
  *
@@ -11,6 +13,7 @@ public enum ConfVars {
 	VARONE_HOME("varOne.home", "../"),
 	VARONE_SERVER_ADDR("varOne.server.addr", "0.0.0.0"),
 	VARONE_SERVER_PORT("varOne.server.port", 8080),
+	VARONE_NODE_PORT("varOne.node.port", 8181),
 	VARONE_SERVER_CONTEXT_PATH("varOne.server.context.path", "/varOne-web"),
 	VARONE_WAR("varOne.war", "../varOne-web/src/main/webapp"),
 	VARONE_WAR_TEMPDIR("varOne.war.tempdir", "webapps");
