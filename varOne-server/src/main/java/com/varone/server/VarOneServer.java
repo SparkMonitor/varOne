@@ -29,7 +29,6 @@ import com.varone.web.resource.ClusterResource;
 import com.varone.web.resource.HistoryResource;
 import com.varone.web.resource.JobResource;
 import com.varone.web.resource.NodeResource;
-import com.varone.web.resource.VarOneResource;
 
 /**
  * @author allen
@@ -173,9 +172,6 @@ public class VarOneServer extends Application {
 	    
 	    NodeResource nodeResource = new NodeResource();
 	    singletons.add(nodeResource);
-	    
-	    VarOneResource varOneResource = new VarOneResource();
-	    singletons.add(varOneResource);
 	    
 	    return singletons;
 	}

@@ -19,7 +19,6 @@ import com.varone.web.aggregator.UIDataAggregator;
 import com.varone.web.aggregator.timeperiod.TimePeriodHandler;
 import com.varone.web.eventlog.bean.SparkEventLogBean;
 import com.varone.web.eventlog.bean.SparkEventLogBean.AppStart;
-import com.varone.web.form.VarOneConfigForm;
 import com.varone.web.metrics.bean.MetricBean;
 import com.varone.web.metrics.bean.NodeBean;
 import com.varone.web.reader.eventlog.EventLogReader;
@@ -34,7 +33,6 @@ import com.varone.web.vo.HistoryDetailStageVO;
 import com.varone.web.vo.HistoryVO;
 import com.varone.web.vo.JobVO;
 import com.varone.web.vo.StageVO;
-import com.varone.web.vo.UpdateStatusVO;
 import com.varone.web.vo.VarOneConfigVO;
 import com.varone.web.yarn.service.YarnService;
 
@@ -232,26 +230,5 @@ public class SparkMonitorFacade {
 		SparkEventLogBean eventLog = eventLogReader.getJobStages(applicationId, jobId);
 		
 		return new UIDataAggregator().aggregateJobStages(applicationId, jobId, eventLog);
-	}
-
-	public VarOneConfigVO getVarOneConfig() throws Exception {
-		String port = this.varOneNodePort;
-		VarOneConfigVO result = new VarOneConfigVO();
-		result.setPort(port);
-		return result;
-	}
-
-	public UpdateStatusVO updateVarOneConfig(VarOneConfigForm conf) {
-//		UpdateStatusVO result = new UpdateStatusVO();
-//		try {
-//			this.varOneConf.updateVarOneNodePort(conf.port);
-//			result.setOk(true);
-//			result.setError("");
-//		} catch (IOException e) {
-//			result.setOk(false);
-//			result.setError(e.getMessage());
-//		}
-//		return result;
-		return null;
 	}
 }
