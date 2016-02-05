@@ -22,3 +22,4 @@ varOne-web/src/main/webapp/dist
 varOne.log
 conf/*.xml
 conf/*.sh
+varOne*.tgz
