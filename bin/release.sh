@@ -20,6 +20,7 @@ if [[ -z "${VARONE_HOME}" ]]; then
   export VARONE_HOME="$(cd "${FWDIR}/.."; pwd)"
 fi
 
+cd ${bin}/..
 gradle clean build shadowJar -x test
 
 if [[ -d "${VARONE_HOME}/varOne-${1}" ]]; then
