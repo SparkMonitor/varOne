@@ -42,8 +42,8 @@ function addJarInDir(){
 
 addJarInDir "${VARONE_HOME}/lib"
 
-CLASSPATH+=":${VARONE_CLASSPATH}"
+# CLASSPATH+=":${VARONE_CLASSPATH}"
 
 echo $CLASSPATH
 echo $VARONE_WAR
-$(exec java -cp $CLASSPATH $VARONE_SERVER "$@")
+$(exec java -cp $VARONE_CLASSPATH $VARONE_SERVER "$@")

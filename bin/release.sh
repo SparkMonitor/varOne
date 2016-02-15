@@ -39,6 +39,7 @@ cp -r "${VARONE_HOME}/CONTRIBUTING.md" "${VARONE_RELEASE_DIR}"
 cp -r "${VARONE_HOME}/LICENSE" "${VARONE_RELEASE_DIR}"
 cp -r "${VARONE_HOME}/README.md" "${VARONE_RELEASE_DIR}"
 cp -r "${VARONE_HOME}/varOne-server/build/lib" "${VARONE_RELEASE_DIR}"
+cp "${VARONE_HOME}/varOne-node/build/libs/varOned-${1}.jar" "${VARONE_RELEASE_DIR}"
 cp "${VARONE_HOME}/varOne-server/build/libs/varOne-server-${1}.jar" "${VARONE_RELEASE_DIR}"
 cp "${VARONE_HOME}/varOne-web/build/libs/varOne-web-${1}.war" "${VARONE_RELEASE_DIR}"
 
