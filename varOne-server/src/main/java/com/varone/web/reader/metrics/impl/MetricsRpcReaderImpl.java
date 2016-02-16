@@ -29,12 +29,12 @@ public class MetricsRpcReaderImpl implements MetricsReader {
 	
 	private MetricsStubCenter stubCenter;
 
-	public MetricsRpcReaderImpl(String port) {
+	public MetricsRpcReaderImpl(int port) {
 		logger.debug("MetricsRpcReaderImpl constructor, port = " + port);
 		this.stubCenter = new MetricsStubCenter(port);
 	}
 	
-	public MetricsRpcReaderImpl(List<String> nodes, String port) {
+	public MetricsRpcReaderImpl(List<String> nodes, int port) {
 		logger.debug("MetricsRpcReaderImpl constructor, nodes size = " + nodes.size() + " port = " + port);
 		this.stubCenter = new MetricsStubCenter(nodes, port);
 	}

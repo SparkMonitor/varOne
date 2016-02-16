@@ -41,7 +41,7 @@ import com.varone.web.yarn.service.YarnService;
  */
 public class SparkMonitorFacade {
 	
-	private String varOneNodePort;
+	private int varOneNodePort;
 	private VarOneEnv env;
 	private Configuration config;
 	private MetricsProperties metricsProperties;
@@ -50,7 +50,7 @@ public class SparkMonitorFacade {
 		VarOneConfiguration conf = VarOneConfiguration.create();
 		this.env = new VarOneEnv(conf);
 		this.config = env.loadHadoopConfiguration();
-		this.varOneNodePort = conf.getString(ConfVars.VARONE_NODE_PORT);
+		this.varOneNodePort = conf.getInt(ConfVars.VARONE_NODE_PORT);
 		this.metricsProperties = env.loadMetricsConfiguration();
 	}
 	

@@ -38,7 +38,7 @@ public class MetricsRpcReaderImplTest extends TestCase {
 	 * @throws Exception 
 	 */
 	public void testGetNodeMetrics() throws Exception {
-		MetricsReader reader = new MetricsRpcReaderImpl(HOSTS, "8888");
+		MetricsReader reader = new MetricsRpcReaderImpl(HOSTS, 8888);
 		String applicationId = "application_1439169262151_0237";
 		List<String> metricsType = new ArrayList<String>();
 		

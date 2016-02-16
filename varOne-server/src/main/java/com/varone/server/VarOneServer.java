@@ -128,7 +128,7 @@ public class VarOneServer extends Application {
 	      webApp.setWar(warPath.getAbsolutePath());
 	      File warTempDirectory = new File(conf.getRelativeDir(ConfVars.VARONE_WAR_TEMPDIR));
 	      warTempDirectory.mkdir();
-	      LOG.info("ZeppelinServer Webapp path: {}" + warTempDirectory.getPath());
+	      LOG.info("VarOneServer Webapp path: {}" + warTempDirectory.getPath());
 	      webApp.setTempDirectory(warTempDirectory);
 	    }
 	    // Explicit bind to root

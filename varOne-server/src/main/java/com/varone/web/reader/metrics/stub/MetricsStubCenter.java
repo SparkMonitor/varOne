@@ -25,14 +25,14 @@ public class MetricsStubCenter {
 	/**
 	 * 
 	 */
-	public MetricsStubCenter(String port) {
+	public MetricsStubCenter(int port) {
 		logger.debug("MetricsStubCenter constructor, port = " + port);
-		this.port = Integer.valueOf(port);
+		this.port = port;
 	}
 
-	public MetricsStubCenter(List<String> nodes, String port) {
+	public MetricsStubCenter(List<String> nodes, int port) {
 		logger.debug("MetricsStubCenter constructor, nodes size = " + nodes.size() + " port = " + port);
-		this.port = Integer.valueOf(port);
+		this.port = port;
 		this.nodes = nodes;
 	}
 
