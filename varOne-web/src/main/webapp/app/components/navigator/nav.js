@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import Brand from './brand';
 import Header from './header';
 
-import VarOneConfigModal from '../commons/varOne-conf-modal';
 import VarOneLogModal from '../commons/varOne-log-modal';
 
 class Nav extends React.Component {
@@ -25,7 +24,6 @@ class Nav extends React.Component {
                 dimensionItemClickCB={ this.props.dimensionItemClickCB }/>
             </div>
         </nav>
-        <VarOneConfigModal />
         <VarOneLogModal />
       </div>
     );

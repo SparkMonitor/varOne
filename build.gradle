@@ -57,7 +57,7 @@ subprojects {
                 referencedProjects 'varOne-rpc'
             }
         }
-    } else if (project.name in ["varOne-web"]) {
+    } else if (project.name in ["varOne-server"]) {
         eclipse {
             project {
                 referencedProjects 'varOne-node'

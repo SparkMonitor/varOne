@@ -35,8 +35,8 @@ class Header extends React.Component {
     clearInterval(this.fetchInterval);
   }
 
-  handleModalClick = () => VarOneAction.changeStatus();
   handleLogModalClick = () => VarOneAction.showLogStatus();
+
   render() {
     let errorMessageicon = 'fa fa-2x fa-cog fa fa-bell';
     if (this.props.errorFlag === true) {
@@ -68,7 +68,7 @@ class Header extends React.Component {
                 onClick={ this.handleLogModalClick }></i>
             </a>
           </li>
-          <li className='dropdown'>
+          { /** <li className='dropdown'>
             <a className='dropdown-toggle varOne-setting'>
               <i className='fa fa-2x fa-cog fa-spin'
                 data-toggle='modal'
@@ -76,6 +76,7 @@ class Header extends React.Component {
                 onClick={ this.handleModalClick }></i>
             </a>
           </li>
+          **/ }
         </ul>
       </div>
     );
