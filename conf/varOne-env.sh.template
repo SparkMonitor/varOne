@@ -5,3 +5,4 @@
 
 # export SPARK_HOME                 # (required) spark location, please make sure metrics.properties has been configured.
 # export HADOOP_CONF_DIR         		# (required) yarn-site.xml is located in configuration directory in HADOOP_CONF_DIR.
+# export VARONE_LOG_DIR
