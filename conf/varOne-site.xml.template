@@ -18,7 +18,13 @@
   <property>
     <name>varOne.node.port</name>
     <value>8181</value>
-    <description>Port of varOne nodes(daemond), default is 8181</description>
+    <description>Port of varOne daemond, default is 8181</description>
+  </property>
+
+  <property>
+    <name>varOne.node.thread.number</name>
+    <value>5</value>
+    <description>The number of RPC handler for varOne daemond, default is 5</description>
   </property>
 
   <property>

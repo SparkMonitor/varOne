@@ -9,8 +9,8 @@ package com.varone.node.utils;
  */
 public class Consts {
 	public final static String VARONE_SPARK_METRICS_PROP_DIR = "spark.metrics.prop.dir";
-	public final static String VARONE_NODE_PORT = "varone.node.port";
-	public final static String VARONE_NODE_THREAD_NUM = "varone.node.thread";
+	public final static String VARONE_NODE_PORT = "varOne.node.port";
+	public final static String VARONE_NODE_THREAD_NUM = "varOne.node.thread.number";
 	
 	public final static Integer VARONE_NODE_DEFAULT_PORT = 8181;
 	public final static Integer VARONE_NODE_DEFAULT_THREAD_NUM = 5;
