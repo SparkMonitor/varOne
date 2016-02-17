@@ -10,11 +10,6 @@ elif [[ "$1" != "start" && "$1" != "stop" ]]; then
   exit 1
 fi
 
-if [[ $SPARK_HOME == ""  ]]; then
-  echo Make sure you have
-fi
-
-
 bin=$(dirname "${BASH_SOURCE-$0}")
 bin=$(cd "${bin}">/dev/null; pwd)
 
@@ -36,8 +31,12 @@ if [[ -f "${VARONE_CONF_DIR}/varOne-env.sh" ]]; then
   . "${VARONE_CONF_DIR}/varOne-env.sh"
 fi
 
+if [[ $SPARK_HOME == ""  ]]; then
+  echo "Make sure you have set SPARK_HOME in ${VARONE_CONF_DIR}/varOne-env.sh"
+fi
+
 VARONED_CLASSPATH+="${VARONE_CONF_DIR}"
-VARONED_SERVER=com.varone.node.SPMNode
+VARONED_SERVER=com.varone.node.VarOned
 
 function addJarInDir(){
   if [[ -d "${1}" ]]; then
@@ -49,9 +48,9 @@ addJarInDir "${VARONE_HOME}/lib"
 
 
 if [[ "$1" == "start" ]]; then
-  $(nohup java -cp $VARONED_CLASSPATH $VARONED_SERVER -d "${SPARK_HOME}/conf" -p 8000 >varOned.log 2>&1 &)
+  $(nohup java -cp $VARONED_CLASSPATH $VARONED_SERVER -d "${SPARK_HOME}/conf" >varOned.log 2>&1 &)
 elif [[ "$1" == "stop" ]]; then
-  PID="$(ps -ef | grep SPMNode | grep -v grep | awk '{ print $2 }')"
+  PID="$(ps -ef | grep VarOned | grep -v grep | awk '{ print $2 }')"
   if [[ $PID == ""  ]]; then
     echo No Process to kill.
   else
