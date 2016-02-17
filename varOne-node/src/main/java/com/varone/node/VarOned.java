@@ -20,7 +20,7 @@ import com.varone.node.utils.MetricsPropertiesParser;
  * @author allen
  *
  */
-public class SPMNode {
+public class VarOned {
 	
 	/**
 	 * @param args
