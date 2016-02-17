@@ -35,6 +35,7 @@ mkdir ${VARONE_RELEASE_DIR}/bin
 cp "${VARONE_HOME}/bin/varOne.sh" "${VARONE_RELEASE_DIR}/bin"
 cp "${VARONE_HOME}/conf/varOne-env.sh.template" "${VARONE_RELEASE_DIR}/conf"
 cp "${VARONE_HOME}/conf/varOne-site.xml.template" "${VARONE_RELEASE_DIR}/conf"
+cp "${VARONE_HOME}/conf/log4j.properties" "${VARONE_RELEASE_DIR}/conf"
 cp -r "${VARONE_HOME}/docs" "${VARONE_RELEASE_DIR}"
 cp -r "${VARONE_HOME}/CONTRIBUTING.md" "${VARONE_RELEASE_DIR}"
 cp -r "${VARONE_HOME}/LICENSE" "${VARONE_RELEASE_DIR}"
