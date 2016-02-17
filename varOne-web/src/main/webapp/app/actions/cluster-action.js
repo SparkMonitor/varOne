@@ -18,6 +18,7 @@ class ClusterAction {
       const result = JSON.parse(response.text);
       this.actions.fetchTotalNodeDashBoardSuccessful({ result, period });
     } catch (e) {
+      console.log(e.response.text);
       VarOneAction.showFailMessage(e.response.text);
       MenuAction.changErrorMessageIcon(true);
     }
