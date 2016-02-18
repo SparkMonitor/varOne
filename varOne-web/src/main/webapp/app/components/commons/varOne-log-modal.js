@@ -23,22 +23,39 @@ export default class VarOneLogModal extends React.Component {
 
   render() {
     const failResultMessage = this.props.failMessage;
-    return (
-      <div id='varOneLogModal' className='modal fade' tabIndex='-1' role='dialog'>
-        <div className='modal-dialog modal-lg' role='document'>
-          <div className='modal-content'>
-            <div className='modal-header'>
-              <button type='button' className='close' data-dismiss='modal'>&times;</button>
-              <h4 className='modal-title'>varOne Error Message</h4>
-            </div>
-            <div className='modal-body'>
-              <textarea ref='textFailMessage'
-                rows='35' cols='90' value={ failResultMessage }>
-              </textarea>
+    if (failResultMessage !== null) {
+      return (
+        <div id='varOneLogModal' className='modal fade' tabIndex='-1' role='dialog'>
+          <div className='modal-dialog modal-lg' role='document'>
+            <div className='modal-content'>
+              <div className='modal-header'>
+                <button type='button' className='close' data-dismiss='modal'>&times;</button>
+                <h4 className='modal-title'>varOne Error Message</h4>
+              </div>
+              <div className='modal-body'>
+                <textarea ref='textFailMessage'
+                  rows='35' cols='105' value={ failResultMessage }>
+                </textarea>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div id='varOneLogModal' className='modal fade' tabIndex='-1' role='dialog'>
+          <div className='modal-dialog modal-lg' role='document'>
+            <div className='modal-content'>
+              <div className='modal-header'>
+                <button type='button' className='close' data-dismiss='modal'>&times;</button>
+                <h4 className='modal-title'>varOne Error Message</h4>
+              </div>
+              <div className='modal-body'>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
   }
 }
