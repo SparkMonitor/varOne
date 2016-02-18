@@ -43,7 +43,9 @@ public class NodeResource {
 			return toJson;
 		}catch(Exception e){
 			VarOneExceptionParser parser = new VarOneExceptionParser();
-			throw new VarOneException(parser.parse(e));
+			String errorMessage = parser.parse(e);
+			logger.error(errorMessage);
+			throw new VarOneException(errorMessage);
 		}
 	}
 	
@@ -71,7 +73,9 @@ public class NodeResource {
 			return toJson;
 		}catch(Exception e){
 			VarOneExceptionParser parser = new VarOneExceptionParser();
-			throw new VarOneException(parser.parse(e));
+			String errorMessage = parser.parse(e);
+			logger.error(errorMessage);
+			throw new VarOneException(errorMessage);
 		}
 	}
 }

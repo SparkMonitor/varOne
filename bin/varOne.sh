@@ -30,6 +30,14 @@ if [[ -z "${VARONE_WAR}" ]]; then
   fi
 fi
 
+if [[ -z "${VARONE_LOG_DIR}" ]]; then
+  export VARONE_LOG_DIR="${VARONE_HOME}/logs"
+fi
+HOSTNAME=$(hostname)
+VARONE_LOGFILE="${VARONE_LOG_DIR}/varOne-${HOSTNAME}.log"
+JAVA_OPTS+=" -DvarOne.log.file=${VARONE_LOGFILE}"
+
+
 VARONE_CLASSPATH+="${VARONE_CONF_DIR}:"
 VARONE_CLASSPATH+=$(find -L "${VARONE_HOME}" -name "varOne-server*.jar")
 VARONE_SERVER=com.varone.server.VarOneServer
@@ -42,4 +50,4 @@ function addJarInDir(){
 
 addJarInDir "${VARONE_HOME}/lib"
 
-$(exec java -cp $VARONE_CLASSPATH $VARONE_SERVER "$@")
+$(exec java $JAVA_OPTS -cp $VARONE_CLASSPATH $VARONE_SERVER "$@")

@@ -103,6 +103,7 @@ subprojects {
         }
         hadoopConf('org.apache.hadoop:hadoop-yarn-common:2.3.0'){
            exclude group: "com.sun.jersey", module: "jersey-json"
+           exclude group: "com.sun.jersey", module: "jersey-core"
         }
     }
 

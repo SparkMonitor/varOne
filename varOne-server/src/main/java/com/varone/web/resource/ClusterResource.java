@@ -53,11 +53,12 @@ public class ClusterResource {
 			logger.debug("metricsAsList size = " + metricsAsList.size() + " period = " + period);
 			logger.debug(" toJson = " + toJson);
 			logger.info("finish fetchClusterDashBoard method ...");
-			
 			return toJson;
 		}catch(Exception e){
-			VarOneExceptionParser parser = new VarOneExceptionParser();
-			throw new VarOneException(parser.parse(e));
+		    VarOneExceptionParser parser = new VarOneExceptionParser();
+		    String errorMessage = parser.parse(e);
+			logger.error(errorMessage);
+			throw new VarOneException(errorMessage);
 		}
 	}
 }
