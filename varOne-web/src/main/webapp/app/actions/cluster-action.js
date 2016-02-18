@@ -4,9 +4,9 @@ import MenuAction from '../actions/menu-action';
 import request from 'superagent';
 
 class ClusterAction {
-	constructor() {
-  this.generateActions('fetchTotalNodeDashBoardSuccessful');
-	}
+  constructor() {
+    this.generateActions('fetchTotalNodeDashBoardSuccessful');
+  }
 
   async fetchTotalNodeDashBoard(selectMetrics, period) {
     try {
@@ -18,12 +18,10 @@ class ClusterAction {
       const result = JSON.parse(response.text);
       this.actions.fetchTotalNodeDashBoardSuccessful({ result, period });
     } catch (e) {
-      console.log(e.response.text);
       VarOneAction.showFailMessage(e.response.text);
       MenuAction.changErrorMessageIcon(true);
     }
   }
-
 }
 
 export default alt.createActions(ClusterAction);

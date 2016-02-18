@@ -38,7 +38,8 @@ class HistoryAction {
 
   async fetchStages(applicationId, jobId) {
     try {
-      const response = await request.get(`/varOne-web/rest/history/${applicationId}/${jobId}/stages`)
+      const response = await request.get(
+        `/varOne-web/rest/history/${applicationId}/${jobId}/stages`)
                                     .set('Accept', 'application/json');
       const stages = JSON.parse(response.text);
       const result = { stages, jobId };
@@ -51,7 +52,8 @@ class HistoryAction {
 
   async fetchStageDetails(applicationId, stageId) {
     try {
-      const response = await request.get(`/varOne-web/rest/history/${applicationId}/jobs/${stageId}`)
+      const response = await request.get(`
+        /varOne-web/rest/history/${applicationId}/jobs/${stageId}`)
                                     .set('Accept', 'application/json');
       const stageDetails = JSON.parse(response.text);
       const result = { stageDetails };
