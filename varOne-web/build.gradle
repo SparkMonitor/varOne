@@ -29,6 +29,10 @@ war {
     exclude('.bootstraprc')
     exclude('karma.conf.js')
     exclude('package.json')
+    exclude('**/test')
+    exclude('**/report')
+    exclude('tests.webpack.js')
+    exclude('package.json')
 
     from('src/main/webapp/dist')
 
