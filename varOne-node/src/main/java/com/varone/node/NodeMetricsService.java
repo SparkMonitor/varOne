@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.log4j.Logger;
 
 import com.varone.hadoop.rpc.AbstractServer;
 import com.varone.hadoop.rpc.metrics.MetricsService;
@@ -24,7 +25,7 @@ import com.varone.node.utils.MetricsDataTransfer;
  *
  */
 public class NodeMetricsService extends AbstractServer implements MetricsService {
-	
+	private static final Logger LOG = Logger.getLogger(NodeMetricsService.class);
 	private NodeMetricsReader reader;
 	
 	
@@ -43,21 +44,27 @@ public class NodeMetricsService extends AbstractServer implements MetricsService
 	@Override
 	public MetricsServiceResponse getMetrics(MetricsServiceRequest request)
 			throws Exception {
-		String applicationId = request.getApplicationId();
-		List<MetricsTypeProto> metricsTypeProtos = request.getMetrics();
+		String applicationId = null;
+		try{
+			applicationId = request.getApplicationId();
+			List<MetricsTypeProto> metricsTypeProtos = request.getMetrics();
+			
+			MetricsDataTransfer transfer = new MetricsDataTransfer();
+			
+			List<MetricsType> decodeMetricsType = transfer.decodeMetricsType(metricsTypeProtos);
+			Map<String, List<MetricTuple>> metricsByApplicationId = 
+					this.reader.readMetricsByApplicationId(applicationId, decodeMetricsType);
+			
+			List<MetricsMapProto> metricsProtos = transfer.encodeMetricsData(metricsByApplicationId);
+			
+			MetricsServiceResponse response = new MetricsServiceResponsePBImpl();
+			response.setResult(metricsProtos);
+			return response;
+		} catch(Exception e) {
+			LOG.error("Fetch metrics of [" + applicationId + "] failed on VarOned", e);
+			throw e;
+		}
 		
-		MetricsDataTransfer transfer = new MetricsDataTransfer();
-		
-		List<MetricsType> decodeMetricsType = transfer.decodeMetricsType(metricsTypeProtos);
-		Map<String, List<MetricTuple>> metricsByApplicationId = 
-				this.reader.readMetricsByApplicationId(applicationId, decodeMetricsType);
-		
-		List<MetricsMapProto> metricsProtos = transfer.encodeMetricsData(metricsByApplicationId);
-		
-		MetricsServiceResponse response = new MetricsServiceResponsePBImpl();
-		response.setResult(metricsProtos);
-		
-		return response;
 	}
 
 	/* (non-Javadoc)

@@ -12,6 +12,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.log4j.Logger;
 
 import com.varone.node.utils.Consts;
 import com.varone.node.utils.MetricsPropertiesParser;
@@ -20,8 +21,8 @@ import com.varone.node.utils.MetricsPropertiesParser;
  * @author allen
  *
  */
-public class SPMNode {
-	
+public class VarOned {
+	private static final Logger LOG = Logger.getLogger(VarOned.class);
 	/**
 	 * @param args
 	 * @throws Exception 
@@ -29,8 +30,6 @@ public class SPMNode {
 	public static void main(String[] args) throws Exception {
 		Options options = new Options();
 		options.addOption("d", "metricsDir", true, "enter the directory which include metrics.properties");
-		options.addOption("p", "port", true, "enter port number");
-		options.addOption("t", "thread", true, "enter thread quantity");
 		
 		MetricsProperties loadProperties = null;
 		HelpFormatter formatter = new HelpFormatter();
@@ -44,10 +43,14 @@ public class SPMNode {
         try {
             cmd = parser.parse( options, args);
             metricsDir = cmd.getOptionValue("d", "");
-            port = cmd.getOptionValue("p", Consts.VARONE_NODE_DEFAULT_PORT.toString());
-            thread = cmd.getOptionValue("t", Consts.VARONE_NODE_DEFAULT_THREAD_NUM.toString());
+            VarOnedConfiguration varOneConfig = VarOnedConfiguration.create();
+  
+            port = (String) varOneConfig.getStringValue(
+            		Consts.VARONE_NODE_PORT, Consts.VARONE_NODE_DEFAULT_PORT.toString());
+            thread = (String) varOneConfig.getStringValue(
+            		Consts.VARONE_NODE_THREAD_NUM, Consts.VARONE_NODE_DEFAULT_THREAD_NUM.toString());
         } catch (ParseException e) {
-            System.err.println(e.getMessage());
+        	LOG.error(e.getMessage());
             formatter.printHelp( "varOned-{version}.jar", options );
             return;
         }
@@ -62,7 +65,7 @@ public class SPMNode {
         	Integer.parseInt(thread);
         	if(portN < 0 || portN > 65535) throw new NumberFormatException("1 < port number < 65535");
         } catch (NumberFormatException e){
-        	System.err.println(e.getMessage());
+        	LOG.error(e.getMessage());
         	return;
         } 
         
@@ -82,7 +85,7 @@ public class SPMNode {
 	    		throw new Exception("The value of *.sink.csv.unit should be seconds");
 	    	} 
         } catch (Exception e){
-        	System.err.println(e.getMessage());
+        	LOG.error(e.getMessage());
         	return;
         } 
         
@@ -97,6 +100,8 @@ public class SPMNode {
 		
 		NodeMetricsService service = new NodeMetricsService(config);
 		service.start();
+		
+		LOG.info("varOned started and listening on " + port);
 	}
 
 }

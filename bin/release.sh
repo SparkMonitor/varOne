@@ -32,16 +32,17 @@ export VARONE_RELEASE_DIR="${VARONE_HOME}/varOne-${1}"
 mkdir ${VARONE_RELEASE_DIR}
 mkdir ${VARONE_RELEASE_DIR}/conf
 mkdir ${VARONE_RELEASE_DIR}/bin
-cp "${VARONE_HOME}/bin/varOne.sh" "${VARONE_RELEASE_DIR}/bin"
+cp ${VARONE_HOME}/bin/varOne* "${VARONE_RELEASE_DIR}/bin"
 cp "${VARONE_HOME}/conf/varOne-env.sh.template" "${VARONE_RELEASE_DIR}/conf"
 cp "${VARONE_HOME}/conf/varOne-site.xml.template" "${VARONE_RELEASE_DIR}/conf"
 cp "${VARONE_HOME}/conf/log4j.properties" "${VARONE_RELEASE_DIR}/conf"
+cp "${VARONE_HOME}/conf/varonedaemond" "${VARONE_RELEASE_DIR}/conf"
 cp -r "${VARONE_HOME}/docs" "${VARONE_RELEASE_DIR}"
 cp -r "${VARONE_HOME}/CONTRIBUTING.md" "${VARONE_RELEASE_DIR}"
 cp -r "${VARONE_HOME}/LICENSE" "${VARONE_RELEASE_DIR}"
 cp -r "${VARONE_HOME}/README.md" "${VARONE_RELEASE_DIR}"
 cp -r "${VARONE_HOME}/varOne-server/build/lib" "${VARONE_RELEASE_DIR}"
-cp "${VARONE_HOME}/varOne-node/build/libs/varOned-${1}.jar" "${VARONE_RELEASE_DIR}"
+cp "${VARONE_HOME}/varOne-node/build/libs/varOne-node-${1}.jar" "${VARONE_RELEASE_DIR}"
 cp "${VARONE_HOME}/varOne-server/build/libs/varOne-server-${1}.jar" "${VARONE_RELEASE_DIR}"
 cp "${VARONE_HOME}/varOne-web/build/libs/varOne-web-${1}.war" "${VARONE_RELEASE_DIR}"
 
