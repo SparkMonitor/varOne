@@ -9,12 +9,14 @@ import java.util.List;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.configuration.tree.ConfigurationNode;
+import org.apache.log4j.Logger;
 
 /**
  * @author allen
  *
  */
 public class VarOnedConfiguration extends XMLConfiguration {
+	private static final Logger LOG = Logger.getLogger(VarOnedConfiguration.class);
 	private static final String VARONE_SITE_XML = "varOne-site.xml";
 	private static final long serialVersionUID = 4749305895693853035L;
 	private static VarOnedConfiguration conf;
@@ -56,14 +58,14 @@ public class VarOnedConfiguration extends XMLConfiguration {
 	    }
 	    
 	    if (url == null) {
-	        System.out.println("Failed to load configuration, proceeding with a default");
+	    	LOG.warn("Failed to load " + VARONE_SITE_XML + ", proceeding with a default");
 	        conf = new VarOnedConfiguration();
 	    } else {
 	    	try {
-	    		System.out.println("Load configuration from " + url);
+	    		LOG.info("Load configuration from " + url);
 	    		conf = new VarOnedConfiguration(url);
 	        } catch (ConfigurationException e) {
-	        	System.out.println("Failed to load configuration from " + url + " proceeding with a default " + e.getMessage());
+	        	LOG.warn("Failed to load configuration from " + url + " proceeding with a default ", e);
 	        	conf = new VarOnedConfiguration();
 	        }
 	    }

@@ -11,8 +11,8 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
-import org.apache.commons.math3.util.MultidimensionalCounter.Iterator;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.log4j.Logger;
 
 import com.varone.node.utils.Consts;
 import com.varone.node.utils.MetricsPropertiesParser;
@@ -22,7 +22,7 @@ import com.varone.node.utils.MetricsPropertiesParser;
  *
  */
 public class VarOned {
-	
+	private static final Logger LOG = Logger.getLogger(VarOned.class);
 	/**
 	 * @param args
 	 * @throws Exception 
@@ -50,7 +50,7 @@ public class VarOned {
             thread = (String) varOneConfig.getStringValue(
             		Consts.VARONE_NODE_THREAD_NUM, Consts.VARONE_NODE_DEFAULT_THREAD_NUM.toString());
         } catch (ParseException e) {
-            System.err.println(e.getMessage());
+        	LOG.error(e.getMessage());
             formatter.printHelp( "varOned-{version}.jar", options );
             return;
         }
@@ -65,7 +65,7 @@ public class VarOned {
         	Integer.parseInt(thread);
         	if(portN < 0 || portN > 65535) throw new NumberFormatException("1 < port number < 65535");
         } catch (NumberFormatException e){
-        	System.err.println(e.getMessage());
+        	LOG.error(e.getMessage());
         	return;
         } 
         
@@ -85,7 +85,7 @@ public class VarOned {
 	    		throw new Exception("The value of *.sink.csv.unit should be seconds");
 	    	} 
         } catch (Exception e){
-        	System.err.println(e.getMessage());
+        	LOG.error(e.getMessage());
         	return;
         } 
         
@@ -101,7 +101,7 @@ public class VarOned {
 		NodeMetricsService service = new NodeMetricsService(config);
 		service.start();
 		
-		System.out.println("varOned started and listening on " + port);
+		LOG.info("varOned started and listening on " + port);
 	}
 
 }

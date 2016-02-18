@@ -35,6 +35,17 @@ if [[ $SPARK_HOME == ""  ]]; then
   echo "Make sure you have set SPARK_HOME in ${VARONE_CONF_DIR}/varOne-env.sh"
 fi
 
+if [[ -z "${VARONE_LOG_DIR}" ]]; then
+  export VARONE_LOG_DIR="${VARONE_HOME}/logs"
+fi
+
+if [[ ! -d "${VARONE_LOG_DIR}" ]]; then
+  mkdir $VARONE_LOG_DIR
+fi
+
+HOSTNAME=$(hostname)
+VARONE_LOGFILE="${VARONE_LOG_DIR}/varOned-${HOSTNAME}.log"
+
 VARONED_CLASSPATH+="${VARONE_CONF_DIR}"
 VARONED_SERVER=com.varone.node.VarOned
 
@@ -48,14 +59,13 @@ addJarInDir "${VARONE_HOME}/lib"
 
 
 if [[ "$1" == "start" ]]; then
-  $(nohup java -cp $VARONED_CLASSPATH $VARONED_SERVER -d "${SPARK_HOME}/conf" >varOned.log 2>&1 &)
+  $(nohup java -cp $VARONED_CLASSPATH $VARONED_SERVER -d "${SPARK_HOME}/conf" >$VARONE_LOGFILE 2>&1 &)
 elif [[ "$1" == "stop" ]]; then
   PID="$(ps -ef | grep VarOned | grep -v grep | awk '{ print $2 }')"
-  HOST=$(hostname)
   if [[ $PID == ""  ]]; then
-    echo "No Process to kill on ${HOST}."
+    echo "No Process to kill on ${HOSTNAME}."
   else
     $(exec kill -9 $PID)
-    echo "Kill process ${PID} on ${HOST}."
+    echo "Kill process ${PID} on ${HOSTNAME}."
   fi
 fi
