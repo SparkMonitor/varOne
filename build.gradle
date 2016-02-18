@@ -12,7 +12,7 @@ subprojects {
     apply plugin: 'project-report'
     sourceCompatibility = 1.7
     group = 'com.haredb'
-    version = '0.1.0-beta'
+    version = '0.1.0'
 
     // set encoding 'UTF-8' on all compile task
     tasks.withType(JavaCompile) {
