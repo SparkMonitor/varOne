@@ -47,6 +47,7 @@ Then pick one node to start all daemonds by following instructions:
   - List your each hostname(one host per line)
 * Run: ```./bin/varOned-all.sh start```
 
+After running, you can check whether ```VarOned``` process listed by ```jps```   
 In addition, you can stop all varOne daemond as this command: ```./bin/varOned-all.sh stop```
 
 ### c. Start varOne web server
@@ -56,3 +57,6 @@ Follow below steps to start varOne web server:
 * Run: ```./bin/varOne.sh```
 
 After running, the browser will automatically open and redirect to http://localhost:$PORT/varOne-web/index.html
+
+# **Development**
+### Check [this](https://github.com/SparkMonitor/varOne/blob/master/docs/development.md) document
