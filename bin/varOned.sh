@@ -51,9 +51,11 @@ if [[ "$1" == "start" ]]; then
   $(nohup java -cp $VARONED_CLASSPATH $VARONED_SERVER -d "${SPARK_HOME}/conf" >varOned.log 2>&1 &)
 elif [[ "$1" == "stop" ]]; then
   PID="$(ps -ef | grep VarOned | grep -v grep | awk '{ print $2 }')"
+  HOST=$(hostname)
   if [[ $PID == ""  ]]; then
-    echo No Process to kill.
+    echo "No Process to kill on ${HOST}."
   else
     $(exec kill -9 $PID)
+    echo "Kill process ${PID} on ${HOST}."
   fi
 fi
