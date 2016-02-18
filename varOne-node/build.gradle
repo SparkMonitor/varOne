@@ -18,6 +18,6 @@ shadowJar {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'com.varone.node.SPMNode'
+        attributes 'Main-Class': 'com.varone.node.VarOned'
     }
 }

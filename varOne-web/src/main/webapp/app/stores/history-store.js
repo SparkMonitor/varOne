@@ -4,7 +4,7 @@ import HistoryAction from '../actions/history-action';
 
 class HistoryStore {
 
-  constructor(){
+  constructor() {
     this.bindActions(HistoryAction);
     this.selectApplicationId;
     this.jobId;
@@ -13,60 +13,63 @@ class HistoryStore {
     this.stages = [];
     this.stageDetails = [];
     this.tab = Const.history.tab.HISTORY_TAB;
-    this.breadcrumb = [Const.history.tab.HISTORY_TAB];
+    this.breadcrumb = [ Const.history.tab.HISTORY_TAB ];
   }
 
-  onFetchApplications(result){
+  onFetchApplications(result) {
     this.tab = Const.history.tab.HISTORY_TAB;
-    this.breadcrumb = [Const.history.tab.HISTORY_TAB];
+    this.breadcrumb = [ Const.history.tab.HISTORY_TAB ];
     this.histories = result;
   }
 
-  onFetchJobs(result){
+  onFetchJobs(result) {
     this.tab = Const.history.tab.JOB_TAB;
-    this.breadcrumb = [Const.history.tab.HISTORY_TAB, Const.history.tab.JOB_TAB];
+    this.breadcrumb = [ Const.history.tab.HISTORY_TAB, Const.history.tab.JOB_TAB ];
     this.jobs = result.jobs;
     this.selectApplicationId = result.applicationId;
   }
 
-  onFetchStages(result){
+  onFetchStages(result) {
     this.tab = Const.history.tab.STAGE_TAB;
     this.breadcrumb = [
       Const.history.tab.HISTORY_TAB,
       Const.history.tab.JOB_TAB,
-      Const.history.tab.STAGE_TAB];
+      Const.history.tab.STAGE_TAB ];
     this.stages = result.stages;
-    this.jobId  = result.jobId;
-  }
-  
-  onFetchStageDetails(result){
-	this.tab = Const.history.tab.STAGE_DETAILS_TAB;
-	this.breadcrumb = [
-    Const.history.tab.HISTORY_TAB, 
-	Const.history.tab.JOB_TAB, 
-	Const.history.tab.STAGE_TAB,
-	Const.history.tab.STAGE_DETAILS_TAB];
-	this.stageDetails = result.stageDetails.tasks;
-	this.stageAggregator = result.stageDetails.aggregatorExecutor;
-	this.completeTaskSize = result.stageDetails.completeTaskSize;
-	this.metricCompletedTasks = result.stageDetails.metricCompletedTasks;
+    this.jobId = result.jobId;
   }
 
-  onSwitchToJobTab(){
+  onFetchStageDetails(result) {
+    this.tab = Const.history.tab.STAGE_DETAILS_TAB;
+    this.breadcrumb = [
+      Const.history.tab.HISTORY_TAB,
+      Const.history.tab.JOB_TAB,
+      Const.history.tab.STAGE_TAB,
+      Const.history.tab.STAGE_DETAILS_TAB ];
+    this.stageDetails = result.stageDetails.tasks;
+    this.stageAggregator = result.stageDetails.aggregatorExecutor;
+    this.completeTaskSize = result.stageDetails.completeTaskSize;
+    this.metricCompletedTasks = result.stageDetails.metricCompletedTasks;
+  }
+
+  onSwitchToJobTab() {
     this.tab = Const.history.tab.JOB_TAB;
-    this.breadcrumb = [Const.history.tab.HISTORY_TAB, Const.history.tab.JOB_TAB];
-  }
-  
-  onSwitchToStageTab(){
-	this.tab = Const.history.tab.STAGE_TAB;
-	this.breadcrumb = [Const.history.tab.HISTORY_TAB, Const.history.tab.JOB_TAB, Const.history.tab.STAGE_TAB];
+    this.breadcrumb = [ Const.history.tab.HISTORY_TAB, Const.history.tab.JOB_TAB ];
   }
 
-  onSwitchToHistoryTab(){
+  onSwitchToStageTab() {
+    this.tab = Const.history.tab.STAGE_TAB;
+    this.breadcrumb = [
+      Const.history.tab.HISTORY_TAB,
+      Const.history.tab.JOB_TAB,
+      Const.history.tab.STAGE_TAB
+    ];
+  }
+
+  onSwitchToHistoryTab() {
     this.tab = Const.history.tab.HISTORY_TAB;
-    this.breadcrumb = [Const.history.tab.HISTORY_TAB];
+    this.breadcrumb = [ Const.history.tab.HISTORY_TAB ];
   }
-
 }
 
 export default alt.createStore(HistoryStore);

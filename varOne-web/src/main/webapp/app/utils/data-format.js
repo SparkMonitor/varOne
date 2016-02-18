@@ -1,54 +1,51 @@
-const K = 1024,
-      M = 1048576,
-      G = 1073741824,
-      T = 1099511627776;
+const K = 1024;
+const M = 1048576;
+const G = 1073741824;
+const T = 1099511627776;
 
 
-function getRoundToN(num, pos){
-  var N = Math.pow(10, pos);
-  return Math.round(num*N)/N;
+function getRoundToN(num, pos) {
+  const N = Math.pow(10, pos);
+  return Math.round(num * N) / N;
 }
 
 
-export function byte_format(d){
-  var result = d;
-  if(result < M) {
-    result = result/K;
+export function byteFormatter(d) {
+  let result = d;
+  if (result < M) {
+    result = result / K;
     result = getRoundToN(result, 2);
     return result + ' KB';
-  } else if(result >= M && result < G){
-    result = result/M;
+  } else if (result >= M && result < G) {
+    result = result / M;
     result = getRoundToN(result, 2);
     return result + ' MB';
-  } else if(result >= G && result < T){
-    result = result/G;
+  } else if (result >= G && result < T) {
+    result = result / G;
     result = getRoundToN(result, 2);
     return result + ' GB';
   } else {
-    result = result/T;
+    result = result / T;
     result = getRoundToN(result, 2);
     return result + ' TB';
   }
 }
 
-export function percentage_format(d){
-  var result = d;
+export function percentageFormatter(d) {
+  let result = d;
   result = getRoundToN(result, 2);
   return result * 100 + ' %';
 }
 
-export function millis_format(d) {
-  var result = d;
-
-  var second = d / 1000;
-  if(second < 60) {
+export function millisFormatter(d) {
+  const second = d / 1000;
+  if (second < 60) {
     return second + ' second';
-  } else if(second >= 60){
+  } else if (second >= 60) {
     return second / 60 + ' minute';
   }
 }
 
-export function date_format(timestamp){
-	var d = new Date(timestamp*1);
-	return d;
+export function dateFormatter(timestamp) {
+  return new Date(timestamp * 1);
 }

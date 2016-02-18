@@ -1,7 +1,0 @@
-@import '../../node_modules/font-awesome/css/font-awesome.css';
-
-.breadcrumb > li + li:before {
-    color: #ccc;
-    content: " > ";
-    padding: 0 5px;
-}

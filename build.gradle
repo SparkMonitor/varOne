@@ -12,7 +12,7 @@ subprojects {
     apply plugin: 'project-report'
     sourceCompatibility = 1.7
     group = 'com.haredb'
-    version = '0.1.0-beta'
+    version = '0.1.0'
 
     // set encoding 'UTF-8' on all compile task
     tasks.withType(JavaCompile) {
@@ -57,7 +57,7 @@ subprojects {
                 referencedProjects 'varOne-rpc'
             }
         }
-    } else if (project.name in ["varOne-web"]) {
+    } else if (project.name in ["varOne-server"]) {
         eclipse {
             project {
                 referencedProjects 'varOne-node'
@@ -103,6 +103,7 @@ subprojects {
         }
         hadoopConf('org.apache.hadoop:hadoop-yarn-common:2.3.0'){
            exclude group: "com.sun.jersey", module: "jersey-json"
+           exclude group: "com.sun.jersey", module: "jersey-core"
         }
     }
 

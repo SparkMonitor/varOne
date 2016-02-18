@@ -1,16 +1,13 @@
 import path from 'path';
 import webpack from 'webpack';
 
-import writeBundle from './utils/writeBundle';
-
-const WEBPACK_DEV_SERVER_PORT = parseInt(process.env.PORT) + 1 || 3001;
+const WEBPACK_DEV_SERVER_PORT = parseInt(process.env.PORT, 10) + 1 || 3001;
 const PUBLIC_PATH = `http://localhost:${WEBPACK_DEV_SERVER_PORT}/assets/`;
-const BS_ASSETS = path.resolve(__dirname, './node_modules/bootstrap-sass/assets/stylesheets');
 
 export default {
-  server:{
+  server: {
     port: WEBPACK_DEV_SERVER_PORT,
-    options:{
+    options: {
       publicPath: PUBLIC_PATH,
       hot: true,
       stats: {
@@ -24,8 +21,8 @@ export default {
       }
     }
   },
-  webpack:{
-    entry:[
+  webpack: {
+    entry: [
       `webpack-dev-server/client?http://localhost:${WEBPACK_DEV_SERVER_PORT}`,
       'webpack/hot/only-dev-server',
       'bootstrap-loader',
@@ -34,45 +31,51 @@ export default {
 
     publicPath: PUBLIC_PATH,
 
-    output:{
+    output: {
       path: path.join(__dirname, '../build'),
       filename: 'app.js',
       publicPath: PUBLIC_PATH
     },
 
     module: {
+      preLoaders: [
+        { test: /\.js$/, exclude: /node_modules/, loader: 'eslint' }
+      ],
       loaders: [
-        { test: /\.js$/, loaders: ['react-hot', 'babel'], exclude: /node_modules/},
+        { test: /\.js$/, loaders: [ 'react-hot', 'babel' ], exclude: /node_modules/ },
         { test: /\.scss$/, loaders: [ 'style', 'css', 'sass' ] },
         { test: /\.(woff2?|ttf|eot|svg)$/, loader: 'url?limit=10000' },
-        // { test: /bootstrap-sass\/assets\/javascripts\//, loader: 'imports?jQuery=jquery' },
+        { test: /bootstrap-sass\/assets\/javascripts\//, loader: 'imports?jQuery=jquery' },
         {
           test: /\.(jpe?g|png|gif|svg|woff|woff2|eot|ttf)(\?v=[0-9].[0-9].[0-9])?$/,
           loader: 'file?name=[sha512:hash:base64:7].[ext]',
           exclude: /node_modules\/(?!font-awesome)/
         },
-        {test: /\.css$/, loader: 'style-loader!css-loader'}
+        { test: /\.css$/, loader: 'style-loader!css-loader' }
       ]
     },
 
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoErrorsPlugin(),
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery',
+        'window.jQuery': 'jquery',
+        'root.jQuery': 'jquery'
+      }),
       new webpack.DefinePlugin({
         'process.env': {
           BROWSER: JSON.stringify(true),
           NODE_ENV: JSON.stringify('development')
         }
-      }),
-      function(){
-        // this.plugin('done', writeBundle);
-      }
+      })
     ],
 
     resolve: {
-      extensions: ['', '.js', '.jsx'],
+      extensions: [ '', '.js', '.jsx' ],
       // root: [path.join(__dirname, "public", "javascripts")],
-      modulesDirectories: ['node_modules']
+      modulesDirectories: [ 'node_modules' ]
     }
   }
-}
+};

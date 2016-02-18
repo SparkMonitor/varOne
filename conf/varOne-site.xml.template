@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+
+  <property>
+    <name>varOne.server.addr</name>
+    <value>0.0.0.0</value>
+    <description>varOne Web Server address</description>
+  </property>
+
+  <property>
+    <name>varOne.server.port</name>
+    <value>8080</value>
+    <description>varOne Web Server port, default is 8080</description>
+  </property>
+
+  <property>
+    <name>varOne.node.port</name>
+    <value>8181</value>
+    <description>varOne daemond port, default is 8181</description>
+  </property>
+
+  <property>
+    <name>varOne.node.thread.number</name>
+    <value>5</value>
+    <description>The number of RPC handler for varOne daemond, default is 5</description>
+  </property>
+
+  <property>
+    <name>varOne.server.context.path</name>
+    <value>/varOne-web</value>
+    <description>Context Path of the varOne Web Application</description>
+  </property>
+
+  <property>
+    <name>varOne.war.tempdir</name>
+    <value>webapps</value>
+    <description>Location of jetty temporary directory</description>
+  </property>
+
+</configuration>

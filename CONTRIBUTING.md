@@ -24,7 +24,7 @@ Guidelines for bug reports:
 
 3. **Isolate the problem** &mdash; It's better give a live example or screenshot.
 
-Please try to be as detailed as possible in your report. What isyour environment? 
+Please try to be as detailed as possible in your report. What isyour environment?
 What steps will reproduce the issue? What browser(s) and OS
 experience the problem? What would you expect to be the outcome? All these
 details will help people to fix any potential bugs.

@@ -1,41 +1,22 @@
 import alt from '../alt';
-import Const from '../utils/consts';
 import VarOneAction from '../actions/varOne-action';
 
 class VarOneStore {
 
-  constructor(){
+  constructor() {
     this.bindActions(VarOneAction);
-    this.port = null;
     this.msg = null;
-    this.inputPort = null;
-    this.fromUserClick = false;
+    this.showLogClick = false;
+    this.failMessage = null;
   }
 
-  onChangePort(port) {
-    this.inputPort = port;
+  onShowLogStatus() {
+    this.showLogClick = true;
   }
 
-  onFetchVarOneConfig({ port }) {
-    this.msg = null;
-    this.port = port;
-    this.inputPort = port;
+  onShowFailMessage(failMessage) {
+    this.failMessage = this.failMessage + failMessage;
   }
-
-  onUpdateVarOneConf({ ok, error, port }) {
-    if(ok) {
-      this.port = port;
-      this.inputPort = port;
-      this.msg = "Update varOne configuration succesful.";
-    } else {
-      this.msg = error;
-    }
-  }
-
-  onChangeStatus() {
-    this.fromUserClick = true;
-  }
-
 }
 
 export default alt.createStore(VarOneStore);
