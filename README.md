@@ -56,7 +56,7 @@ Follow below steps to start varOne web server:
 * Configure ```varOne-env.sh``` in ```$VARONE_HOME/conf``` directory
 * Run: ```./bin/varOne.sh```
 
-After running, the browser will automatically open and redirect to http://localhost:$PORT/varOne-web/index.html
+After running, the browser will automatically open and redirect to http://localhost:{PORT}/varOne-web/index.html
 
 # **Development**
 ### Check [this](https://github.com/SparkMonitor/varOne/blob/master/docs/development.md) document

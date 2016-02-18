@@ -39,7 +39,7 @@ For example, eclipse, you can follow these steps in the below:
   * HADOOP_CONF_DIR
   * SPARK_HOME
 * Go to varOne-web/src/main/webapp, and run ```npm run dev```(It will start a webpack dev server on port 3001)
-* Open your browser and go to http://localhost:$PORT/varOne-web/index.html
+* Open your browser and go to http://localhost:{PORT}/varOne-web/index.html
 
 After these instructions, you should work well on your IDE, actually, you can pass step2 for adding ```$VARONE_HOME/conf```   
 to java build path or classpath in ```varOne-server```. If losing ```varOne-site.xml```, varOne server will take default values to run up.   
@@ -49,7 +49,7 @@ You can use gradle and remote debug to run varOne web server:
 * Prepare your ```varOne-site.xml``` in ```$VARONE_HOME/conf``` directory
 * Run: HADOOP_CONF_DIR=path_hadoop_conf_dir SPARK_HOME=path_to_spark gradle execVarOneServer
 * Go to varOne-web/src/main/webapp, and run ```npm run dev```(It will start a webpack dev server on port 3001)
-* Open your browser and go to http://localhost:$PORT/varOne-web/index.html
+* Open your browser and go to http://localhost:{PORT}/varOne-web/index.html
 
 > **Notes:**   
 > varOne uses <code>webpack</code> build up a development server for react hot loading, so
