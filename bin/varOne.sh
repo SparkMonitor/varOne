@@ -34,7 +34,7 @@ if [[ -z "${VARONE_LOG_DIR}" ]]; then
   export VARONE_LOG_DIR="${VARONE_HOME}/logs"
 fi
 HOSTNAME=$(hostname)
-VARONE_LOGFILE="${VARONE_LOG_DIR}/varOne-${HOSTNAME}.log"
+VARONE_LOGFILE="${VARONE_LOG_DIR}/varOne-server-${HOSTNAME}.log"
 JAVA_OPTS+=" -DvarOne.log.file=${VARONE_LOGFILE}"
 
 
