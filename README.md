@@ -54,9 +54,27 @@ In addition, you can stop all varOne daemond as this command: ```./bin/varOned-a
 Follow below steps to start varOne web server:
 * Configure ```varOne-site.xml``` in ```$VARONE_HOME/conf``` directory
 * Configure ```varOne-env.sh``` in ```$VARONE_HOME/conf``` directory
+  - Make sure you have set ```SPARK_HOME```
+  - Make sure you have set ```HADOOP_CONF_DIR```
 * Run: ```./bin/varOne.sh```
 
-After running, the browser will automatically open and redirect to http://localhost:{PORT}/varOne-web/index.html
+After running, open browser and go to [http://localhost:8080/varOne-web/index.html](http://localhost:8080/varOne-web/index.html)
+
+### d. About varOne-site.xml
+**varOne.server.port**
+* varOne Web Server port, default is 8080
+
+**varOne.node.port**
+* varOne daemond port, default is 8181
+
+**varOne.node.thread.number**
+* The number of RPC handler for varOne daemond, default is 5
+
+**varOne.server.context.path**
+* Context Path of the varOne Web Application, default is /varOne-web
+
+**varOne.war.tempdir**
+* Location of jetty temporary directory
 
 # **Development**
 ### Check [this](https://github.com/SparkMonitor/varOne/blob/master/docs/development.md) document
