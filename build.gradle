@@ -65,6 +65,14 @@ subprojects {
         }
     }
 }
+/**
+*Exclude all log4j.properties file
+*/
+subprojects {
+  jar {
+     exclude("**/log4j.properties")
+  }
+}
 
 subprojects {
     repositories {
