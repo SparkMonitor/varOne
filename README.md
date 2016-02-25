@@ -37,9 +37,9 @@ executor.source.jvm.class=org.apache.spark.metrics.source.JvmSource</br>
 
 Click [here](http://sparkmonitor.github.io/varOne/varOne-0.1.0.tgz) to download ```varOne-0.1.0```
 
-### b. Start varOne daemond
+### b. Start varOne daemon
 Deploy the ```varOne-0.1.0.tgz``` to each node in your cluster and untar all of it   
-Then pick one node to start all daemonds by following instructions:
+Then pick one node to start all daemons by following instructions:
 * Configure ```varOne-site.xml``` in ```$VARONE_HOME/conf``` directory
 * Configure ```varOne-env.sh``` in ```$VARONE_HOME/conf``` directory
   - Make sure you have set ```SPARK_HOME```
@@ -48,7 +48,7 @@ Then pick one node to start all daemonds by following instructions:
 * Run: ```./bin/varOned-all.sh start```
 
 After running, you can check whether ```VarOned``` process listed by ```jps```   
-In addition, you can stop all varOne daemond as this command: ```./bin/varOned-all.sh stop```
+In addition, you can stop all varOne daemon as this command: ```./bin/varOned-all.sh stop```
 
 ### c. Start varOne web server
 Follow below steps to start varOne web server:
@@ -56,6 +56,8 @@ Follow below steps to start varOne web server:
 * Configure ```varOne-env.sh``` in ```$VARONE_HOME/conf``` directory
   - Make sure you have set ```SPARK_HOME```
   - Make sure you have set ```HADOOP_CONF_DIR```
+* Configure ```varonedaemond``` in ```$VARONE_HOME/conf``` directory
+  - List your each hostname(one host per line)
 * Run: ```./bin/varOne.sh```
 
 After running, open browser and go to [http://localhost:8080/varOne-web/index.html](http://localhost:8080/varOne-web/index.html)

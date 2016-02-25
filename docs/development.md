@@ -33,7 +33,7 @@ there are few ways you can choice to develop
 
 #### IDE
 For example, eclipse, you can follow these steps in the below:
-* Prepare your ```varOne-site.xml``` in ```$VARONE_HOME/conf``` directory
+* Prepare your ```varOne-site.xml``` and ```varonedaemond``` in ```$VARONE_HOME/conf``` directory
 * In eclipse, add ```$VARONE_HOME/conf``` directory to the java build path or classpath of ```varOne-server```
 * In eclipse, run ```com.varone.server.VarOneServer``` with following environment variables
   * HADOOP_CONF_DIR
@@ -46,7 +46,7 @@ to java build path or classpath in ```varOne-server```. If losing ```varOne-site
 
 #### Gradle
 You can use gradle and remote debug to run varOne web server:
-* Prepare your ```varOne-site.xml``` in ```$VARONE_HOME/conf``` directory
+* Prepare your ```varOne-site.xml``` and ```varonedaemond``` in ```$VARONE_HOME/conf``` directory
 * Run: HADOOP_CONF_DIR=path_hadoop_conf_dir SPARK_HOME=path_to_spark gradle execVarOneServer
 * Go to varOne-web/src/main/webapp, and run ```npm run dev```(It will start a webpack dev server on port 3001)
 * Open your browser and go to http://localhost:{PORT}/varOne-web/index.html
