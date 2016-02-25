@@ -39,4 +39,10 @@
     <description>Location of jetty temporary directory</description>
   </property>
 
+  <property>
+    <name>varOne.server.timer.interval</name>
+    <value>5000</value>
+    <description>varOne-server remote proceduce call varOned timer interval, default is 5000 millisecond</description>
+  </property>
+
 </configuration>

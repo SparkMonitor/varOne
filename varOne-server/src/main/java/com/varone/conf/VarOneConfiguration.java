@@ -270,6 +270,9 @@ public class VarOneConfiguration extends XMLConfiguration {
 		return getString(ConfVars.VARONE_SERVER_ADDR);
 	}
 
+	public String getTimerInterval() {
+		return getString(ConfVars.VARONE_SERVER_TIMER_INTERVAL);
+	}
 	public int getServerPort() {
 		return getInt(ConfVars.VARONE_SERVER_PORT);
 	}
