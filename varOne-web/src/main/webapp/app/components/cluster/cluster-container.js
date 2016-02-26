@@ -15,6 +15,7 @@ class ClusterContainer extends React.Component {
   static propTypes = {
     data: PropTypes.object,
     period: PropTypes.string,
+    timerInterval: PropTypes.string,
     nodeClickCB: PropTypes.func
   }
   static getStores() {
@@ -41,7 +42,7 @@ class ClusterContainer extends React.Component {
     clearInterval(this.fetchInterval);
     this.fetchInterval = setInterval(() => {
       ClusterAction.fetchTotalNodeDashBoard(this.selectMetrics, this.props.period);
-    }, 6000);
+    }, this.props.timerInterval);
   }
 
   handleModalSubmit = selectMetrics => {

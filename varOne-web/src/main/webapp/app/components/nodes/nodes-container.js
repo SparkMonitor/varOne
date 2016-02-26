@@ -14,6 +14,7 @@ class NodesContainer extends React.Component {
   static propTypes = {
     data: PropTypes.object,
     period: PropTypes.string,
+    timerInterval: PropTypes.string,
     nodes: PropTypes.array
   }
   static getStores() {
@@ -46,7 +47,7 @@ class NodesContainer extends React.Component {
         NodesAction.fetchNodeDashBoard(
           this.selectNode, this.selectMetrics, this.props.period);
       }
-    }, 6000);
+    }, this.props.timerInterval);
   }
 
   handleNodeSelect(node) {

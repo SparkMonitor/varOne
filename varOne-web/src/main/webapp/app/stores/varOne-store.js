@@ -8,6 +8,7 @@ class VarOneStore {
     this.msg = null;
     this.showLogClick = false;
     this.failMessage = null;
+    this.timerInterval = null;
   }
 
   onShowLogStatus() {
@@ -16,6 +17,10 @@ class VarOneStore {
 
   onShowFailMessage(failMessage) {
     this.failMessage = this.failMessage + failMessage;
+  }
+
+  onFetchTimerInterval(timerInterval) {
+    this.timerInterval = timerInterval;
   }
 }
 

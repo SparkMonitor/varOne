@@ -16,7 +16,8 @@ public enum ConfVars {
 	VARONE_NODE_PORT("varOne.node.port", 8181),
 	VARONE_SERVER_CONTEXT_PATH("varOne.server.context.path", "/varOne-web"),
 	VARONE_WAR("varOne.war", "../varOne-web/src/main/webapp"),
-	VARONE_WAR_TEMPDIR("varOne.war.tempdir", "webapps");
+	VARONE_WAR_TEMPDIR("varOne.war.tempdir", "webapps"),
+	VARONE_SERVER_TIMER_INTERVAL("varOne.server.timer.interval", "5000");
 
 	private String varName;
     @SuppressWarnings("rawtypes")
