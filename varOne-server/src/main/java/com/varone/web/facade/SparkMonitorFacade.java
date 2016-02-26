@@ -63,7 +63,7 @@ public class SparkMonitorFacade {
 		
 		try {
 			long[] startAndEndTime = timePeriodHandler.transferToLongPeriod(periodExpression);
-			List<String> allNodeHost = yarnService.getAllNodeHost();
+			List<String> allNodeHost = this.env.getDaemonHosts();
 			int runningAppNum = yarnService.getRunningSparkApplications().size();
 			List<String> periodSparkAppId = yarnService.getSparkApplicationsByPeriod(startAndEndTime[0], startAndEndTime[1]);
 			
@@ -106,7 +106,7 @@ public class SparkMonitorFacade {
 			metrics.add(MetricsType.EXEC_THREADPOOL_COMPLETETASK.name());
 		
 		try{
-			List<String> allNodeHost = yarnService.getAllNodeHost();
+			List<String> allNodeHost = this.env.getDaemonHosts();
 			
 			if(yarnService.isStartRunningSparkApplication(applicationId)){
 				
@@ -186,14 +186,7 @@ public class SparkMonitorFacade {
 
 	public List<String> getNodeLists() throws Exception{
 		List<String> nodes = new ArrayList<String>();
-		YarnService yarnService = new YarnService(this.config);
-		try{
-			nodes = yarnService.getAllNodeHost();
-		} finally {
-			yarnService.close();
-		}
-		
-		return nodes;
+		return this.env.getDaemonHosts();
 	}
 
 	public List<HistoryVO> getAllSparkApplication() throws Exception {

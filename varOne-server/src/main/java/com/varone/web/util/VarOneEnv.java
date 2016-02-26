@@ -1,13 +1,13 @@
 package com.varone.web.util;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -15,14 +15,11 @@ import java.util.Properties;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 
-import com.varone.conf.ConfVars;
 import com.varone.conf.VarOneConfiguration;
 import com.varone.node.MetricsProperties;
 import com.varone.node.utils.MetricsPropertiesParser;
 
 public class VarOneEnv {
-	public static String CONFIG = "conf";
-	
 	public static String VARONE_PROPTIES = "varOne.properties";
 	public static String VARONE_NODE_PORT = "varOne.node.port";
 	
@@ -31,6 +28,7 @@ public class VarOneEnv {
 	public static String CORESITEFILENAME = "core-site.xml";
 	public static String METRICSPROPERTIES_FILENAME = "metrics.properties";
 	public static String SPARK_DEFAULT_CONF_FILENAME = "spark-defaults.conf";
+	public static String VARONEDAEMON = "varonedaemond";
 	
 	private VarOneConfiguration conf;
 	
@@ -38,65 +36,44 @@ public class VarOneEnv {
 		this.conf = conf;
 	}
 	
-//	public File getVarOneHomePath(){
-//		File sysDir = new File(this.conf.getString(ConfVars.VARONE_SYS_DIR));
-//		this.mkdir(sysDir);
-//		return sysDir;
-//	}
-//	
-//	public File getVarOneHomePath(String homeDir, String homeName){
-//		File homePath = new File(new File(homeDir), homeName);
-//		this.mkdir(homePath);
-//		return homePath;
-//	}
-//	
-//	public File getVarOneConfPath(){
-//		File confPath = new File(this.getVarOneHomePath(), CONFIG);
-//		return confPath;
-//	}
-//	
-//	public File createVarOneConfPath(){
-//		File confPath = getVarOneConfPath();
-//		this.mkdir(confPath);
-//		return confPath;
-//	}
-	
-//	public void createVarOnePropFile() {
-//		File varOnePropties = new File(this.getVarOneConfPath(), VARONE_PROPTIES);
-//		if(!varOnePropties.exists()){
-//				
-//			InputStream input = null;
-//			OutputStream output = null;
-//			
-//			try{
-//				ClassLoader classLoader = getClass().getClassLoader();
-//				File source = new File(classLoader.getResource(VARONE_PROPTIES).getFile());
-//				input = new FileInputStream(source);
-//				output = new FileOutputStream(varOnePropties);
-//				
-//				byte[] buffer = new byte[1024];
-//				int bytesRead;
-//				while ((bytesRead = input.read(buffer)) > 0) {
-//					output.write(buffer, 0, bytesRead);
-//				}
-//				
-//				output.flush();
-//			} catch(IOException e){
-//				throw new RuntimeException(e);
-//			} finally {
-//				try{
-//					if(input != null) input.close();
-//					if(output != null) output.close();
-//				} catch(IOException e){}
-//			}
-//		}
-//	}
-	
 	public MetricsProperties loadMetricsConfiguration(){
 		File sparkConfDir = new File(this.conf.getSparkHome(), "conf");
 		MetricsProperties loadProperties = MetricsPropertiesParser.loadProperties(
 				new File(sparkConfDir, METRICSPROPERTIES_FILENAME).getPath());
 		return loadProperties;
+	}
+	
+	public List<String> getDaemonHosts() throws IOException {
+		List<String> hostNames = new ArrayList<String>();
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+	    URL url;
+	    
+	    url = VarOneEnv.class.getResource(VARONEDAEMON);
+	    
+	    if (url == null) {
+	    	ClassLoader cl = VarOneEnv.class.getClassLoader();
+	    	if (cl != null) {
+	    		url = cl.getResource(VARONEDAEMON);
+	    	}
+	    }
+	    
+	    if (url == null) {
+	    	url = classLoader.getResource(VARONEDAEMON);
+	    }
+	    
+	    if (url == null) {
+	        throw new IOException("Make sure " + VARONEDAEMON + " exists in java build path or classpath.");
+	    } else {
+	    	File daemonFile = new File(url.getPath());
+	    	BufferedReader br = new BufferedReader(new FileReader(daemonFile));
+	    	String line = null;
+	    	while ((line = br.readLine()) != null) {
+	    		hostNames.add(line);
+	    	}
+	    	br.close();
+	    }
+		
+		return hostNames;
 	}
 	
 	public void isOneSecondsPeriod(){
