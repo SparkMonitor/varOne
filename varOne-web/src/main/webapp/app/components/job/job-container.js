@@ -14,6 +14,7 @@ export default class JobContainer extends React.Component {
   static propTypes = {
     data: PropTypes.object,
     appId: PropTypes.string,
+    timerInterval: PropTypes.string,
     period: PropTypes.string
   }
   static getStores() {
@@ -37,10 +38,11 @@ export default class JobContainer extends React.Component {
   }
 
   componentDidUpdate() {
+    console.log('Job Container:' + this.props.timerInterval);
     clearInterval(this.fetchInterval);
     this.fetchInterval = setInterval(() => {
       JobAction.fetchJobDashBoard(this.props.appId, this.selectMetrics, this.props.period);
-    }, 6000);
+    }, this.props.timerInterval);
   }
 
   handleModalSubmit = selectMetrics => {
