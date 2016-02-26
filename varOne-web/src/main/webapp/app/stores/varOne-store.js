@@ -8,7 +8,7 @@ class VarOneStore {
     this.msg = null;
     this.showLogClick = false;
     this.failMessage = null;
-    this.timerInterval = null;
+    this.timerInterval = 5000;
   }
 
   onShowLogStatus() {

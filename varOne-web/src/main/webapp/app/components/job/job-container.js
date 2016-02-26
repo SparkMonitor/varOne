@@ -38,7 +38,6 @@ export default class JobContainer extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('Job Container:' + this.props.timerInterval);
     clearInterval(this.fetchInterval);
     this.fetchInterval = setInterval(() => {
       JobAction.fetchJobDashBoard(this.props.appId, this.selectMetrics, this.props.period);
