@@ -36,27 +36,6 @@ public class YarnServiceTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 	}
-
-	/**
-	 * Test method for {@link com.varone.web.yarn.service.YarnService#getAllNodeHost()}.
-	 * @throws IOException 
-	 * @throws YarnException 
-	 */
-	public void testGetAllNodeHost() throws YarnException, IOException {
-		
-		List<String> hosts = Arrays.asList(new String[]{"server-a2","server-a3","server-a4","server-a5","server-a1"});
-		
-		YarnService service = new YarnService(this.config);
-		List<String> allNodeHost = service.getAllNodeHost();	
-		assertNotNull(allNodeHost);
-		assertTrue(allNodeHost.size() > 0);
-		 
-		for(String hostname: allNodeHost){
-			assertTrue(hosts.contains(hostname));
-		}
-		 
-		service.close();
-	}
 	
 	/**
 	 * Test method for {@link com.varone.web.yarn.service.YarnService#getRunningSparkApplications()}.

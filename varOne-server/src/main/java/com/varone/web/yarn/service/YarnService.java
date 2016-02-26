@@ -9,9 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.yarn.api.records.ApplicationId;
 import org.apache.hadoop.yarn.api.records.ApplicationReport;
-import org.apache.hadoop.yarn.api.records.NodeReport;
 import org.apache.hadoop.yarn.api.records.YarnApplicationState;
 import org.apache.hadoop.yarn.client.api.YarnClient;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
@@ -31,16 +29,6 @@ public class YarnService implements Closeable{
 		this.yarnClient = YarnClient.createYarnClient();
 		this.yarnClient.init(conf);
 		this.yarnClient.start();
-	}
-	
-	public List<String> getAllNodeHost() throws YarnException, IOException{
-		List<NodeReport> nodeReports = this.yarnClient.getNodeReports();
-		List<String> hosts = new ArrayList<String>(nodeReports.size());
-		for(NodeReport nr: nodeReports){
-//			if(nr.getHttpAddress().split(":")[0].equals("server-a1")) continue;
-			hosts.add(nr.getHttpAddress().split(":")[0]);
-		}
-		return hosts;
 	}
 	
 	public List<String> getRunningSparkApplications() throws YarnException, IOException{
