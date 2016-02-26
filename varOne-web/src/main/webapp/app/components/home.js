@@ -56,11 +56,7 @@ class Home extends React.Component {
   }
 
   renderContainer() {
-    let timer = 6000;
-    if (this.props.timerInterval !== null) {
-      timer = this.props.timerInterval;
-    }
-
+    const timer = this.props.timerInterval;
     if (this.state.container === Const.menu.cluster) {
       return <ClusterContainer nodeClickCB={ this.handleNodeClick } timerInterval={ timer }/>;
     } else if (this.state.container === Const.menu.runningJobs) {

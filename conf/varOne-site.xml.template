@@ -42,7 +42,7 @@
   <property>
     <name>varOne.server.timer.interval</name>
     <value>5000</value>
-    <description>varOne-server remote proceduce call varOned timer interval, default is 5000 millisecond</description>
+    <description>Timer for web server fetching spark metrics on web page, default is 5000 millisecond</description>
   </property>
 
 </configuration>

@@ -10,11 +10,11 @@ import com.varone.conf.VarOneConfiguration;
 
 
 @Produces(MediaType.APPLICATION_JSON)
-@Path("/timer")
-public class TimerResource {
+@Path("/varone")
+public class VarOneResource {
 
 	@GET
-	@Path("/")
+	@Path("/timer")
 	public String fetchTimerInterval(){
 		VarOneConfiguration config = VarOneConfiguration.create();
 		return config.getTimerInterval();
