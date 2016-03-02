@@ -17,7 +17,8 @@ public enum ConfVars {
 	VARONE_SERVER_CONTEXT_PATH("varOne.server.context.path", "/varOne-web"),
 	VARONE_WAR("varOne.war", "../varOne-web/src/main/webapp"),
 	VARONE_WAR_TEMPDIR("varOne.war.tempdir", "webapps"),
-	VARONE_SERVER_TIMER_INTERVAL("varOne.server.timer.interval", "5000");
+	VARONE_SERVER_TIMER_INTERVAL("varOne.server.timer.interval", "5000"),
+	SPARK_DEPLOY_MODE("spark.deploy.mode", "yarn");
 
 	private String varName;
     @SuppressWarnings("rawtypes")

@@ -19,4 +19,14 @@ public class VarOneConfigurationTest {
 		assertEquals(timerInterval, "1000");
 	}
 	
+	@Test
+	public void testSparkDeployMode(){
+		VarOneConfiguration config = VarOneConfiguration.create();
+		String deployMode = config.getProperty(ConfVars.SPARK_DEPLOY_MODE.getVarName()).toString();
+		assertEquals("yarn", deployMode);
+		
+		config.setProperty(ConfVars.SPARK_DEPLOY_MODE.getVarName(), "standalone");
+		deployMode = config.getProperty(ConfVars.SPARK_DEPLOY_MODE.getVarName()).toString();
+		assertEquals("standalone", deployMode);
+	}
 }

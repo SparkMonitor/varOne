@@ -45,4 +45,9 @@
     <description>Timer for web server fetching spark metrics on web page, default is 5000 millisecond</description>
   </property>
 
+  <property>
+    <name>spark.deploy.mode</name>
+    <value>yarn</value>
+    <description>Configure for spark deploy mode, available value is yarn and standalone, default is yarn</description>
+  </property>
 </configuration>

@@ -273,8 +273,12 @@ public class VarOneConfiguration extends XMLConfiguration {
 	public String getTimerInterval() {
 		return getString(ConfVars.VARONE_SERVER_TIMER_INTERVAL);
 	}
+	
+	public String getSparkDeployMode() {
+		return getString(ConfVars.SPARK_DEPLOY_MODE);
+	}
+	
 	public int getServerPort() {
 		return getInt(ConfVars.VARONE_SERVER_PORT);
 	}
-
 }
