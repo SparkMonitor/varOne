@@ -3,6 +3,7 @@
  */
 package com.varone.web.eventlog.bean;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -253,7 +254,11 @@ public class SparkEventLogBean {
 			@SerializedName("Host")private String host;
 			@SerializedName("Total Cores")private String cores;
 			public String getHost() {
-				return host;
+				try{
+					return InetAddress.getByName(host).getHostName();
+				}catch(Exception e){
+					throw new RuntimeException(e);
+				}
 			}
 			public void setHost(String host) {
 				this.host = host;
@@ -332,7 +337,11 @@ public class SparkEventLogBean {
 				this.executorId = executorId;
 			}
 			public String getHost() {
-				return host;
+				try{
+					return InetAddress.getByName(host).getHostName();
+				}catch(Exception e){
+					throw new RuntimeException(e);
+				}
 			}
 			public void setHost(String host) {
 				this.host = host;
@@ -437,7 +446,11 @@ public class SparkEventLogBean {
 				this.executorId = executorId;
 			}
 			public String getHost() {
-				return host;
+				try{
+					return InetAddress.getByName(host).getHostName();
+				}catch(Exception e){
+					throw new RuntimeException(e);
+				}
 			}
 			public void setHost(String host) {
 				this.host = host;
@@ -529,7 +542,11 @@ public class SparkEventLogBean {
 			@SerializedName("Input Metrics")private InputMetrics inputMetrics;
 			@SerializedName("Output Metrics")private OutputMetrics outputMetrics;
 			public String getHost() {
-				return host;
+				try{
+					return InetAddress.getByName(host).getHostName();
+				}catch(Exception e){
+					throw new RuntimeException(e);
+				}
 			}
 			public void setHost(String host) {
 				this.host = host;
@@ -730,7 +747,11 @@ public class SparkEventLogBean {
 				this.id = id;
 			}
 			public String getHost() {
-				return host;
+				try{
+					return InetAddress.getByName(host).getHostName();
+				}catch(Exception e){
+					throw new RuntimeException(e);
+				}
 			}
 			public void setHost(String host) {
 				this.host = host;
