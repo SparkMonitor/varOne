@@ -28,6 +28,7 @@ public class VarOneEnv {
 	public static String CORESITEFILENAME = "core-site.xml";
 	public static String METRICSPROPERTIES_FILENAME = "metrics.properties";
 	public static String SPARK_DEFAULT_CONF_FILENAME = "spark-defaults.conf";
+	public static String SPARK_ENV_SH_FILENAME = "spark-env.sh";
 	public static String VARONEDAEMON = "varonedaemond";
 	
 	private VarOneConfiguration conf;
@@ -152,6 +153,30 @@ public class VarOneEnv {
 		if(!defaultConf.exists()) {
 			throw new RuntimeException(
 					"Make sure " + SPARK_DEFAULT_CONF_FILENAME + " exists in the " + sparkConfDir.getPath());
+		}
+	}
+	
+	public String getSparkMasterIP(){
+		try {
+			File sparkConfDir = new File(this.conf.getSparkHome() + "/conf", SPARK_ENV_SH_FILENAME);
+			InputStream input = new FileInputStream(sparkConfDir);
+			Properties properties = new Properties();
+			properties.load(input);
+			return properties.getProperty("SPARK_MASTER_IP");
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public String getSparkMasterWebUIPort(){
+		try {
+			File sparkConfDir = new File(this.conf.getSparkHome() + "/conf", SPARK_ENV_SH_FILENAME);
+			InputStream input = new FileInputStream(sparkConfDir);
+			Properties properties = new Properties();
+			properties.load(input);
+			return properties.getProperty("SPARK_MASTER_WEBUI_PORT");
+		}catch(Exception e){
+			throw new RuntimeException(e);
 		}
 	}
 	
