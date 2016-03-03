@@ -33,6 +33,8 @@ import com.varone.web.vo.HistoryDetailStageVO;
 import com.varone.web.vo.HistoryVO;
 import com.varone.web.vo.JobVO;
 import com.varone.web.vo.StageVO;
+import com.varone.web.yarn.service.AbstractDeployModeService;
+import com.varone.web.yarn.service.StandaloneService;
 import com.varone.web.yarn.service.YarnService;
 
 /**
@@ -57,15 +59,15 @@ public class SparkMonitorFacade {
 	public DefaultTotalNodeVO getDefaultClusterDashBoard(List<String> metrics, String periodExpression) throws Exception{
 		DefaultTotalNodeVO result = null;
 		TimePeriodHandler timePeriodHandler = new TimePeriodHandler(this.metricsProperties);
-		YarnService yarnService = new YarnService(this.config);
+		AbstractDeployModeService deployModeService = this.getDeployModeService();
 				
 		Map<String, List<NodeBean>> nodeMetricsByAppId = new LinkedHashMap<String, List<NodeBean>>();
 		
 		try {
 			long[] startAndEndTime = timePeriodHandler.transferToLongPeriod(periodExpression);
 			List<String> allNodeHost = this.env.getDaemonHosts();
-			int runningAppNum = yarnService.getRunningSparkApplications().size();
-			List<String> periodSparkAppId = yarnService.getSparkApplicationsByPeriod(startAndEndTime[0], startAndEndTime[1]);
+			int runningAppNum = deployModeService.getRunningSparkApplications().size();
+			List<String> periodSparkAppId = deployModeService.getSparkApplicationsByPeriod(startAndEndTime[0], startAndEndTime[1]);
 			
 			EventLogReader eventLogReader = new EventLogHdfsReaderImpl(this.config, this.env.getEventLogDir());
 			MetricsReader metricsReader = new MetricsRpcReaderImpl(allNodeHost, this.varOneNodePort); 
@@ -89,7 +91,7 @@ public class SparkMonitorFacade {
 							nodeMetricsByAppId, inProgressEventLogByAppId, plotPointInPeriod);
 			
 		} finally{
-			yarnService.close();
+			deployModeService.close();
 		}
 		
 		return result;
@@ -99,7 +101,7 @@ public class SparkMonitorFacade {
 	public DefaultApplicationVO getJobDashBoard(String applicationId, 
 			List<String> metrics, String periodExpression) throws Exception{
 		DefaultApplicationVO result = null;
-		YarnService yarnService = new YarnService(this.config);
+		AbstractDeployModeService deployModeService = this.getDeployModeService();
 		TimePeriodHandler timePeriodHandler = new TimePeriodHandler(this.metricsProperties);
 		
 		if(!metrics.contains(MetricsType.EXEC_THREADPOOL_COMPLETETASK))
@@ -108,7 +110,7 @@ public class SparkMonitorFacade {
 		try{
 			List<String> allNodeHost = this.env.getDaemonHosts();
 			
-			if(yarnService.isStartRunningSparkApplication(applicationId)){
+			if(deployModeService.isStartRunningSparkApplication(applicationId)){
 				
 				long[] startAndEndTime = timePeriodHandler.transferToLongPeriod(periodExpression);
 				List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
@@ -129,7 +131,7 @@ public class SparkMonitorFacade {
 						inProgressLog, nodeMetrics, plotPointInPeriod);
 			}
 		} finally{
-			yarnService.close();
+			deployModeService.close();
 		}
 		return result;
 	}
@@ -137,7 +139,7 @@ public class SparkMonitorFacade {
 	public DefaultNodeVO getNodeDashBoard(String node, 
 			List<String> metrics, String periodExpression) throws Exception {
 		DefaultNodeVO result = null;
-		YarnService yarnService = new YarnService(this.config);
+		AbstractDeployModeService deployModeService = this.getDeployModeService();
 		TimePeriodHandler timePeriodHandler = new TimePeriodHandler(this.metricsProperties);
 		Map<String, NodeBean> nodeMetricsByAppId = new LinkedHashMap<String, NodeBean>();
 		
@@ -146,7 +148,7 @@ public class SparkMonitorFacade {
 			long[] startAndEndTime = timePeriodHandler.transferToLongPeriod(periodExpression);
 			List<Long> plotPointInPeriod = timePeriodHandler.getDefaultPlotPointInPeriod(startAndEndTime);
 			
-			List<String> periodSparkAppId = yarnService.getSparkApplicationsByPeriod(startAndEndTime[0], startAndEndTime[1]);
+			List<String> periodSparkAppId = deployModeService.getSparkApplicationsByPeriod(startAndEndTime[0], startAndEndTime[1]);
 			
 			for(String applicationId: periodSparkAppId){
 				NodeBean nodeBean = metricsReader.getNodeMetrics(node, applicationId, metrics);
@@ -160,7 +162,7 @@ public class SparkMonitorFacade {
 			result = new UIDataAggregator().aggregateNodeDashBoard(metrics, node, nodeMetricsByAppId, plotPointInPeriod);
 			
 		} finally{
-			yarnService.close();
+			deployModeService.close();
 		}
 		return result;
 	}
@@ -180,8 +182,8 @@ public class SparkMonitorFacade {
 	
 	
 	public List<String> getRunningJobs() throws Exception {
-		YarnService yarnService = new YarnService(this.config);
-		return yarnService.getRunningSparkApplications();
+		AbstractDeployModeService deployModeService = this.getDeployModeService();
+		return deployModeService.getRunningSparkApplications();
 	}
 
 	public List<String> getNodeLists() throws Exception{
@@ -222,5 +224,17 @@ public class SparkMonitorFacade {
 		SparkEventLogBean eventLog = eventLogReader.getJobStages(applicationId, jobId);
 		
 		return new UIDataAggregator().aggregateJobStages(applicationId, jobId, eventLog);
+	}
+	
+	private AbstractDeployModeService getDeployModeService() {
+		VarOneConfiguration conf = VarOneConfiguration.create();
+		String deployMode = conf.getSparkDeployMode();
+		if(deployMode.equals("standalone")){
+			return new StandaloneService(this.config);
+		}else if(deployMode.equals("yarn")){
+			return new YarnService(this.config);
+		}else{
+			throw new RuntimeException(ConfVars.SPARK_DEPLOY_MODE.getVarName() + " setting not yarn or standalone");
+		}
 	}
 }

@@ -19,7 +19,7 @@ import org.apache.hadoop.yarn.exceptions.YarnException;
  * @author allen
  *
  */
-public class YarnService implements Closeable{
+public class YarnService extends AbstractDeployModeService{
 	
 	private YarnClient yarnClient;
 	
@@ -72,5 +72,4 @@ public class YarnService implements Closeable{
 	public void close() throws IOException {
 		this.yarnClient.close();
 	}
-	
 }
