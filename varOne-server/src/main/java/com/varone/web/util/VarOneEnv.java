@@ -156,36 +156,29 @@ public class VarOneEnv {
 		}
 	}
 	
-	public String getSparkMasterIP(){
+	public String getSparkMasterRestfulURL(){
 		try {
+			String SPARK_MASTER_IP = "SPARK_MASTER_IP";
+			String SPARK_MASTER_WEBUI_PORT = "SPARK_MASTER_WEBUI_PORT";
+			
 			File sparkConfDir = new File(this.conf.getSparkHome() + "/conf", SPARK_ENV_SH_FILENAME);
 			InputStream input = new FileInputStream(sparkConfDir);
 			Properties properties = new Properties();
 			properties.load(input);
-			return properties.getProperty("SPARK_MASTER_IP");
+			String sparkMasterIP = properties.getProperty(SPARK_MASTER_IP);
+			String sparkMasterWebUIPort = properties.getProperty(SPARK_MASTER_WEBUI_PORT);
+			
+			if(sparkMasterIP == null ||  sparkMasterWebUIPort == null){
+				throw new RuntimeException("Make sure you have set the " + SPARK_MASTER_IP + "and " + 
+			                SPARK_MASTER_WEBUI_PORT + " environment variable in the " + SPARK_ENV_SH_FILENAME);
+			}
+			return "http://" + sparkMasterIP + ":" + sparkMasterWebUIPort;
+			
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}
 	}
 	
-	public String getSparkMasterWebUIPort(){
-		try {
-			File sparkConfDir = new File(this.conf.getSparkHome() + "/conf", SPARK_ENV_SH_FILENAME);
-			InputStream input = new FileInputStream(sparkConfDir);
-			Properties properties = new Properties();
-			properties.load(input);
-			return properties.getProperty("SPARK_MASTER_WEBUI_PORT");
-		}catch(Exception e){
-			throw new RuntimeException(e);
-		}
-	}
-	
-	private void mkdir(File folderPath){
-		if(!folderPath.exists()){
-			folderPath.mkdir();
-		}
-	}
-
 	public Configuration loadHadoopConfiguration(){
 		Configuration config = new Configuration();
 		File varOneConfPath = new File(this.conf.getHadoopConfDir());

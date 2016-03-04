@@ -9,11 +9,9 @@ import java.util.List;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.yarn.exceptions.YarnException;
 
 import com.google.gson.Gson;
-import com.varone.conf.VarOneConfiguration;
 import com.varone.web.util.VarOneEnv;
 
 
@@ -23,15 +21,8 @@ public class StandaloneService extends AbstractDeployModeService {
 	private String httpURLRoot;
 	
 	
-	public StandaloneService(Configuration config){
-		VarOneEnv varOneEnv = new VarOneEnv(VarOneConfiguration.create());
-		
-		String sparkMasterIP = varOneEnv.getSparkMasterIP();
-		String sparkMasterWebUIPort = varOneEnv.getSparkMasterWebUIPort();
-		if(sparkMasterIP == null ||  sparkMasterWebUIPort == null){
-			throw new RuntimeException("spark-env.sh file not setting SPARK_MASTER_IP and SPARK_MASTER_WEB_PORT environment variable");
-		}
-		this.httpURLRoot = "http://" + sparkMasterIP + ":" + sparkMasterWebUIPort;
+	public StandaloneService(VarOneEnv varOneEnv){
+		this.httpURLRoot = varOneEnv.getSparkMasterRestfulURL();
 	}
 	
 	@Override
