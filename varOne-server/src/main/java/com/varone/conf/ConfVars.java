@@ -18,7 +18,7 @@ public enum ConfVars {
 	VARONE_WAR("varOne.war", "../varOne-web/src/main/webapp"),
 	VARONE_WAR_TEMPDIR("varOne.war.tempdir", "webapps"),
 	VARONE_SERVER_TIMER_INTERVAL("varOne.server.timer.interval", "5000"),
-	SPARK_DEPLOY_MODE("spark.deploy.mode", "yarn");
+	SPARK_DEPLOY_MODE("spark.deploy.mode", ConfVars.SPARK_DEPLOY_YARN);
 
 	private String varName;
     @SuppressWarnings("rawtypes")
@@ -29,7 +29,9 @@ public enum ConfVars {
     private float floatValue;
     private boolean booleanValue;
     private long longValue;
-
+    public static final String SPARK_DEPLOY_YARN = "yarn";
+    public static final String SPARK_DEPLOY_STANDALONE = "standalone";
+    
 	ConfVars(String varName, String varValue) {
 	    this.varName = varName;
 	    this.varClass = String.class;

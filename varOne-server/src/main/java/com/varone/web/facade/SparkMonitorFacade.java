@@ -229,9 +229,9 @@ public class SparkMonitorFacade {
 	private AbstractDeployModeService getDeployModeService() {
 		VarOneConfiguration conf = VarOneConfiguration.create();
 		String deployMode = conf.getSparkDeployMode();
-		if(deployMode.equals("standalone")){
-			return new StandaloneService(this.config);
-		}else if(deployMode.equals("yarn")){
+		if(deployMode.equals(ConfVars.SPARK_DEPLOY_STANDALONE)){
+			return new StandaloneService(this.env);
+		}else if(deployMode.equals(ConfVars.SPARK_DEPLOY_YARN)){
 			return new YarnService(this.config);
 		}else{
 			throw new RuntimeException(ConfVars.SPARK_DEPLOY_MODE.getVarName() + " setting not yarn or standalone");
