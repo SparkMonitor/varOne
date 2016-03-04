@@ -20,8 +20,8 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 import com.varone.conf.VarOneConfiguration;
+import com.varone.web.deploy.service.StandaloneService.ApplicationsBean;
 import com.varone.web.util.VarOneEnv;
-import com.varone.web.yarn.service.StandaloneService.ApplicationsBean;
 
 public class StandaloneServiceTest {
 	private String restfulURL = "http://server-a3:8080/api/v1/applications";

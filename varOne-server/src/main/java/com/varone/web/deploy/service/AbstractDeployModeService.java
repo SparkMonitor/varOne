@@ -1,4 +1,4 @@
-package com.varone.web.yarn.service;
+package com.varone.web.deploy.service;
 
 import java.io.Closeable;
 import java.util.List;

@@ -10,7 +10,7 @@ import java.util.List;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.yarn.exceptions.YarnException;
 
-import com.varone.web.yarn.service.YarnService;
+import com.varone.web.deploy.service.YarnService;
 
 import junit.framework.TestCase;
 
@@ -38,7 +38,7 @@ public class YarnServiceTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link com.varone.web.yarn.service.YarnService#getRunningSparkApplications()}.
+	 * Test method for {@link com.varone.web.deploy.service.YarnService#getRunningSparkApplications()}.
 	 * @throws IOException 
 	 * @throws YarnException 
 	 */
