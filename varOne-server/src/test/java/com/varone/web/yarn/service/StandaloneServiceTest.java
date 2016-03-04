@@ -5,7 +5,14 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -17,57 +24,42 @@ import com.varone.web.util.VarOneEnv;
 import com.varone.web.yarn.service.StandaloneService.ApplicationsBean;
 
 public class StandaloneServiceTest {
-
+	private String restfulURL = "http://server-a3:8080/api/v1/applications";
+	
 	@Test
 	public void testhttpconnection() {
 		try {
-			String httpURL = "http://server-a2:4040/api/v1/applications";
-			
 			HttpClient client = new HttpClient();
-			GetMethod method = new GetMethod(httpURL);
+			GetMethod method = new GetMethod(restfulURL);
 			int status = client.executeMethod(method);
+			assertEquals(200, status);
 		} catch(Exception e){
-			
+			throw new RuntimeException(e);
 		}
 	}
 	@Test
 	public void restfulTest() throws Exception{
-		String httpURL = "http://server-a2:4040/api/v1/applications";
-		
 		HttpClient client = new HttpClient();
-		GetMethod method = new GetMethod(httpURL);
+		GetMethod method = new GetMethod(restfulURL);
 		int status = client.executeMethod(method);
-		System.out.println(status);
 		byte[] resultByte = method.getResponseBody(1024 * 1024 * 10);
 		String result = new String(resultByte);
 		
 		
 		Gson gson = new Gson();
 		ApplicationsBean []applications = gson.fromJson(result, ApplicationsBean[].class);
-		System.out.println(applications.length);
-		for(ApplicationsBean application : applications){
-			System.out.println(application.getId());
-			System.out.println(application.getName());
-			System.out.println(application.getAttempts().get(0).getStartTime());
+		assertEquals(200, status);
+		assertTrue(applications.length > 0);
+	}
+	@Test
+	public void datetest(){
+		try{
+			String dateTime = "2016-03-02T07:13:45.843GMT";
+			SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSz");
+			Date date = dateFormatGmt.parse(dateTime);
+			assertEquals("Wed Mar 02 15:13:45 CST 2016", date.toString());
+		}catch(Exception e){
+			throw new RuntimeException(e);
 		}
 	}
-	@Test
-	public void applicationRunningTest() throws IOException {
-		StandaloneService service = new StandaloneService(null);
-		List<String> list = service.getRunningSparkApplications();
-		assertTrue(list.size() > 0);
-	}
-	@Test
-	public void isStartRunningSparkApplication() throws IOException {
-		StandaloneService service = new StandaloneService(null);
-		boolean isRunning = service.isStartRunningSparkApplication("HBase_Query_with_RDD");
-		assertTrue(isRunning);
-	}
-	@Test
-	public void sparkenvtest(){
-		VarOneEnv env = new VarOneEnv(VarOneConfiguration.create());
-		System.out.println(env.getSparkMasterIP());
-		System.out.println(env.getSparkMasterWebUIPort());
-	}
-
 }

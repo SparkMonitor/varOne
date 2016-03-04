@@ -3,7 +3,6 @@
  */
 package com.varone.web.yarn.service;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +30,7 @@ public class YarnService extends AbstractDeployModeService{
 		this.yarnClient.start();
 	}
 	
+	@Override
 	public List<String> getRunningSparkApplications() throws YarnException, IOException{
 		List<String> applicationIds = new ArrayList<String>();
 		for(ApplicationReport report : this.yarnClient.getApplications()){
@@ -41,6 +41,7 @@ public class YarnService extends AbstractDeployModeService{
 		return applicationIds;
 	}
 	
+	@Override
 	public boolean isStartRunningSparkApplication(String applicationId) throws YarnException, IOException{
 		boolean valid = false;
 		for(ApplicationReport report : this.yarnClient.getApplications()){
@@ -55,6 +56,7 @@ public class YarnService extends AbstractDeployModeService{
 		return valid;
 	}
 
+	@Override
 	public List<String> getSparkApplicationsByPeriod(long start, long end) throws YarnException, IOException {
 		List<String> applicationIds = new ArrayList<String>();
 		for(ApplicationReport report : this.yarnClient.getApplications()){
