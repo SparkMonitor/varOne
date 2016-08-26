@@ -13,6 +13,7 @@ This is an [Apache Spark](http://spark.apache.org/) web monitoring tool, named *
 
 ## Prerequisites
 - Spark on YARN(**We will loose this restriction in near future**)
+  * Support yarn-client.
 - JDK 7 and later
 - metrics.properties should enable CsvSink for all instances, you can follow the config in the below:
 <div>
@@ -25,6 +26,24 @@ executor.source.jvm.class=org.apache.spark.metrics.source.JvmSource</br>
 </div>
 
 > **Tip:** ```metrics.properties``` exists in **$SPARK_HOME/conf**.
+
+- Setting the below flag when using spark-submit:
+
+  ```--files=/path/to/metrics.properties --conf spark.metrics.conf=metrics.properties```
+
+  or set the properties in you application. For example:
+
+  ```java
+  val sparkConf = new spark.SparkConf()
+  .set("spark.metrics.conf.*.sink.csv.class", "org.apache.spark.metrics.sink.CsvSink")
+  .set("spark.metrics.conf.*.sink.csv.period", "1")
+  .set("spark.metrics.conf.*.sink.csv.unit", "seconds")
+  .set("spark.metrics.conf.*.sink.csv.directory", "/path/to/CSV_SINK")
+  .set("spark.metrics.conf.driver.source.jvm.class", "org.apache.spark.metrics.source.JvmSource")
+  .set("spark.metrics.conf.executor.source.jvm.class", "org.apache.spark.metrics.source.JvmSource")
+
+  val sc = new spark.SparkContext(sparkConf)
+  ```
 
 - Enable Spark event log, in $SPARK_HOME/conf/spark-defaults.conf
   * Set ```spark.eventLog.enabled``` to true
